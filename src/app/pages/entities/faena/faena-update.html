@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Faena</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button [disabled]="!isReadyToSave" (click)="save()" color="primary">
+        @if (platform.is('ios')) {
+          <span>{{ 'DONE_BUTTON' | translate }}</span>
+        } @else {
+          <ion-icon name="checkmark"></ion-icon>
+        }
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (form) {
+    <form name="form" [formGroup]="form" (ngSubmit)="save()">
+      <ion-list>
+        <ion-item [hidden]="!form.id">
+          <ion-label>ID</ion-label>
+          <ion-input type="hidden" id="id" formControlName="id" readonly></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Nombre</ion-label>
+          <ion-input type="text" name="nombre" formControlName="nombre"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Cliente Mandante</ion-label>
+          <ion-select id="field_clienteMandante" formControlName="clienteMandanteId" [compareWith]="compareClienteMandante">
+            <ion-select-option [value]="null"></ion-select-option>
+            @for (clienteMandanteOption of clienteMandantes; track trackClienteMandanteById($index, clienteMandanteOption)) {
+              <ion-select-option [value]="clienteMandanteOption.id">{{ clienteMandanteOption.id }}</ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+      </ion-list>
+    </form>
+  }
+</ion-content>

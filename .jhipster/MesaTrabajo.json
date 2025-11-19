@@ -1,0 +1,40 @@
+{
+  "annotations": {
+    "changelogDate": "20250905222607"
+  },
+  "applications": "*",
+  "changelogDate": "20250905222607",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "mesa_trabajo",
+  "fields": [
+    {
+      "fieldName": "identificador",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "descripcion",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "tipo",
+      "fieldType": "TipoMesa",
+      "fieldValues": "MESA_UNO,MESA_DOS"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "MesaTrabajo",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "correaTransportadora",
+      "otherEntityRelationshipName": "mesaTrabajo",
+      "relationshipName": "correaTransportadora",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}

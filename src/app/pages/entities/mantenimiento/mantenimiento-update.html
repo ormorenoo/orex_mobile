@@ -1,0 +1,69 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Mantenimiento</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button [disabled]="!isReadyToSave" (click)="save()" color="primary">
+        @if (platform.is('ios')) {
+          <span>{{ 'DONE_BUTTON' | translate }}</span>
+        } @else {
+          <ion-icon name="checkmark"></ion-icon>
+        }
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (form) {
+    <form name="form" [formGroup]="form" (ngSubmit)="save()">
+      <ion-list>
+        <ion-item [hidden]="!form.id">
+          <ion-label>ID</ion-label>
+          <ion-input type="hidden" id="id" formControlName="id" readonly></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Fecha Creacion</ion-label>
+          <ion-datetime displayFormat="MM/DD/YYYY HH:mm" formControlName="fechaCreacion" id="field_fechaCreacion"></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label>Condicion Polin</ion-label>
+          <ion-select formControlName="condicionPolin" id="field_condicionPolin">
+            <ion-select-option value="OPERATIVO">{{ 'CondicionPolin.OPERATIVO' | translate }}</ion-select-option>
+            <ion-select-option value="NO_OPERATIVO">{{ 'CondicionPolin.NO_OPERATIVO' | translate }}</ion-select-option>
+            <ion-select-option value="OBSERVACION">{{ 'CondicionPolin.OBSERVACION' | translate }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Ruta Foto General</ion-label>
+          <ion-input type="text" name="rutaFotoGeneral" formControlName="rutaFotoGeneral"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Ruta Foto Detalle Polin</ion-label>
+          <ion-input type="text" name="rutaFotoDetallePolin" formControlName="rutaFotoDetallePolin"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Polin</ion-label>
+          <ion-select id="field_polin" formControlName="polinId" [compareWith]="comparePolin">
+            <ion-select-option [value]="null"></ion-select-option>
+            @for (polinOption of polins; track trackPolinById($index, polinOption)) {
+              <ion-select-option [value]="polinOption.id">{{ polinOption.id }}</ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Inspeccion</ion-label>
+          <ion-select id="field_inspeccion" formControlName="inspeccionId" [compareWith]="compareInspeccion">
+            <ion-select-option [value]="null"></ion-select-option>
+            @for (inspeccionOption of inspeccions; track trackInspeccionById($index, inspeccionOption)) {
+              <ion-select-option [value]="inspeccionOption.id">{{ inspeccionOption.id }}</ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+      </ion-list>
+    </form>
+  }
+</ion-content>

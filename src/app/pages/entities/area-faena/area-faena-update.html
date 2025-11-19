@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Area Faena</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button [disabled]="!isReadyToSave" (click)="save()" color="primary">
+        @if (platform.is('ios')) {
+          <span>{{ 'DONE_BUTTON' | translate }}</span>
+        } @else {
+          <ion-icon name="checkmark"></ion-icon>
+        }
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (form) {
+    <form name="form" [formGroup]="form" (ngSubmit)="save()">
+      <ion-list>
+        <ion-item [hidden]="!form.id">
+          <ion-label>ID</ion-label>
+          <ion-input type="hidden" id="id" formControlName="id" readonly></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Area</ion-label>
+          <ion-select id="field_area" formControlName="areaId" [compareWith]="compareArea">
+            <ion-select-option [value]="null"></ion-select-option>
+            @for (areaOption of areas; track trackAreaById($index, areaOption)) {
+              <ion-select-option [value]="areaOption.id">{{ areaOption.id }}</ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Faena</ion-label>
+          <ion-select id="field_faena" formControlName="faenaId" [compareWith]="compareFaena">
+            <ion-select-option [value]="null"></ion-select-option>
+            @for (faenaOption of faenas; track trackFaenaById($index, faenaOption)) {
+              <ion-select-option [value]="faenaOption.id">{{ faenaOption.id }}</ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+      </ion-list>
+    </form>
+  }
+</ion-content>

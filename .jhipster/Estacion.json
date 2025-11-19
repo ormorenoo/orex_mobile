@@ -1,0 +1,50 @@
+{
+  "annotations": {
+    "changelogDate": "20250905222608"
+  },
+  "applications": "*",
+  "changelogDate": "20250905222608",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "estacion",
+  "fields": [
+    {
+      "fieldName": "identificador",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "descripcion",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "tipoEstacion",
+      "fieldType": "TipoEstacion",
+      "fieldValues": "CARGA,RETORNO,IMPACTO"
+    },
+    {
+      "fieldName": "tipoEstacionPolin",
+      "fieldType": "TipoEstacionPolin",
+      "fieldValues": "ARTESA_3_RODILLOS,ARTESA_5_RODILLOS,IMPACTO_3_RODILLOS,IMPACTO_5_RODILLOS,RETORNO_UNICO,RETORNO_V_INVERTIDA,ALINEAMIENTO_CARGA,ALINEAMIENTO_RETORNO,TRANSICION"
+    },
+    {
+      "fieldName": "estado",
+      "fieldType": "Estado",
+      "fieldValues": "OPERATIVO,OBSERVACION,NO_OPERATIVO"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Estacion",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "mesaTrabajo",
+      "otherEntityRelationshipName": "estacion",
+      "relationshipName": "mesaTrabajo",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}

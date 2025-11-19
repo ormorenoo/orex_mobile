@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Cliente Mandante</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button [disabled]="!isReadyToSave" (click)="save()" color="primary">
+        @if (platform.is('ios')) {
+          <span>{{ 'DONE_BUTTON' | translate }}</span>
+        } @else {
+          <ion-icon name="checkmark"></ion-icon>
+        }
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (form) {
+    <form name="form" [formGroup]="form" (ngSubmit)="save()">
+      <ion-list>
+        <ion-item [hidden]="!form.id">
+          <ion-label>ID</ion-label>
+          <ion-input type="hidden" id="id" formControlName="id" readonly></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Rut</ion-label>
+          <ion-input type="text" name="rut" formControlName="rut"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Razon Social</ion-label>
+          <ion-input type="text" name="razonSocial" formControlName="razonSocial"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Direccion</ion-label>
+          <ion-input type="text" name="direccion" formControlName="direccion"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Nombre Contacto</ion-label>
+          <ion-input type="text" name="nombreContacto" formControlName="nombreContacto"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Telefono</ion-label>
+          <ion-input type="text" name="telefono" formControlName="telefono"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Correo</ion-label>
+          <ion-input type="text" name="correo" formControlName="correo"></ion-input>
+        </ion-item>
+      </ion-list>
+    </form>
+  }
+</ion-content>

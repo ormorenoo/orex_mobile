@@ -1,0 +1,31 @@
+{
+  "annotations": {
+    "changelogDate": "20250905222603"
+  },
+  "applications": "*",
+  "changelogDate": "20250905222603",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "faena",
+  "fields": [
+    {
+      "fieldName": "nombre",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Faena",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "clienteMandante",
+      "otherEntityRelationshipName": "faena",
+      "relationshipName": "clienteMandante",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}

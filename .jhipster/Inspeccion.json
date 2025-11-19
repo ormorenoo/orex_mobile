@@ -1,0 +1,58 @@
+{
+  "annotations": {
+    "changelogDate": "20250905222610"
+  },
+  "applications": "*",
+  "changelogDate": "20250905222610",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "inspeccion",
+  "fields": [
+    {
+      "fieldName": "fechaCreacion",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "condicionPolin",
+      "fieldType": "CondicionPolin",
+      "fieldValues": "OPERATIVO,NO_OPERATIVO,OBSERVACION"
+    },
+    {
+      "fieldName": "criticidad",
+      "fieldType": "Criticidad",
+      "fieldValues": "INMEDIATO,URGENTE,PLANIFICADO"
+    },
+    {
+      "fieldName": "observacion",
+      "fieldType": "Observacion",
+      "fieldValues": "DESGASTE,DANIO,OXIDACION,BLOQUEADO,DESALINEADO"
+    },
+    {
+      "fieldName": "comentarios",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "rutaFotoGeneral",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "rutaFotoDetallePolin",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Inspeccion",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "polin",
+      "otherEntityRelationshipName": "inspeccion",
+      "relationshipName": "polin",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}

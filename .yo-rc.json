@@ -1,0 +1,33 @@
+{
+  "generator-jhipster": {
+    "authenticationType": "jwt",
+    "baseName": "orexIonic",
+    "blueprints": [
+      {
+        "name": "generator-jhipster-ionic",
+        "version": "8.7.0"
+      }
+    ],
+    "enableTranslation": true,
+    "entities": [
+      "EmpresaCliente",
+      "ClienteMandante",
+      "Faena",
+      "Area",
+      "AreaFaena",
+      "CorreaTransportadora",
+      "MesaTrabajo",
+      "Estacion",
+      "Polin",
+      "Inspeccion",
+      "Mantenimiento"
+    ],
+    "jhipsterVersion": "8.11.0",
+    "prettierDefaultIndent": 2,
+    "projectName": "OrexIonic"
+  },
+  "generator-jhipster-ionic": {
+    "appDir": "C:\\Users\\erika\\Documents\\orex",
+    "ionicDir": null
+  }
+}

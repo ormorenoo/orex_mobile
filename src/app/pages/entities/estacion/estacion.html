@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Estacions</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!-- todo: add elasticsearch support -->
+<ion-content class="ion-padding">
+  <ion-refresher [disabled]="plt.is('desktop')" slot="fixed" (ionRefresh)="loadAll($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list>
+    @for (estacion of estacions; track trackId($index, estacion)) {
+      <ion-item-sliding #slidingItem>
+        <ion-item (click)="view(estacion)">
+          <ion-label text-wrap>
+            <p>{{ estacion.id }}</p>
+            <p>{{ estacion.identificador }}</p>
+            <p>{{ estacion.descripcion }}</p>
+            <!-- todo: special handling for translating enum - {{'TipoEstacion.' + estacion.tipoEstacion}}" -->
+            <p>{{ estacion.tipoEstacion }}</p>
+            <!-- todo: special handling for translating enum - {{'TipoEstacionPolin.' + estacion.tipoEstacionPolin}}" -->
+            <p>{{ estacion.tipoEstacionPolin }}</p>
+            <!-- todo: special handling for translating enum - {{'Estado.' + estacion.estado}}" -->
+            <p>{{ estacion.estado }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option color="primary" (click)="edit(slidingItem, estacion)">
+            {{ 'EDIT_BUTTON' | translate }}
+          </ion-item-option>
+          <ion-item-option color="danger" (click)="delete(estacion)">
+            {{ 'DELETE_BUTTON' | translate }}
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    }
+  </ion-list>
+  @if (!estacions?.length) {
+    <ion-item>
+      <ion-label> No Estacions found. </ion-label>
+    </ion-item>
+  }
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="new()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Empresa Cliente</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-item>
+      <ion-label position="fixed">ID</ion-label>
+      <div item-content>
+        <span id="id-content">{{ empresaCliente.id }}</span>
+      </div>
+    </ion-item>
+    <ion-item>
+      <ion-label position="fixed">Rut</ion-label>
+      <div item-content>
+        <span id="rut-content">{{ empresaCliente.rut }}</span>
+      </div>
+    </ion-item>
+    <ion-item>
+      <ion-label position="fixed">Razon Social</ion-label>
+      <div item-content>
+        <span id="razonSocial-content">{{ empresaCliente.razonSocial }}</span>
+      </div>
+    </ion-item>
+    <ion-item>
+      <ion-label position="fixed">Direccion</ion-label>
+      <div item-content>
+        <span id="direccion-content">{{ empresaCliente.direccion }}</span>
+      </div>
+    </ion-item>
+    <ion-item>
+      <ion-label position="fixed">Telefono</ion-label>
+      <div item-content>
+        <span id="telefono-content">{{ empresaCliente.telefono }}</span>
+      </div>
+    </ion-item>
+    <ion-item>
+      <ion-label position="fixed">Nombre Contacto</ion-label>
+      <div item-content>
+        <span id="nombreContacto-content">{{ empresaCliente.nombreContacto }}</span>
+      </div>
+    </ion-item>
+    <ion-item>
+      <ion-label position="fixed">Correo</ion-label>
+      <div item-content>
+        <span id="correo-content">{{ empresaCliente.correo }}</span>
+      </div>
+    </ion-item>
+  </ion-list>
+
+  <ion-button expand="block" color="primary" (click)="open(empresaCliente)">{{ 'EDIT_BUTTON' | translate }}</ion-button>
+  <ion-button expand="block" color="danger" (click)="deleteModal(empresaCliente)">{{ 'DELETE_BUTTON' | translate }}</ion-button>
+</ion-content>

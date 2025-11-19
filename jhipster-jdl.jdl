@@ -1,0 +1,149 @@
+entity EmpresaCliente {
+    rut String,
+    razonSocial String,
+    direccion String,
+    telefono String,
+    nombreContacto String,
+    correo String
+}
+
+entity ClienteMandante {
+    rut String,
+    razonSocial String,
+    direccion String,
+    nombreContacto String,
+    telefono String,
+    correo String
+}
+
+entity Faena {
+    nombre String
+}
+
+entity Area {
+    nombre String
+}
+
+entity AreaFaena {}
+
+entity CorreaTransportadora {
+    tagId String,
+    descripcion String
+}
+
+entity MesaTrabajo {
+    identificador String,
+    descripcion String,
+    tipo TipoMesa
+}
+
+enum TipoMesa {
+    MESA_UNO, MESA_DOS
+}
+
+entity Estacion {
+    identificador String,
+    descripcion String,
+    tipoEstacion TipoEstacion,
+    tipoEstacionPolin TipoEstacionPolin,
+    estado Estado
+}
+
+enum TipoEstacion {
+    CARGA, RETORNO, IMPACTO
+}
+
+enum TipoEstacionPolin {
+    ARTESA_3_RODILLOS,
+    ARTESA_5_RODILLOS,
+    IMPACTO_3_RODILLOS,
+    IMPACTO_5_RODILLOS,
+    RETORNO_UNICO,
+    RETORNO_V_INVERTIDA,
+    ALINEAMIENTO_CARGA,
+    ALINEAMIENTO_RETORNO,
+    TRANSICION
+}
+
+enum Estado {
+    OPERATIVO,
+    OBSERVACION,
+    NO_OPERATIVO
+}
+
+entity Polin {
+    identificador String,
+    descripcion String,
+    tipoPolin TipoPolin,
+    estado Estado
+}
+
+entity Inspeccion {
+    fechaCreacion Instant,
+    condicionPolin CondicionPolin,
+    criticidad Criticidad,
+    observacion Observacion,
+    comentarios String,
+    rutaFotoGeneral String,
+    rutaFotoDetallePolin String
+}
+
+enum CondicionPolin {
+    OPERATIVO,
+    NO_OPERATIVO,
+    OBSERVACION
+}
+
+enum Criticidad {
+    INMEDIATO,
+    URGENTE,
+    PLANIFICADO
+}
+
+enum Observacion {
+    DESGASTE,
+    DANIO,
+    OXIDACION,
+    BLOQUEADO,
+    DESALINEADO
+}
+
+enum TipoPolin {
+    UNICO,
+    CENTRAL,
+    CENTRAL_DERECHO,
+    CENTRAL_IZQUIERDO,
+    DERECHO,
+    IZQUIERDO
+}
+
+entity Mantenimiento {
+    fechaCreacion Instant,
+    condicionPolin CondicionPolin,
+    rutaFotoGeneral String,
+    rutaFotoDetallePolin String
+}
+
+relationship ManyToOne {
+    AreaFaena{area} to Area,
+    AreaFaena{faena} to Faena,
+    CorreaTransportadora{areaFaena} to AreaFaena,
+    Faena{clienteMandante} to ClienteMandante,
+    MesaTrabajo{correaTransportadora} to CorreaTransportadora,
+    Estacion{mesaTrabajo} to MesaTrabajo,
+    Polin{estacion} to Estacion,
+    Inspeccion{polin} to Polin,
+    Mantenimiento{polin} to Polin,
+    Mantenimiento{inspeccion} to Inspeccion
+}
+
+// Pagination (infinite scroll)
+pagination EmpresaCliente, ClienteMandante, Faena,
+Area, CorreaTransportadora, MesaTrabajo, Estacion, Polin,
+Inspeccion, Mantenimiento with infinite-scroll
+
+// Use DTO with MapStruct
+dto * with mapstruct
+
+// Use serviceImpl for all entities
+service * with serviceImpl

@@ -1,0 +1,7 @@
+{
+  "name": "orexIonic",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

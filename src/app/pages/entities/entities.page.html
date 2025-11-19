@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ 'TAB2_TITLE' | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
+    @for (entity of entities; track entity.id) {
+      <ion-item (click)="openPage(entity)">
+        <h2>{{ entity.name }}</h2>
+      </ion-item>
+    }
+  </ion-list>
+
+  @if (entities.length === 0) {
+    <div>{{ 'EMPTY_ENTITIES_MESSAGE' | translate }}</div>
+  }
+</ion-content>

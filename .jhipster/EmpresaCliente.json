@@ -1,0 +1,43 @@
+{
+  "annotations": {
+    "changelogDate": "20250905222601"
+  },
+  "applications": "*",
+  "changelogDate": "20250905222601",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "empresa_cliente",
+  "fields": [
+    {
+      "fieldName": "rut",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "razonSocial",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "direccion",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "telefono",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "nombreContacto",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "correo",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "EmpresaCliente",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceImpl"
+}

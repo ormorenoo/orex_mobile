@@ -1,0 +1,35 @@
+{
+  "annotations": {
+    "changelogDate": "20250905222606"
+  },
+  "applications": "*",
+  "changelogDate": "20250905222606",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "correa_transportadora",
+  "fields": [
+    {
+      "fieldName": "tagId",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "descripcion",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "CorreaTransportadora",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "areaFaena",
+      "otherEntityRelationshipName": "correaTransportadora",
+      "relationshipName": "areaFaena",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}

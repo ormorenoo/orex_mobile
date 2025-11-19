@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Mesa Trabajo</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button [disabled]="!isReadyToSave" (click)="save()" color="primary">
+        @if (platform.is('ios')) {
+          <span>{{ 'DONE_BUTTON' | translate }}</span>
+        } @else {
+          <ion-icon name="checkmark"></ion-icon>
+        }
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (form) {
+    <form name="form" [formGroup]="form" (ngSubmit)="save()">
+      <ion-list>
+        <ion-item [hidden]="!form.id">
+          <ion-label>ID</ion-label>
+          <ion-input type="hidden" id="id" formControlName="id" readonly></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Identificador</ion-label>
+          <ion-input type="text" name="identificador" formControlName="identificador"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Descripcion</ion-label>
+          <ion-input type="text" name="descripcion" formControlName="descripcion"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Tipo</ion-label>
+          <ion-select formControlName="tipo" id="field_tipo">
+            <ion-select-option value="MESA_UNO">{{ 'TipoMesa.MESA_UNO' | translate }}</ion-select-option>
+            <ion-select-option value="MESA_DOS">{{ 'TipoMesa.MESA_DOS' | translate }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Correa Transportadora</ion-label>
+          <ion-select id="field_correaTransportadora" formControlName="correaTransportadoraId" [compareWith]="compareCorreaTransportadora">
+            <ion-select-option [value]="null"></ion-select-option>
+            @for (
+              correaTransportadoraOption of correaTransportadoras;
+              track trackCorreaTransportadoraById($index, correaTransportadoraOption)
+            ) {
+              <ion-select-option [value]="correaTransportadoraOption.id">{{ correaTransportadoraOption.id }}</ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+      </ion-list>
+    </form>
+  }
+</ion-content>

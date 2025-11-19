@@ -1,0 +1,72 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Inspeccion</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-item>
+      <ion-label position="fixed">ID</ion-label>
+      <div item-content>
+        <span id="id-content">{{ inspeccion.id }}</span>
+      </div>
+    </ion-item>
+    <ion-item>
+      <ion-label position="fixed">Fecha Creacion</ion-label>
+      <div item-content>
+        <span id="fechaCreacion-content">{{ inspeccion.fechaCreacion | date: 'medium' }}</span>
+      </div>
+    </ion-item>
+    <ion-item>
+      <ion-label position="fixed">Condicion Polin</ion-label>
+      <div item-content>
+        <span id="condicionPolin-content">{{ inspeccion.condicionPolin }}</span>
+      </div>
+    </ion-item>
+    <ion-item>
+      <ion-label position="fixed">Criticidad</ion-label>
+      <div item-content>
+        <span id="criticidad-content">{{ inspeccion.criticidad }}</span>
+      </div>
+    </ion-item>
+    <ion-item>
+      <ion-label position="fixed">Observacion</ion-label>
+      <div item-content>
+        <span id="observacion-content">{{ inspeccion.observacion }}</span>
+      </div>
+    </ion-item>
+    <ion-item>
+      <ion-label position="fixed">Comentarios</ion-label>
+      <div item-content>
+        <span id="comentarios-content">{{ inspeccion.comentarios }}</span>
+      </div>
+    </ion-item>
+    <ion-item>
+      <ion-label position="fixed">Ruta Foto General</ion-label>
+      <div item-content>
+        <span id="rutaFotoGeneral-content">{{ inspeccion.rutaFotoGeneral }}</span>
+      </div>
+    </ion-item>
+    <ion-item>
+      <ion-label position="fixed">Ruta Foto Detalle Polin</ion-label>
+      <div item-content>
+        <span id="rutaFotoDetallePolin-content">{{ inspeccion.rutaFotoDetallePolin }}</span>
+      </div>
+    </ion-item>
+    <ion-item>
+      <ion-label>Polin</ion-label>
+      @if (inspeccion.polinId) {
+        <div item-content>
+          <a>{{ inspeccion.polinundefined }}</a>
+        </div>
+      }
+    </ion-item>
+  </ion-list>
+
+  <ion-button expand="block" color="primary" (click)="open(inspeccion)">{{ 'EDIT_BUTTON' | translate }}</ion-button>
+  <ion-button expand="block" color="danger" (click)="deleteModal(inspeccion)">{{ 'DELETE_BUTTON' | translate }}</ion-button>
+</ion-content>

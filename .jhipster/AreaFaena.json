@@ -1,0 +1,33 @@
+{
+  "annotations": {
+    "changelogDate": "20250905222605"
+  },
+  "applications": "*",
+  "changelogDate": "20250905222605",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "area_faena",
+  "fields": [],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "AreaFaena",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "area",
+      "otherEntityRelationshipName": "areaFaena",
+      "relationshipName": "area",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "faena",
+      "otherEntityRelationshipName": "areaFaena",
+      "relationshipName": "faena",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}

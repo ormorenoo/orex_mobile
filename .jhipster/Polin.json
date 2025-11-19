@@ -1,0 +1,45 @@
+{
+  "annotations": {
+    "changelogDate": "20250905222609"
+  },
+  "applications": "*",
+  "changelogDate": "20250905222609",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "polin",
+  "fields": [
+    {
+      "fieldName": "identificador",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "descripcion",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "tipoPolin",
+      "fieldType": "TipoPolin",
+      "fieldValues": "UNICO,CENTRAL,CENTRAL_DERECHO,CENTRAL_IZQUIERDO,DERECHO,IZQUIERDO"
+    },
+    {
+      "fieldName": "estado",
+      "fieldType": "Estado",
+      "fieldValues": "OPERATIVO,OBSERVACION,NO_OPERATIVO"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Polin",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "estacion",
+      "otherEntityRelationshipName": "polin",
+      "relationshipName": "estacion",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}

@@ -1,0 +1,51 @@
+{
+  "annotations": {
+    "changelogDate": "20250905222611"
+  },
+  "applications": "*",
+  "changelogDate": "20250905222611",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "mantenimiento",
+  "fields": [
+    {
+      "fieldName": "fechaCreacion",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "condicionPolin",
+      "fieldType": "CondicionPolin",
+      "fieldValues": "OPERATIVO,NO_OPERATIVO,OBSERVACION"
+    },
+    {
+      "fieldName": "rutaFotoGeneral",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "rutaFotoDetallePolin",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Mantenimiento",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "polin",
+      "otherEntityRelationshipName": "mantenimiento",
+      "relationshipName": "polin",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "inspeccion",
+      "otherEntityRelationshipName": "mantenimiento",
+      "relationshipName": "inspeccion",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}

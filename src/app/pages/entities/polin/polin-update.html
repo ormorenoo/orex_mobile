@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Polin</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button [disabled]="!isReadyToSave" (click)="save()" color="primary">
+        @if (platform.is('ios')) {
+          <span>{{ 'DONE_BUTTON' | translate }}</span>
+        } @else {
+          <ion-icon name="checkmark"></ion-icon>
+        }
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (form) {
+    <form name="form" [formGroup]="form" (ngSubmit)="save()">
+      <ion-list>
+        <ion-item [hidden]="!form.id">
+          <ion-label>ID</ion-label>
+          <ion-input type="hidden" id="id" formControlName="id" readonly></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Identificador</ion-label>
+          <ion-input type="text" name="identificador" formControlName="identificador"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Descripcion</ion-label>
+          <ion-input type="text" name="descripcion" formControlName="descripcion"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Tipo Polin</ion-label>
+          <ion-select formControlName="tipoPolin" id="field_tipoPolin">
+            <ion-select-option value="UNICO">{{ 'TipoPolin.UNICO' | translate }}</ion-select-option>
+            <ion-select-option value="CENTRAL">{{ 'TipoPolin.CENTRAL' | translate }}</ion-select-option>
+            <ion-select-option value="CENTRAL_DERECHO">{{ 'TipoPolin.CENTRAL_DERECHO' | translate }}</ion-select-option>
+            <ion-select-option value="CENTRAL_IZQUIERDO">{{ 'TipoPolin.CENTRAL_IZQUIERDO' | translate }}</ion-select-option>
+            <ion-select-option value="DERECHO">{{ 'TipoPolin.DERECHO' | translate }}</ion-select-option>
+            <ion-select-option value="IZQUIERDO">{{ 'TipoPolin.IZQUIERDO' | translate }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Estado</ion-label>
+          <ion-select formControlName="estado" id="field_estado">
+            <ion-select-option value="OPERATIVO">{{ 'Estado.OPERATIVO' | translate }}</ion-select-option>
+            <ion-select-option value="OBSERVACION">{{ 'Estado.OBSERVACION' | translate }}</ion-select-option>
+            <ion-select-option value="NO_OPERATIVO">{{ 'Estado.NO_OPERATIVO' | translate }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Estacion</ion-label>
+          <ion-select id="field_estacion" formControlName="estacionId" [compareWith]="compareEstacion">
+            <ion-select-option [value]="null"></ion-select-option>
+            @for (estacionOption of estacions; track trackEstacionById($index, estacionOption)) {
+              <ion-select-option [value]="estacionOption.id">{{ estacionOption.id }}</ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+      </ion-list>
+    </form>
+  }
+</ion-content>
