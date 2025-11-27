@@ -37,6 +37,20 @@ export class HomePage implements OnInit {
     this.goBackToHomePage();
   }
 
+  goTo(section: string) {
+    this.navController.navigateForward(`/tabs/entities/${section}`);
+  }
+
+  create(type: string) {
+    if (type === 'inspeccion') {
+      this.navController.navigateForward('/tabs/entities/inspeccion/new');
+    }
+
+    if (type === 'mantenimiento') {
+      this.navController.navigateForward('/tabs/entities/mantenimiento/new');
+    }
+  }
+
   private goBackToHomePage(): void {
     this.navController.navigateBack('');
   }

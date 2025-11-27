@@ -1,17 +1,63 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title> {{ 'WELCOME_TITLE' | translate }}, {{ account?.firstName }} </ion-title>
+    <ion-title>
+      Hola, {{ account?.firstName }}
+    </ion-title>
+
     <ion-buttons slot="end">
-      <ion-button (click)="logout()" id="logout">
-        {{ 'LOGOUT_TITLE' | translate }}
-        <ion-icon slot="end" name="log-out"></ion-icon>
+      <ion-button fill="clear" (click)="logout()">
+        <ion-icon name="log-out-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-  <p>{{ 'WELCOME_INTRO' | translate }}</p>
 
-  <span class="hipster"></span>
+  <!-- Sección de bienvenida -->
+  <div class="welcome-section">
+    <h2>Bienvenido</h2>
+    <p>¿Qué deseas hacer hoy?</p>
+  </div>
+
+  <!-- Accesos rápidos -->
+  <ion-grid class="quick-actions">
+    <ion-row>
+      <ion-col size="6">
+        <ion-card button (click)="goTo('mantenimiento')">
+          <ion-card-content>
+            <ion-icon name="construct-outline"></ion-icon>
+            <p>Mantenimientos</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col size="6">
+        <ion-card button (click)="goTo('inspeccion')">
+          <ion-card-content>
+            <ion-icon name="clipboard-outline"></ion-icon>
+            <p>Inspecciones</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- Acciones rápidas -->
+  <div class="quick-actions-secondary">
+    <h3>Acciones rápidas</h3>
+
+    <div class="action-buttons">
+      <div class="action-item" (click)="create('inspeccion')">
+        <ion-icon name="add-circle-outline"></ion-icon>
+        <span>Nueva inspección</span>
+      </div>
+
+      <div class="action-item" (click)="create('mantenimiento')">
+        <ion-icon name="add-circle-outline"></ion-icon>
+        <span>Nuevo mantenimiento</span>
+      </div>
+    </div>
+  </div>
+
 </ion-content>

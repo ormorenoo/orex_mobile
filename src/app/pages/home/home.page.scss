@@ -1,20 +1,92 @@
-.hipster {
-  display: inline-block;
-  width: 347px;
-  height: 497px;
-  background: url('../../../assets/img/jhipster_family_member_0.svg') no-repeat center top;
-  background-size: contain;
+.welcome-section {
+  text-align: left;
+  margin-bottom: 1.5rem;
+
+  h2 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.4rem;
+  }
+
+  p {
+    margin-top: 4px;
+    color: var(--ion-color-medium);
+  }
 }
 
-/* wait autoprefixer update to allow simple generation of high pixel density media query */
-@media only screen and (-webkit-min-device-pixel-ratio: 2),
-  only screen and (min--moz-device-pixel-ratio: 2),
-  only screen and (-o-min-device-pixel-ratio: 2/1),
-  only screen and (min-device-pixel-ratio: 2),
-  only screen and (min-resolution: 192dpi),
-  only screen and (min-resolution: 2dppx) {
-  .hipster {
-    background: url('../../../assets/img/jhipster_family_member_0.svg') no-repeat center top;
-    background-size: contain;
+/* Accesos rápidos */
+.quick-actions ion-card {
+  text-align: center;
+  border-radius: 16px;
+  padding: 10px;
+  background: var(--ion-color-light);
+  box-shadow: none;
+  transition: transform 0.15s ease-in-out;
+
+  &:active {
+    transform: scale(0.96);
+  }
+
+  ion-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+
+    ion-icon {
+      font-size: 2rem;
+      color: var(--ion-color-primary);
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: var(--ion-color-dark);
+    }
+  }
+}
+
+/* Acciones rápidas */
+.quick-actions-secondary {
+  margin-top: 1rem;
+
+  h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.7rem;
+    color: var(--ion-color-dark);
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-start;
+
+    .action-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: var(--ion-color-light);
+      padding: 1rem;
+      border-radius: 12px;
+      width: 120px;
+      text-align: center;
+      transition: background 0.15s, transform 0.15s;
+
+      &:active {
+        transform: scale(0.95);
+      }
+
+      ion-icon {
+        font-size: 1.8rem;
+        color: var(--ion-color-primary);
+        margin-bottom: 6px;
+      }
+
+      span {
+        font-size: 0.85rem;
+        color: var(--ion-color-dark);
+      }
+    }
   }
 }

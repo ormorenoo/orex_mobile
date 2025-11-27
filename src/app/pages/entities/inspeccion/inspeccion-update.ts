@@ -29,7 +29,7 @@ export class InspeccionUpdatePage implements OnInit {
     comentarios: [null, []],
     rutaFotoGeneral: [null, []],
     rutaFotoDetallePolin: [null, []],
-    polinId: [null, []],
+    polin: [null, []],
   });
 
   constructor(
@@ -70,7 +70,7 @@ export class InspeccionUpdatePage implements OnInit {
       comentarios: inspeccion.comentarios,
       rutaFotoGeneral: inspeccion.rutaFotoGeneral,
       rutaFotoDetallePolin: inspeccion.rutaFotoDetallePolin,
-      polinId: inspeccion.polinId,
+      polin: inspeccion.polin,
     });
   }
 
@@ -132,7 +132,7 @@ export class InspeccionUpdatePage implements OnInit {
       comentarios: this.form.get(['comentarios']).value,
       rutaFotoGeneral: this.form.get(['rutaFotoGeneral']).value,
       rutaFotoDetallePolin: this.form.get(['rutaFotoDetallePolin']).value,
-      polinId: this.form.get(['polinId']).value,
+      polin: this.form.get(['polin']).value,
     };
   }
 }

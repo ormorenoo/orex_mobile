@@ -3,70 +3,102 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Inspeccion</ion-title>
+    <ion-title>Inspección #{{ inspeccion.id }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-list>
-    <ion-item>
-      <ion-label position="fixed">ID</ion-label>
-      <div item-content>
-        <span id="id-content">{{ inspeccion.id }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Fecha Creacion</ion-label>
-      <div item-content>
-        <span id="fechaCreacion-content">{{ inspeccion.fechaCreacion | date: 'medium' }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Condicion Polin</ion-label>
-      <div item-content>
-        <span id="condicionPolin-content">{{ inspeccion.condicionPolin }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Criticidad</ion-label>
-      <div item-content>
-        <span id="criticidad-content">{{ inspeccion.criticidad }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Observacion</ion-label>
-      <div item-content>
-        <span id="observacion-content">{{ inspeccion.observacion }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Comentarios</ion-label>
-      <div item-content>
-        <span id="comentarios-content">{{ inspeccion.comentarios }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Ruta Foto General</ion-label>
-      <div item-content>
-        <span id="rutaFotoGeneral-content">{{ inspeccion.rutaFotoGeneral }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Ruta Foto Detalle Polin</ion-label>
-      <div item-content>
-        <span id="rutaFotoDetallePolin-content">{{ inspeccion.rutaFotoDetallePolin }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label>Polin</ion-label>
-      @if (inspeccion.polinId) {
-        <div item-content>
-          <a>{{ inspeccion.polinundefined }}</a>
-        </div>
-      }
-    </ion-item>
-  </ion-list>
+<ion-content class="detail-content">
+  <!-- SECTION: DATOS GENERALES -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Datos generales</ion-card-title>
+    </ion-card-header>
 
-  <ion-button expand="block" color="primary" (click)="open(inspeccion)">{{ 'EDIT_BUTTON' | translate }}</ion-button>
-  <ion-button expand="block" color="danger" (click)="deleteModal(inspeccion)">{{ 'DELETE_BUTTON' | translate }}</ion-button>
+    <ion-card-content>
+      <div class="field">
+        <div class="field-label">Fecha creación</div>
+        <p>{{ inspeccion.fechaCreacion | date: 'medium' }}</p>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Condición del Polín</div>
+        <p>{{ inspeccion.condicionPolin }}</p>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Criticidad</div>
+        <ion-chip color="danger" *ngIf="inspeccion.criticidad.toString() === 'INMEDIATO'">
+          <ion-label class="chip-text">Inmediato</ion-label>
+        </ion-chip>
+
+        <ion-chip color="warning" *ngIf="inspeccion.criticidad.toString() === 'URGENTE'">
+          <ion-label class="chip-text">Urgente</ion-label>
+        </ion-chip>
+
+        <ion-chip color="success" *ngIf="inspeccion.criticidad.toString() === 'PLANIFICADO'">
+          <ion-label class="chip-text">Planificado</ion-label>
+        </ion-chip>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Observación</div>
+        <p>{{ inspeccion.observacion }}</p>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Comentarios</div>
+        <p>{{ inspeccion.comentarios }}</p>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- SECTION: POLIN -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Polín inspeccionado</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <div class="field" *ngIf="inspeccion.polin">
+        <div class="field-label">Identificador</div>
+        <p>{{ inspeccion.polin.identificador }}</p>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- SECTION: IMÁGENES -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Imágenes</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <div class="img-row">
+        <div class="img-block">
+          <div class="field-label">Foto general</div>
+          <img *ngIf="thumbnailGeneral" [src]="thumbnailGeneral" class="thumb" (click)="openImage(thumbnailGeneral)" />
+        </div>
+
+        <div class="img-block">
+          <div class="field-label">Detalle del Polín</div>
+          <img *ngIf="thumbnailDetallePolin" [src]="thumbnailDetallePolin" class="thumb" (click)="openImage(thumbnailDetallePolin)" />
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- ACTION BUTTONS -->
+  <div class="actions">
+    <ion-button expand="block" color="danger" (click)="deleteModal(inspeccion)"> Eliminar </ion-button>
+  </div>
 </ion-content>
+
+<!-- MODAL PARA IMAGEN -->
+<ion-modal #modalImagen>
+  <ng-template>
+    <div class="modal-img-wrapper">
+      <ion-icon name="close" class="close-btn" (click)="closeModal()"></ion-icon>
+      <img [src]="imagenSeleccionada" />
+    </div>
+  </ng-template>
+</ion-modal>

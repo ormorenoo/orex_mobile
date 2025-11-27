@@ -8,6 +8,7 @@ import { InspeccionService } from './inspeccion.service';
 @Component({
   selector: 'page-inspeccion',
   templateUrl: 'inspeccion.html',
+  styleUrls: ['inspeccion.scss'],
 })
 export class InspeccionPage {
   inspeccions: Inspeccion[];
@@ -59,9 +60,8 @@ export class InspeccionPage {
     await this.navController.navigateForward('/tabs/entities/inspeccion/new');
   }
 
-  async edit(item: IonItemSliding, inspeccion: Inspeccion) {
+  async edit(inspeccion: Inspeccion) {
     await this.navController.navigateForward(`/tabs/entities/inspeccion/${inspeccion.id}/edit`);
-    await item.close();
   }
 
   async delete(inspeccion) {

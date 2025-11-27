@@ -31,4 +31,11 @@ export class InspeccionService {
   delete(id: number): Observable<HttpResponse<any>> {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
+
+  verImagen(id: number, tipo: string): Observable<HttpResponse<Blob>> {
+    return this.http.get(`${this.resourceUrl}/${id}/imagen/${tipo}`, {
+      responseType: 'blob',
+      observe: 'response',
+    });
+  }
 }
