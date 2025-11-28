@@ -31,4 +31,8 @@ export class CorreaTransportadoraService {
   delete(id: number): Observable<HttpResponse<any>> {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
+
+  findByAreaIdAndFaenaId(areaId: number, faenaId: number): Observable<HttpResponse<CorreaTransportadora[]>> {
+    return this.http.get<CorreaTransportadora[]>(`${this.resourceUrl}-by-area-and-faena/${areaId}/${faenaId}`, { observe: 'response' });
+  }
 }

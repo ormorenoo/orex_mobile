@@ -1,0 +1,24 @@
+.form-item {
+  margin-bottom: 18px;
+}
+
+ion-item {
+  --inner-padding-top: 12px;
+  --inner-padding-bottom: 12px;
+  border-radius: 10px;
+  --background: rgb(34, 34, 34);
+  margin-bottom: 12px;
+}
+
+ion-select {
+  font-size: 16px;
+}
+
+ion-label {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.save-container {
+  margin-top: 25px;
+}

@@ -31,4 +31,8 @@ export class PolinService {
   delete(id: number): Observable<HttpResponse<any>> {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
+
+  findByEstacionId(idEstacion: number): Observable<HttpResponse<Polin[]>> {
+    return this.http.get<Polin[]>(`${this.resourceUrl}-by-estacion-id/${idEstacion}`, { observe: 'response' });
+  }
 }

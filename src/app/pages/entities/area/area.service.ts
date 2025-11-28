@@ -31,4 +31,8 @@ export class AreaService {
   delete(id: number): Observable<HttpResponse<any>> {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
+
+  findByFaenaId(faenaId: number): Observable<HttpResponse<Area[]>> {
+    return this.http.get<Area[]>(`${this.resourceUrl}-by-faena/${faenaId}`, { observe: 'response' });
+  }
 }

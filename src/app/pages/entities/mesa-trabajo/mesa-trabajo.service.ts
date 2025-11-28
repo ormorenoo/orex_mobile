@@ -31,4 +31,8 @@ export class MesaTrabajoService {
   delete(id: number): Observable<HttpResponse<any>> {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
+
+  findByCorreaId(correaId: number): Observable<HttpResponse<MesaTrabajo[]>> {
+    return this.http.get<MesaTrabajo[]>(`${this.resourceUrl}-by-correa/${correaId}`, { observe: 'response' });
+  }
 }

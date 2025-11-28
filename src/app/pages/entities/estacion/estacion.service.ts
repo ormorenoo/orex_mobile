@@ -31,4 +31,8 @@ export class EstacionService {
   delete(id: number): Observable<HttpResponse<any>> {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
+
+  findByMesaId(mesaId: number): Observable<HttpResponse<Estacion[]>> {
+    return this.http.get<Estacion[]>(`${this.resourceUrl}-by-mesa/${mesaId}`, { observe: 'response' });
+  }
 }
