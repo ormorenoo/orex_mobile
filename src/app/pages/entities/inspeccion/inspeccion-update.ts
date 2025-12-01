@@ -57,6 +57,7 @@ export class InspeccionUpdatePage implements OnInit {
     correa: [null, []],
     mesa: [null, []],
     estacion: [null, []],
+    applicationUser: [null, []],
   });
 
   constructor(
@@ -194,7 +195,7 @@ export class InspeccionUpdatePage implements OnInit {
   updateForm(inspeccion: Inspeccion) {
     this.form.patchValue({
       id: inspeccion.id,
-      fechaCreacion: this.isNew ? new Date().toISOString() : inspeccion.fechaCreacion,
+      fechaCreacion: inspeccion.fechaCreacion,
       condicionPolin: inspeccion.condicionPolin,
       criticidad: inspeccion.criticidad,
       observacion: inspeccion.observacion,
@@ -202,6 +203,7 @@ export class InspeccionUpdatePage implements OnInit {
       rutaFotoGeneral: inspeccion.rutaFotoGeneral,
       rutaFotoDetallePolin: inspeccion.rutaFotoDetallePolin,
       polin: inspeccion.polin,
+      applicationUser: inspeccion.applicationUser,
     });
   }
 
@@ -274,6 +276,7 @@ export class InspeccionUpdatePage implements OnInit {
       rutaFotoGeneral: this.form.get(['rutaFotoGeneral']).value,
       rutaFotoDetallePolin: this.form.get(['rutaFotoDetallePolin']).value,
       polin: this.form.get(['polin']).value,
+      applicationUser: this.form.get(['applicationUser']).value,
     };
   }
 }

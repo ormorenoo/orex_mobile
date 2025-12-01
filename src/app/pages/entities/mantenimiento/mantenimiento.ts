@@ -8,6 +8,7 @@ import { MantenimientoService } from './mantenimiento.service';
 @Component({
   selector: 'page-mantenimiento',
   templateUrl: 'mantenimiento.html',
+  styleUrl: 'mantenimiento.scss',
 })
 export class MantenimientoPage {
   mantenimientos: Mantenimiento[];

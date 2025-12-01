@@ -1,6 +1,7 @@
 import { BaseEntity } from 'src/model/base-entity';
 import { Mantenimiento } from '#app/pages/entities/mantenimiento/mantenimiento.model';
 import { Polin } from '../polin';
+import { ApplicationUser } from '../application-user/application-user.model';
 
 export const enum CondicionPolin {
   'OPERATIVO',
@@ -34,5 +35,6 @@ export class Inspeccion implements BaseEntity {
     public rutaFotoDetallePolin?: string,
     public polin?: Polin,
     public mantenimientos?: Mantenimiento[],
+    public applicationUser?: ApplicationUser,
   ) {}
 }

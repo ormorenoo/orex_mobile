@@ -39,22 +39,6 @@
         <span id="rutaFotoDetallePolin-content">{{ mantenimiento.rutaFotoDetallePolin }}</span>
       </div>
     </ion-item>
-    <ion-item>
-      <ion-label>Polin</ion-label>
-      @if (mantenimiento.polinId) {
-        <div item-content>
-          <a>{{ mantenimiento.polinundefined }}</a>
-        </div>
-      }
-    </ion-item>
-    <ion-item>
-      <ion-label>Inspeccion</ion-label>
-      @if (mantenimiento.inspeccionId) {
-        <div item-content>
-          <a>{{ mantenimiento.inspeccionundefined }}</a>
-        </div>
-      }
-    </ion-item>
   </ion-list>
 
   <ion-button expand="block" color="primary" (click)="open(mantenimiento)">{{ 'EDIT_BUTTON' | translate }}</ion-button>

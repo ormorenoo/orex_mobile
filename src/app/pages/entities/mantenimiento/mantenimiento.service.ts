@@ -11,8 +11,14 @@ export class MantenimientoService {
 
   constructor(protected http: HttpClient) {}
 
-  create(mantenimiento: Mantenimiento): Observable<HttpResponse<Mantenimiento>> {
-    return this.http.post<Mantenimiento>(this.resourceUrl, mantenimiento, { observe: 'response' });
+  create(
+    mantenimiento: Mantenimiento,
+    imagenGeneral: File | undefined,
+    imagenDetalle: File | undefined,
+  ): Observable<HttpResponse<Mantenimiento>> {
+    return this.http.post<Mantenimiento>(this.resourceUrl, this.createFormData(mantenimiento, imagenGeneral, imagenDetalle), {
+      observe: 'response',
+    });
   }
 
   update(mantenimiento: Mantenimiento): Observable<HttpResponse<Mantenimiento>> {
@@ -30,5 +36,13 @@ export class MantenimientoService {
 
   delete(id: number): Observable<HttpResponse<any>> {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  protected createFormData(mantenimiento: Mantenimiento, imagenGeneral: File | undefined, imagenDetalle: File | undefined): FormData {
+    const formData: FormData = new FormData();
+    formData.append('mantenimientoDTO', JSON.stringify(mantenimiento));
+    formData.append('imagenGeneral', imagenGeneral ? imagenGeneral : new File([], 'empty.txt'));
+    formData.append('imagenDetalle', imagenDetalle ? imagenDetalle : new File([], 'empty.txt'));
+    return formData;
   }
 }

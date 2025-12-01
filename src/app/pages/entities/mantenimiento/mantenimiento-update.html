@@ -4,66 +4,131 @@
       <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-title>Mantenimiento</ion-title>
-
-    <ion-buttons slot="end">
-      <ion-button [disabled]="!isReadyToSave" (click)="save()" color="primary">
-        @if (platform.is('ios')) {
-          <span>{{ 'DONE_BUTTON' | translate }}</span>
-        } @else {
-          <ion-icon name="checkmark"></ion-icon>
-        }
-      </ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
   @if (form) {
-    <form name="form" [formGroup]="form" (ngSubmit)="save()">
-      <ion-list>
-        <ion-item [hidden]="!form.id">
-          <ion-label>ID</ion-label>
-          <ion-input type="hidden" id="id" formControlName="id" readonly></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>Fecha Creacion</ion-label>
-          <ion-datetime displayFormat="MM/DD/YYYY HH:mm" formControlName="fechaCreacion" id="field_fechaCreacion"></ion-datetime>
-        </ion-item>
-        <ion-item>
-          <ion-label>Condicion Polin</ion-label>
-          <ion-select formControlName="condicionPolin" id="field_condicionPolin">
-            <ion-select-option value="OPERATIVO">{{ 'CondicionPolin.OPERATIVO' | translate }}</ion-select-option>
-            <ion-select-option value="NO_OPERATIVO">{{ 'CondicionPolin.NO_OPERATIVO' | translate }}</ion-select-option>
-            <ion-select-option value="OBSERVACION">{{ 'CondicionPolin.OBSERVACION' | translate }}</ion-select-option>
+    <form [formGroup]="form">
+      <ion-list class="form-list">
+        <!-- SELECT FAENA -->
+        <ion-item class="form-item">
+          <ion-label position="stacked">Faena</ion-label>
+          <ion-select
+            interface="popover"
+            formControlName="faena"
+            (ionChange)="loadAreasOptions(form.get('faena').value)"
+            [compareWith]="compareFaena"
+          >
+            <ion-select-option [value]="null">Seleccione...</ion-select-option>
+            @for (faenaOption of faenas; track trackFaenaById($index, faenaOption)) {
+              <ion-select-option [value]="faenaOption">{{ faenaOption.nombre }}</ion-select-option>
+            }
           </ion-select>
         </ion-item>
-        <ion-item>
-          <ion-label position="floating">Ruta Foto General</ion-label>
-          <ion-input type="text" name="rutaFotoGeneral" formControlName="rutaFotoGeneral"></ion-input>
+
+        <!-- SELECT AREA -->
+        <ion-item class="form-item">
+          <ion-label position="stacked">Área</ion-label>
+          <ion-select
+            interface="popover"
+            formControlName="area"
+            (ionChange)="loadCorreasTransportadorasOptions(form.get('area').value, form.get('faena').value)"
+            [compareWith]="compareArea"
+          >
+            <ion-select-option [value]="null">Seleccione...</ion-select-option>
+            @for (areaOption of areas; track trackAreaById($index, areaOption)) {
+              <ion-select-option [value]="areaOption">{{ areaOption.nombre }}</ion-select-option>
+            }
+          </ion-select>
         </ion-item>
-        <ion-item>
-          <ion-label position="floating">Ruta Foto Detalle Polin</ion-label>
-          <ion-input type="text" name="rutaFotoDetallePolin" formControlName="rutaFotoDetallePolin"></ion-input>
+
+        <!-- SELECT CORREA -->
+        <ion-item class="form-item">
+          <ion-label position="stacked">Correa transportadora</ion-label>
+          <ion-select
+            interface="popover"
+            formControlName="correa"
+            (ionChange)="loadMesasTrabajoOptions(form.get('correa').value)"
+            [compareWith]="compareCorrea"
+          >
+            <ion-select-option [value]="null">Seleccione...</ion-select-option>
+            @for (correaOption of correas; track trackCorreaTransportadoraById($index, correaOption)) {
+              <ion-select-option [value]="correaOption">{{ correaOption.tagId }}</ion-select-option>
+            }
+          </ion-select>
         </ion-item>
-        <ion-item>
-          <ion-label>Polin</ion-label>
-          <ion-select id="field_polin" formControlName="polinId" [compareWith]="comparePolin">
-            <ion-select-option [value]="null"></ion-select-option>
+
+        <!-- SELECT MESA -->
+        <ion-item class="form-item">
+          <ion-label position="stacked">Mesa de trabajo</ion-label>
+          <ion-select
+            interface="popover"
+            formControlName="mesa"
+            (ionChange)="loadEstacionesOptions(form.get('mesa').value)"
+            [compareWith]="compareMesa"
+          >
+            <ion-select-option [value]="null">Seleccione...</ion-select-option>
+            @for (mesaOption of mesas; track trackMesaTrabajoById($index, mesaOption)) {
+              <ion-select-option [value]="mesaOption">{{ mesaOption.identificador }}</ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+
+        <!-- SELECT ESTACIÓN -->
+        <ion-item class="form-item">
+          <ion-label position="stacked">Estación</ion-label>
+          <ion-select
+            interface="popover"
+            formControlName="estacion"
+            (ionChange)="loadPolinesOptions(form.get('estacion').value)"
+            [compareWith]="compareEstacion"
+          >
+            <ion-select-option [value]="null">Seleccione...</ion-select-option>
+            @for (estacionOption of estaciones; track trackEstacionById($index, estacionOption)) {
+              <ion-select-option [value]="estacionOption">{{ estacionOption.identificador }}</ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+
+        <!-- SELECT POLÍN -->
+        <ion-item class="form-item">
+          <ion-label position="stacked">Polín</ion-label>
+          <ion-select interface="popover" formControlName="polin" [compareWith]="comparePolin">
+            <ion-select-option [value]="null">Seleccione...</ion-select-option>
             @for (polinOption of polins; track trackPolinById($index, polinOption)) {
-              <ion-select-option [value]="polinOption.id">{{ polinOption.id }}</ion-select-option>
+              <ion-select-option [value]="polinOption">{{ polinOption.identificador }}</ion-select-option>
             }
           </ion-select>
         </ion-item>
-        <ion-item>
-          <ion-label>Inspeccion</ion-label>
-          <ion-select id="field_inspeccion" formControlName="inspeccionId" [compareWith]="compareInspeccion">
-            <ion-select-option [value]="null"></ion-select-option>
-            @for (inspeccionOption of inspeccions; track trackInspeccionById($index, inspeccionOption)) {
-              <ion-select-option [value]="inspeccionOption.id">{{ inspeccionOption.id }}</ion-select-option>
-            }
-          </ion-select>
-        </ion-item>
+
+        <!-- CAMPOS QUE SE OCULTAN SI NO HAY POLIN -->
+        @if (form.get('polin').value) {
+          <ion-item class="form-item">
+            <ion-label position="stacked">Condición del polín</ion-label>
+            <ion-select interface="popover" formControlName="condicionPolin">
+              @for (key of condicionKeys; track $index) {
+                <ion-select-option [value]="key">{{ condicion[key] }}</ion-select-option>
+              }
+            </ion-select>
+          </ion-item>
+
+          <ion-item class="form-item">
+            <ion-label position="stacked">Imagen General</ion-label>
+            <input type="file" accept="image/*" (change)="onFileSelected($event, 'general')" />
+          </ion-item>
+
+          <ion-item class="form-item">
+            <ion-label position="stacked">Imagen Detalle</ion-label>
+            <input type="file" accept="image/*" (change)="onFileSelected($event, 'detalle')" />
+          </ion-item>
+        }
       </ion-list>
+
+      <!-- BOTÓN GUARDAR -->
+      <div class="save-container">
+        <ion-button expand="block" shape="round" size="large" [disabled]="!isReadyToSave" (click)="save()"> Guardar Mantenimiento </ion-button>
+      </div>
     </form>
   }
 </ion-content>
