@@ -11,8 +11,10 @@ export class InspeccionService {
 
   constructor(protected http: HttpClient) {}
 
-  create(inspeccion: Inspeccion): Observable<HttpResponse<Inspeccion>> {
-    return this.http.post<Inspeccion>(this.resourceUrl, inspeccion, { observe: 'response' });
+  create(inspeccion: Inspeccion, imagenGeneral: File | undefined, imagenDetalle: File | undefined): Observable<HttpResponse<Inspeccion>> {
+    return this.http.post<Inspeccion>(this.resourceUrl, this.createFormData(inspeccion, imagenGeneral, imagenDetalle), {
+      observe: 'response',
+    });
   }
 
   update(inspeccion: Inspeccion): Observable<HttpResponse<Inspeccion>> {
@@ -37,5 +39,13 @@ export class InspeccionService {
       responseType: 'blob',
       observe: 'response',
     });
+  }
+
+  protected createFormData(inspeccion: Inspeccion, imagenGeneral: File | undefined, imagenDetalle: File | undefined): FormData {
+    const formData: FormData = new FormData();
+    formData.append('inspeccionDTO', JSON.stringify(inspeccion));
+    formData.append('imagenGeneral', imagenGeneral ? imagenGeneral : new File([], 'empty.txt'));
+    formData.append('imagenDetalle', imagenDetalle ? imagenDetalle : new File([], 'empty.txt'));
+    return formData;
   }
 }

@@ -39,6 +39,8 @@ export class InspeccionUpdatePage implements OnInit {
   condicionKeys = Object.keys(CondicionPolin);
   observacion = Observacion;
   observacionKeys = Object.keys(Observacion);
+  imagenGeneral: File | undefined = undefined;
+  imagenDetalle: File | undefined = undefined;
 
   form = inject(FormBuilder).group({
     id: [null, []],
@@ -209,7 +211,7 @@ export class InspeccionUpdatePage implements OnInit {
     if (!this.isNew) {
       this.subscribeToSaveResponse(this.inspeccionService.update(inspeccion));
     } else {
-      this.subscribeToSaveResponse(this.inspeccionService.create(inspeccion));
+      this.subscribeToSaveResponse(this.inspeccionService.create(inspeccion, this.imagenGeneral, this.imagenDetalle));
     }
   }
 
@@ -226,6 +228,24 @@ export class InspeccionUpdatePage implements OnInit {
 
   previousState() {
     window.history.back();
+  }
+
+  onFileSelected(event: Event, tipo: 'general' | 'detalle'): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      if (!file.type.startsWith('image/')) {
+        alert('Por favor, selecciona un archivo de imagen válido.');
+        input.value = '';
+        return;
+      }
+
+      if (tipo === 'general') {
+        this.imagenGeneral = file;
+      } else {
+        this.imagenDetalle = file;
+      }
+    }
   }
 
   async onError(error) {
