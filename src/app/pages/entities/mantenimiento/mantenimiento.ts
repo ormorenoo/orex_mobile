@@ -4,6 +4,7 @@ import { filter, map } from 'rxjs/operators';
 import { HttpResponse } from '@angular/common/http';
 import { Mantenimiento } from './mantenimiento.model';
 import { MantenimientoService } from './mantenimiento.service';
+import { MantenimientoOfflineService } from './mantenimiento-offline-service';
 
 @Component({
   selector: 'page-mantenimiento',
@@ -20,6 +21,7 @@ export class MantenimientoPage {
     private mantenimientoService: MantenimientoService,
     private toastCtrl: ToastController,
     public plt: Platform,
+    private mantenimientoOfflineService: MantenimientoOfflineService,
   ) {
     this.mantenimientos = [];
   }
@@ -28,6 +30,10 @@ export class MantenimientoPage {
     await this.loadAll();
   }
 
+  async sync() {
+    await this.mantenimientoOfflineService.sync();
+    alert('Sincronización completada');
+  }
   async loadAll(refresher?) {
     this.mantenimientoService
       .query()

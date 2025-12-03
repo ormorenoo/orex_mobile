@@ -28,6 +28,9 @@ export class HomePage implements OnInit {
     });
   }
 
+  async sync() {
+    alert('Sincronización completada');
+  }
   isAuthenticated() {
     return this.accountService.isAuthenticated();
   }

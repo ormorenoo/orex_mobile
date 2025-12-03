@@ -14,6 +14,8 @@ import { CorreaTransportadora, CorreaTransportadoraService } from '../correa-tra
 import { MesaTrabajo, MesaTrabajoService } from '../mesa-trabajo';
 import { Estacion, EstacionService } from '../estacion';
 import { CondicionPolin } from '../enumerations/condicion-polin.model';
+import { NetworkService } from '#app/services/utils/network.service';
+import { MantenimientoOfflineService } from './mantenimiento-offline-service';
 
 @Component({
   selector: 'page-mantenimiento-update',
@@ -67,6 +69,8 @@ export class MantenimientoUpdatePage implements OnInit {
     private correaTransportadoraService: CorreaTransportadoraService,
     private mesaTrabajoService: MesaTrabajoService,
     private estacionService: EstacionService,
+    private networkService: NetworkService,
+    private mantenimientoOfflineService: MantenimientoOfflineService,
   ) {
     // Watch the form for changes, and
     this.form.valueChanges.subscribe(v => {
@@ -201,16 +205,21 @@ export class MantenimientoUpdatePage implements OnInit {
     });
   }
 
-  save() {
+  async save() {
     this.isSaving = true;
     const mantenimiento = this.createFromForm();
-    if (!this.isNew) {
-      this.subscribeToSaveResponse(this.mantenimientoService.update(mantenimiento));
+    const online = await this.networkService.isOnline();
+    if (online) {
+      if (!this.isNew) {
+        this.subscribeToSaveResponse(this.mantenimientoService.update(mantenimiento));
+      } else {
+        this.subscribeToSaveResponse(this.mantenimientoService.create(mantenimiento, this.imagenGeneral, this.imagenDetalle));
+      }
     } else {
-      this.subscribeToSaveResponse(this.mantenimientoService.create(mantenimiento, this.imagenGeneral, this.imagenDetalle));
+      // --- MODO OFFLINE ---
+      await this.mantenimientoOfflineService.saveOffline(mantenimiento, this.imagenGeneral, this.imagenDetalle);
     }
   }
-
   onFileSelected(event: Event, tipo: 'general' | 'detalle'): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
