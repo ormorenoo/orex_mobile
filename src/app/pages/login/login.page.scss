@@ -1,0 +1,58 @@
+:host {
+  ion-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.login-container {
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 24px;
+  background: #1a1a1a;
+  border-radius: 12px;
+  border: 1px solid var(--orex-border);
+}
+
+.login-container h1,
+.login-container ion-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 32px;
+}
+
+/* Títulos y labels */
+ion-title {
+  color: #fff;
+}
+
+ion-label {
+  color: #ffffffcc !important;
+  font-size: 1rem;
+}
+
+/* Inputs */
+ion-item {
+  --background: transparent;
+  --border-color: #ffffff55;
+  --highlight-color-focused: #ffffff;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+/* Botón de login */
+#login {
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 12px 0;
+  --border-radius: 12px;
+  --background: #ff7a00;
+  --background-activated: #ff8f26;
+}
+
+/* Toggle 'Recordarme' */
+ion-toggle {
+  --handle-background: #fff;
+  --background-checked: #ff7a00;
+}

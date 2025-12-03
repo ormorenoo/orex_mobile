@@ -8,7 +8,8 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <form (submit)="doLogin()">
+  <div class="login-container">
+    <form (submit)="doLogin()">
     <ion-list>
       <ion-item>
         <ion-label position="floating">{{ 'USERNAME' | translate }}</ion-label>
@@ -25,9 +26,10 @@
       </ion-item>
       <ion-row class="ion-padding">
         <ion-col>
-          <ion-button expand="block" type="submit" color="primary" id="login">{{ 'LOGIN_BUTTON' | translate }}</ion-button>
+          <ion-button expand="block" type="submit" id="login">{{ 'LOGIN_BUTTON' | translate }}</ion-button>
         </ion-col>
       </ion-row>
     </ion-list>
   </form>
+  </div>
 </ion-content>

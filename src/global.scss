@@ -1,13 +1,95 @@
-/*
- * App Global CSS
- * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
- */
+/* ============================
+   PALETA OREX
+============================ */
+:root {
+  --orex-orange: #ff6400;
+  --orex-orange-dark: #cc5200;
+  --orex-gray: #3a3a3a;
+  --orex-dark: #111111;
+  --orex-border: #2a2a2a;
+
+  --text-light: #ffffff;
+  --text-muted: #b5b5b5;
+}
+
+/* ============================
+   BASE GENERAL
+============================ */
+body, ion-app, ion-content {
+  background: var(--orex-dark);
+  color: var(--text-light);
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Inputs */
+ion-item {
+  --background: var(--orex-dark);
+  --border-color: var(--orex-border);
+  --border-width: 1px;
+  --highlight-color-focused: var(--orex-orange);
+}
+
+ion-label {
+  color: var(--text-muted);
+}
+
+ion-input {
+  --color: var(--text-light);
+}
+
+/* Toolbars */
+ion-toolbar {
+  --background: #000;
+  --color: white;
+  border-bottom: 1px solid var(--orex-border);
+}
+
+/* ============================
+   BOTONES
+============================ */
+ion-button {
+  --border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+
+  &.button-solid {
+    --background: var(--orex-orange);
+    --background-activated: var(--orex-orange-dark);
+    --background-focused: var(--orex-orange-dark);
+    --background-hover: var(--orex-orange-dark);
+    color: white;
+  }
+
+  &.button-outline {
+    --color: var(--orex-orange);
+    --border-color: var(--orex-orange);
+    --border-width: 1px;
+    --background: transparent;
+  }
+
+  &.button-clear {
+    --color: var(--orex-orange);
+  }
+}
+
+/* Botón gris secundario */
+ion-button.secondary {
+  --background: var(--orex-gray) !important;
+  --background-hover: #4d4d4d !important;
+  --background-focused: #4d4d4d !important;
+}
+
+ion-icon {
+  color: var(--orex-orange);
+}
+
+ion-icon.add {
+  color: white;
+}
+
+ion-fab-button {
+  --background: var(--orex-orange);
+}
 
 /* Core CSS required for Ionic components to work properly */
 @import '~@ionic/angular/css/core.css';

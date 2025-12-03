@@ -38,6 +38,13 @@ export class MantenimientoService {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  verImagen(id: number, tipo: string): Observable<HttpResponse<Blob>> {
+    return this.http.get(`${this.resourceUrl}/${id}/imagen/${tipo}`, {
+      responseType: 'blob',
+      observe: 'response',
+    });
+  }
+
   protected createFormData(mantenimiento: Mantenimiento, imagenGeneral: File | undefined, imagenDetalle: File | undefined): FormData {
     const formData: FormData = new FormData();
     formData.append('mantenimientoDTO', JSON.stringify(mantenimiento));

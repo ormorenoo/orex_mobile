@@ -1,0 +1,100 @@
+.detail-content {
+  padding: 16px;
+}
+
+/* ESTILO GLOBAL DE CADA SECCIÓN */
+ion-card {
+  margin-bottom: 18px;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+/* --- CAMPOS GENERALES --- */
+.field {
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.field-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #939393;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 4px;
+}
+
+.field p {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #939393;
+  line-height: 1.3;
+}
+
+.chip-text {
+  font-size: 1rem;
+  font-weight: 600; 
+}
+
+/* --- IMÁGENES --- */
+.img-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.img-block {
+  flex: 1;
+  text-align: center;
+}
+
+.img-block .field-label {
+  margin-bottom: 8px;
+}
+
+.thumb {
+  width: 100%;
+  max-width: 150px;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  cursor: pointer;
+}
+
+/* --- ACCIONES --- */
+.actions {
+  margin-top: 30px;
+
+  ion-button {
+    margin-bottom: 10px;
+  }
+}
+
+/* --- MODAL IMAGEN --- */
+.modal-img-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background: black;
+  position: relative;
+
+  img {
+    width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 32px;
+    color: white;
+  }
+}

@@ -1,10 +1,38 @@
-.hipster {
+
+.landing {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.landing {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hero {
+  text-align: center;
+  margin-top: 18vh; /* hace que el logo quede arriba sin ser pegado */
+}
+
+.hero-logo {
+  width: 85%;
+  max-width: 420px;
   display: block;
-  width: 209px;
-  height: 300px;
-  margin: 20px auto;
-  background: url('../../../assets/img/jhipster_family_member_0.svg') no-repeat center top;
-  background-size: contain;
+  margin: 0 auto;
+}
+
+.hero-tagline {
+  margin-top: 12px;
+  font-size: 1rem;
+  color: #ffffff; /* tu naranja */
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+
+.actions {
+  margin-bottom: 40px;
 }
 
 /* wait autoprefixer update to allow simple generation of high pixel density media query */

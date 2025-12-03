@@ -40,7 +40,7 @@ export class InspeccionDetailPage implements OnInit {
   loadImage(id: number, tipo: string, destino: 'thumbnailGeneral' | 'thumbnailDetallePolin') {
     this.inspeccionService.verImagen(id, tipo).subscribe(response => {
       const contentType = response.headers.get('Content-Type') ?? 'image/jpeg';
-      const blob = new Blob([response.body!], { type: contentType });
+      const blob = new Blob([response.body], { type: contentType });
       const url = URL.createObjectURL(blob);
       this[destino] = url;
     });
