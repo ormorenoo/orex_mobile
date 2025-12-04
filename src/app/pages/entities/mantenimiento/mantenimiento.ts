@@ -4,6 +4,9 @@ import { filter, map } from 'rxjs/operators';
 import { HttpResponse } from '@angular/common/http';
 import { Mantenimiento } from './mantenimiento.model';
 import { MantenimientoService } from './mantenimiento.service';
+import { MantenimientoOfflineService } from './mantenimiento-offline-service';
+import { EntitiesOfflineService } from '#app/services/utils/entities-offline';
+import { NetworkService } from '#app/services/utils/network.service';
 
 @Component({
   selector: 'page-mantenimiento',
@@ -20,12 +23,20 @@ export class MantenimientoPage {
     private mantenimientoService: MantenimientoService,
     private toastCtrl: ToastController,
     public plt: Platform,
+    private networkService: NetworkService,
+    private entitiesOfflineService: EntitiesOfflineService,
+    private mantenimientoOfflineService: MantenimientoOfflineService,
   ) {
     this.mantenimientos = [];
   }
 
   async ionViewWillEnter() {
-    await this.loadAll();
+    const online = await this.networkService.isOnline();
+    if (online) {
+      await this.loadAll();
+    } else {
+      this.mantenimientos = this.entitiesOfflineService.getMantenimientos();
+    }
   }
 
   async loadAll(refresher?) {

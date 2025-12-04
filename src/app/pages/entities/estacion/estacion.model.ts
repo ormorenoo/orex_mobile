@@ -1,5 +1,6 @@
 import { BaseEntity } from 'src/model/base-entity';
 import { Polin } from '#app/pages/entities/polin/polin.model';
+import { MesaTrabajo } from '../mesa-trabajo';
 
 export const enum TipoEstacion {
   'CARGA',
@@ -35,6 +36,7 @@ export class Estacion implements BaseEntity {
     public estado?: Estado,
     public mesaTrabajoundefined?: string,
     public mesaTrabajoId?: number,
+    public mesaTrabajo?: MesaTrabajo,
     public polins?: Polin[],
   ) {}
 }

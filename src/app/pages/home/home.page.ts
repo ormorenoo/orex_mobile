@@ -3,6 +3,7 @@ import { NavController } from '@ionic/angular';
 import { Account } from 'src/model/account.model';
 import { AccountService } from '#app/services/auth/account.service';
 import { LoginService } from '#app/services/login/login.service';
+import { EntitiesOfflineService } from '#app/services/utils/entities-offline';
 
 @Component({
   selector: 'app-home',
@@ -16,6 +17,7 @@ export class HomePage implements OnInit {
     public navController: NavController,
     private accountService: AccountService,
     private loginService: LoginService,
+    private entititesOffline: EntitiesOfflineService,
   ) {}
 
   ngOnInit() {
@@ -28,6 +30,10 @@ export class HomePage implements OnInit {
     });
   }
 
+  async sync() {
+    this.entititesOffline.loadFaenasOptions();
+    alert('Sincronización completada');
+  }
   isAuthenticated() {
     return this.accountService.isAuthenticated();
   }

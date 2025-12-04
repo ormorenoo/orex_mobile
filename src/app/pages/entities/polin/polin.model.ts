@@ -1,6 +1,7 @@
 import { BaseEntity } from 'src/model/base-entity';
 import { Inspeccion } from '#app/pages/entities/inspeccion/inspeccion.model';
 import { Mantenimiento } from '#app/pages/entities/mantenimiento/mantenimiento.model';
+import { Estacion } from '../estacion';
 
 export const enum TipoPolin {
   'UNICO',
@@ -26,6 +27,7 @@ export class Polin implements BaseEntity {
     public estado?: Estado,
     public estacionundefined?: string,
     public estacionId?: number,
+    public estacion?: Estacion,
     public inspeccions?: Inspeccion[],
     public mantenimientos?: Mantenimiento[],
   ) {}
