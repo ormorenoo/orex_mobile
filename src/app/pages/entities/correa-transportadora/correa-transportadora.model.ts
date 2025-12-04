@@ -10,6 +10,6 @@ export class CorreaTransportadora implements BaseEntity {
     public areaFaenaundefined?: string,
     public areaFaenaId?: number,
     public mesaTrabajos?: MesaTrabajo[],
-    public areaFaena?: AreaFaena[],
+    public areaFaena?: AreaFaena,
   ) {}
 }

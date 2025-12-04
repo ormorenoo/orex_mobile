@@ -14,6 +14,7 @@ import { MesaTrabajoService } from '#app/pages/entities/mesa-trabajo/mesa-trabaj
 import { Polin } from '#app/pages/entities/polin/polin.model';
 import { PolinService } from '#app/pages/entities/polin/polin.service';
 import { Injectable } from '@angular/core';
+import { SqliteService } from './sqlite.service';
 
 @Injectable({
   providedIn: 'root',
@@ -36,14 +37,44 @@ export class EntitiesOfflineService {
     private correaTransportadoraService: CorreaTransportadoraService,
     private mesaTrabajoService: MesaTrabajoService,
     private estacionService: EstacionService,
+    private sqlite: SqliteService,
   ) {
+    //envio mantenimientos
+    this.postMantenimientos();
+    //consulto mantenimientos
     this.mantenimientoService.query().subscribe(data => (this.mantenimientos = data.body ?? []));
+    //consulto listas
     this.loadFaenasOptions();
     this.loadAreasOptions();
     this.loadCorreasTransportadorasOptions();
     this.loadMesasTrabajoOptions();
     this.loadEstacionesOptions();
     this.loadPolinesOptions();
+  }
+
+  async postMantenimientos() {
+    const rows = await this.sqlite.query(`SELECT * FROM mantenimiento WHERE enviado = 0`);
+    for (const row of rows.values) {
+      const data = JSON.parse(row.payload);
+
+      try {
+        // Enviar al backend
+        await this.mantenimientoService
+          .create(data, this.fileFromBase64(data.imagenGeneral), this.fileFromBase64(data.imagenDetalle))
+          .toPromise();
+
+        // Marcar como enviado
+        await this.sqlite.run(`UPDATE mantenimiento SET enviado = 1 WHERE id = ?`, [row.id]);
+      } catch (e) {
+        console.error('Error al sincronizar mantenimientos locales:', e);
+      }
+    }
+    try {
+      // Eliminar los enviados
+      await this.sqlite.run(`DELETE mantenimiento WHERE enviado = 1`);
+    } catch (e) {
+      console.error('Error al eliminar los mantenimientos locales:', e);
+    }
   }
 
   loadFaenasOptions(): void {
@@ -98,5 +129,16 @@ export class EntitiesOfflineService {
   }
   getMantenimientos() {
     return this.mantenimientos;
+  }
+
+  fileFromBase64(base64): File | undefined {
+    if (!base64) return undefined;
+    const arr = base64.split(',');
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) u8arr[n] = bstr.charCodeAt(n);
+    return new File([u8arr], 'image.jpg', { type: mime });
   }
 }

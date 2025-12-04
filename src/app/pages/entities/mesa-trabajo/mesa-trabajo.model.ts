@@ -1,5 +1,6 @@
 import { BaseEntity } from 'src/model/base-entity';
 import { Estacion } from '#app/pages/entities/estacion/estacion.model';
+import { CorreaTransportadora } from '../correa-transportadora';
 
 export const enum TipoMesa {
   'MESA_UNO',
@@ -14,6 +15,7 @@ export class MesaTrabajo implements BaseEntity {
     public tipo?: TipoMesa,
     public correaTransportadoraundefined?: string,
     public correaTransportadoraId?: number,
+    public correaTransportadora?: CorreaTransportadora,
     public estacions?: Estacion[],
   ) {}
 }

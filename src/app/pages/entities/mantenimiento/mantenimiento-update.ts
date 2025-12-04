@@ -139,36 +139,65 @@ export class MantenimientoUpdatePage implements OnInit {
   }
 
   findCorreasOffline(faenaId: number, areaId: number): CorreaTransportadora[] {
-    var correasTemp = this.entitiesOfflineService.getCorreas();
-    return correasTemp.filter(correa => correa.areaFaena?.some(af => af.faenaId === faenaId && af.areaId === areaId));
+    const correasTemp = this.entitiesOfflineService.getCorreas() ?? [];
+    return correasTemp.filter(correa => correa.areaFaena && correa.areaFaena.faena?.id === faenaId && correa.areaFaena.area?.id === areaId);
   }
 
-  loadMesasTrabajoOptions(correa: CorreaTransportadora | null): void {
+  async loadMesasTrabajoOptions(correa: CorreaTransportadora | null): Promise<void> {
+    const online = await this.networkService.isOnline();
     if (correa?.id) {
-      this.mesaTrabajoService.findByCorreaId(correa.id).subscribe(data => {
-        this.mesas = data.body ?? [];
-        if (this.form.get(['mesa']).value) {
-          this.loadEstacionesOptions(this.form.get(['mesa']).value);
-        }
-      });
+      if (online) {
+        this.mesaTrabajoService.findByCorreaId(correa.id).subscribe(data => {
+          this.mesas = data.body ?? [];
+          if (this.form.get(['mesa']).value) {
+            this.loadEstacionesOptions(this.form.get(['mesa']).value);
+          }
+        });
+      } else {
+        this.mesas = this.findMesasOffline(correa.id);
+      }
     }
   }
 
-  loadEstacionesOptions(mesa: MesaTrabajo | null): void {
+  findMesasOffline(correaId: number): MesaTrabajo[] {
+    var mesasTemp = this.entitiesOfflineService.getMesas();
+    return mesasTemp.filter(mesa => mesa.correaTransportadora.id === correaId);
+  }
+
+  async loadEstacionesOptions(mesa: MesaTrabajo | null): Promise<void> {
+    const online = await this.networkService.isOnline();
     if (mesa?.id) {
-      this.estacionService.findByMesaId(mesa.id).subscribe(data => {
-        this.estaciones = data.body ?? [];
-        if (this.form.get(['estacion']).value) {
-          this.loadPolinesOptions(this.form.get(['estacion']).value);
-        }
-      });
+      if (online) {
+        this.estacionService.findByMesaId(mesa.id).subscribe(data => {
+          this.estaciones = data.body ?? [];
+          if (this.form.get(['estacion']).value) {
+            this.loadPolinesOptions(this.form.get(['estacion']).value);
+          }
+        });
+      } else {
+        this.estaciones = this.findEstacionesOffline(mesa.id);
+      }
     }
   }
 
-  loadPolinesOptions(estacion: Estacion | null): void {
+  findEstacionesOffline(id: number): Estacion[] {
+    var estacionesTemp = this.entitiesOfflineService.getEstaciones();
+    return estacionesTemp.filter(mesa => mesa.mesaTrabajo.id === id);
+  }
+
+  async loadPolinesOptions(estacion: Estacion | null): Promise<void> {
+    const online = await this.networkService.isOnline();
     if (estacion?.id) {
-      this.polinService.findByEstacionId(estacion.id).subscribe(data => (this.polins = data.body ?? []));
+      if (online) {
+        this.polinService.findByEstacionId(estacion.id).subscribe(data => (this.polins = data.body ?? []));
+      } else {
+        this.polins = this.findPolinesOffline(estacion.id);
+      }
     }
+  }
+  findPolinesOffline(id: number): Polin[] {
+    var polinesTemp = this.entitiesOfflineService.getPolins();
+    return polinesTemp.filter(mesa => mesa.estacion.id === id);
   }
 
   compareFaena(first: Faena, second: Faena): boolean {
