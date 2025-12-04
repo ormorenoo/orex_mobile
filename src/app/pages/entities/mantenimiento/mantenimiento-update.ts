@@ -16,6 +16,7 @@ import { Estacion, EstacionService } from '../estacion';
 import { CondicionPolin } from '../enumerations/condicion-polin.model';
 import { NetworkService } from '#app/services/utils/network.service';
 import { MantenimientoOfflineService } from './mantenimiento-offline-service';
+import { EntitiesOfflineService } from '#app/services/utils/entities-offline';
 
 @Component({
   selector: 'page-mantenimiento-update',
@@ -71,6 +72,7 @@ export class MantenimientoUpdatePage implements OnInit {
     private estacionService: EstacionService,
     private networkService: NetworkService,
     private mantenimientoOfflineService: MantenimientoOfflineService,
+    private entitiesOfflineService: EntitiesOfflineService,
   ) {
     // Watch the form for changes, and
     this.form.valueChanges.subscribe(v => {
@@ -87,33 +89,58 @@ export class MantenimientoUpdatePage implements OnInit {
     });
   }
 
-  loadFaenasOptions(): void {
-    this.faenaService.query().subscribe(data => (this.faenas = data.body ?? []));
+  async loadFaenasOptions(): Promise<void> {
+    const online = await this.networkService.isOnline();
+    if (online) {
+      this.faenaService.query().subscribe(data => (this.faenas = data.body ?? []));
+    } else {
+      this.faenas = this.entitiesOfflineService.getFaenas();
+    }
     if (this.form.get(['faena']).value) {
       this.loadAreasOptions(this.form.get(['faena']).value);
     }
   }
 
-  loadAreasOptions(faena: Faena | null): void {
+  async loadAreasOptions(faena: Faena | null): Promise<void> {
+    const online = await this.networkService.isOnline();
     if (faena?.id) {
-      this.areaService.findByFaenaId(faena.id).subscribe(data => {
-        this.areas = data.body ?? [];
-        if (this.form.get(['area']).value && this.form.get(['faena']).value) {
-          this.loadCorreasTransportadorasOptions(this.form.get(['area']).value, this.form.get(['faena']).value);
-        }
-      });
+      if (online) {
+        this.areaService.findByFaenaId(faena.id).subscribe(data => {
+          this.areas = data.body ?? [];
+          if (this.form.get(['area']).value && this.form.get(['faena']).value) {
+            this.loadCorreasTransportadorasOptions(this.form.get(['area']).value, this.form.get(['faena']).value);
+          }
+        });
+      } else {
+        this.areas = this.findAreasOffline(faena.id);
+      }
     }
   }
 
-  loadCorreasTransportadorasOptions(area: Area | null, faena: Faena | null): void {
+  findAreasOffline(faenaId: number): Area[] {
+    var areasTemp = this.entitiesOfflineService.getAreas();
+    return areasTemp.filter(area => area.faenas?.some(f => f.id === faenaId));
+  }
+
+  async loadCorreasTransportadorasOptions(area: Area | null, faena: Faena | null): Promise<void> {
+    const online = await this.networkService.isOnline();
     if (area?.id && faena?.id) {
-      this.correaTransportadoraService.findByAreaIdAndFaenaId(area.id, faena.id).subscribe(data => {
-        this.correas = data.body ?? [];
-        if (this.form.get(['correa']).value) {
-          this.loadMesasTrabajoOptions(this.form.get(['correa']).value);
-        }
-      });
+      if (online) {
+        this.correaTransportadoraService.findByAreaIdAndFaenaId(area.id, faena.id).subscribe(data => {
+          this.correas = data.body ?? [];
+          if (this.form.get(['correa']).value) {
+            this.loadMesasTrabajoOptions(this.form.get(['correa']).value);
+          }
+        });
+      } else {
+        this.correas = this.findCorreasOffline(faena.id, area.id);
+      }
     }
+  }
+
+  findCorreasOffline(faenaId: number, areaId: number): CorreaTransportadora[] {
+    var correasTemp = this.entitiesOfflineService.getCorreas();
+    return correasTemp.filter(correa => correa.areaFaena?.some(af => af.faenaId === faenaId && af.areaId === areaId));
   }
 
   loadMesasTrabajoOptions(correa: CorreaTransportadora | null): void {
