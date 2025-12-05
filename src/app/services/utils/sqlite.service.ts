@@ -25,8 +25,17 @@ export class SqliteService {
   }
 
   private async createTables() {
-    const createVentasTable = `
+    const createMantenimientoTable = `
       CREATE TABLE IF NOT EXISTS mantenimiento (
+        id TEXT PRIMARY KEY,
+        estado TEXT,
+        payload TEXT,
+        enviado INTEGER DEFAULT 0
+      );
+    `;
+
+    const createInspeccionTable = `
+      CREATE TABLE IF NOT EXISTS inspeccion (
         id TEXT PRIMARY KEY,
         estado TEXT,
         payload TEXT,
@@ -42,7 +51,8 @@ export class SqliteService {
       );
     `;
 
-    await this.db.execute(createVentasTable);
+    await this.db.execute(createMantenimientoTable);
+    await this.db.execute(createInspeccionTable);
     await this.db.execute(createQueueTable);
 
     console.log('Tablas creadas/existentes OK');
