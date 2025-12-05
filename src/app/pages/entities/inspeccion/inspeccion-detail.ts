@@ -3,6 +3,8 @@ import { AlertController, IonModal, NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { Inspeccion } from './inspeccion.model';
 import { InspeccionService } from './inspeccion.service';
+import { InspeccionOfflineService } from './inspeccion-offline-service';
+import { NetworkService } from '#app/services/utils/network.service';
 
 @Component({
   selector: 'page-inspeccion-detail',
@@ -21,6 +23,8 @@ export class InspeccionDetailPage implements OnInit {
     private inspeccionService: InspeccionService,
     private activatedRoute: ActivatedRoute,
     private alertController: AlertController,
+    private networkService: NetworkService,
+    private inspeccionOffline: InspeccionOfflineService,
   ) {}
 
   ngOnInit(): void {
@@ -74,10 +78,15 @@ export class InspeccionDetailPage implements OnInit {
         },
         {
           text: 'Delete',
-          handler: () => {
-            this.inspeccionService.delete(item.id).subscribe(() => {
-              this.navController.navigateForward('/tabs/entities/inspeccion');
-            });
+          handler: async () => {
+            const online = await this.networkService.isOnline();
+            if (online) {
+              this.inspeccionService.delete(item.id).subscribe(() => {
+                this.navController.navigateForward('/tabs/entities/inspeccion');
+              });
+            } else {
+              await this.inspeccionOffline.deleteOffline(item.id);
+            }
           },
         },
       ],

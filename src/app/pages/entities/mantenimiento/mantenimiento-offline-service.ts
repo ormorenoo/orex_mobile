@@ -30,6 +30,14 @@ export class MantenimientoOfflineService {
     return idTemp;
   }
 
+  async deleteOffline(id: any) {
+    await this.sqlite.run(
+      `INSERT INTO mantenimiento (id, estado, payload, enviado)
+       VALUES (?, ?, null, 3)`,
+      [id, 'ELIMINADO'],
+    );
+  }
+
   private toBase64(file: File): Promise<string | null> {
     return new Promise(resolve => {
       const reader = new FileReader();

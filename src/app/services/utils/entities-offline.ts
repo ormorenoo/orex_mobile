@@ -43,10 +43,12 @@ export class EntitiesOfflineService {
   ) {
     //envio mantenimientos
     this.postMantenimientos();
+    this.deletesMantenimientos();
     //consulto mantenimientos
     this.mantenimientoService.query().subscribe(data => (this.mantenimientos = data.body ?? []));
     //envio mantenimientos
     this.postInspecciones();
+    this.deletesInspecciones();
     //consulto mantenimientos
     this.inspeccionService.query().subscribe(data => (this.inspeccines = data.body ?? []));
     //consulto listas
@@ -56,6 +58,48 @@ export class EntitiesOfflineService {
     this.loadMesasTrabajoOptions();
     this.loadEstacionesOptions();
     this.loadPolinesOptions();
+  }
+
+  async deletesMantenimientos() {
+    const rows = await this.sqlite.query(`SELECT * FROM mantenimiento WHERE enviado = 3`);
+    for (const row of rows.values) {
+      const data = JSON.parse(row.payload);
+      try {
+        // Enviar al backend
+        await this.mantenimientoService.delete(row.id).toPromise();
+        // Marcar como enviado
+        await this.sqlite.run(`UPDATE mantenimiento SET enviado = 1 WHERE id = ?`, [row.id]);
+      } catch (e) {
+        console.error('Error al eliminado manteniemitnos locales:', e);
+      }
+    }
+    try {
+      // Eliminar los enviados
+      await this.sqlite.run(`DELETE mantenimiento WHERE enviado = 1`);
+    } catch (e) {
+      console.error('Error al eliminar los mantenimiento locales:', e);
+    }
+  }
+
+  async deletesInspecciones() {
+    const rows = await this.sqlite.query(`SELECT * FROM inspeccion WHERE enviado = 3`);
+    for (const row of rows.values) {
+      const data = JSON.parse(row.payload);
+      try {
+        // Enviar al backend
+        await this.inspeccionService.delete(row.id).toPromise();
+        // Marcar como enviado
+        await this.sqlite.run(`UPDATE inspeccion SET enviado = 1 WHERE id = ?`, [row.id]);
+      } catch (e) {
+        console.error('Error al eliminado inspeccion locales:', e);
+      }
+    }
+    try {
+      // Eliminar los enviados
+      await this.sqlite.run(`DELETE inspeccion WHERE enviado = 1`);
+    } catch (e) {
+      console.error('Error al eliminar los inspeccion locales:', e);
+    }
   }
   async postInspecciones() {
     const rows = await this.sqlite.query(`SELECT * FROM inspeccion WHERE enviado = 0`);

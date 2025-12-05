@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Mantenimiento } from './mantenimiento.model';
 import { MantenimientoService } from './mantenimiento.service';
 import { Inspeccion } from '../inspeccion';
+import { NetworkService } from '#app/services/utils/network.service';
+import { MantenimientoOfflineService } from './mantenimiento-offline-service';
 
 @Component({
   selector: 'page-mantenimiento-detail',
@@ -22,6 +24,8 @@ export class MantenimientoDetailPage implements OnInit {
     private mantenimientoService: MantenimientoService,
     private activatedRoute: ActivatedRoute,
     private alertController: AlertController,
+    private networkService: NetworkService,
+    private mantenimientoOfflineService: MantenimientoOfflineService,
   ) {}
 
   ngOnInit(): void {
@@ -71,10 +75,15 @@ export class MantenimientoDetailPage implements OnInit {
         },
         {
           text: 'Delete',
-          handler: () => {
-            this.mantenimientoService.delete(item.id).subscribe(() => {
-              this.navController.navigateForward('/tabs/entities/mantenimiento');
-            });
+          handler: async () => {
+            const online = await this.networkService.isOnline();
+            if (online) {
+              this.mantenimientoService.delete(item.id).subscribe(() => {
+                this.navController.navigateForward('/tabs/entities/mantenimiento');
+              });
+            } else {
+              await this.mantenimientoOfflineService.deleteOffline(item.id);
+            }
           },
         },
       ],
