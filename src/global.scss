@@ -10,6 +10,14 @@
 
   --text-light: #ffffff;
   --text-muted: #b5b5b5;
+
+  color-scheme: dark;
+}
+
+body.dark {
+  --ion-color-primary: #f8951d;
+  --ion-background-color: #121212;
+  --ion-text-color: #ffffff;
 }
 
 /* ============================
