@@ -1,7 +1,63 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title> {{ 'TAB3_TITLE' | translate }} </ion-title>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content></ion-content>
+<ion-content class="ion-padding">
+
+  <!-- Loader -->
+  <ion-spinner *ngIf="loading" class="spinner-center"></ion-spinner>
+
+  <!-- Perfil -->
+  <div *ngIf="user && !loading" class="profile-card">
+
+    <div class="avatar">
+      <ion-icon name="person-circle-outline"></ion-icon>
+    </div>
+
+    <h2 class="name">
+      {{ user.firstName }} {{ user.lastName }}
+      <span *ngIf="user.secondLastName"> {{ user.secondLastName }}</span>
+    </h2>
+
+    <p class="id">Cédula: {{ user.cedula }}</p>
+
+    <!-- Sección Datos Personales -->
+    <ion-list lines="none" class="info-list">
+
+      <ion-item>
+        <ion-label>
+          <h3>Usuario</h3>
+          <p>{{ user.login }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <h3>Email</h3>
+          <p>{{ user.email || 'No registrado' }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <h3>Teléfono</h3>
+          <p>{{ user.telefono || 'No registrado' }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <h3>Cargo</h3>
+          <p>{{ user.cargo || 'No especificado' }}</p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item *ngIf="user.empresasCliente?.length">
+        <ion-label>
+          <h3>Empresas vinculadas</h3>
+          <p>{{ user.empresasCliente }}</p>
+        </ion-label>
+      </ion-item>
+
+    </ion-list>
+
+  </div>
+
+</ion-content>

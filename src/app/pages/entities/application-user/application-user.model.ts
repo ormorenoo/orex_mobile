@@ -5,7 +5,10 @@ export class ApplicationUser implements BaseEntity {
   constructor(
     public id?: number,
     public login?: string,
+    public firstName?: string,
+    public lastName?: string,
     public secondLastName?: string,
+    public email?: string,
     public cedula?: string,
     public cargo?: string,
     public telefono?: string,
