@@ -19,7 +19,7 @@
   text-align: center;
   border-radius: 16px;
   padding: 10px;
-  background: var(--ion-color-light);
+  background: var(--ion-color-dark);
   box-shadow: none;
   transition: transform 0.15s ease-in-out;
 
@@ -41,7 +41,7 @@
     p {
       margin: 0;
       font-size: 0.9rem;
-      color: var(--ion-color-dark);
+      color: var(--ion-color-light);
     }
   }
 }
@@ -54,7 +54,7 @@
     font-size: 1rem;
     font-weight: 600;
     margin-bottom: 0.7rem;
-    color: var(--ion-color-dark);
+    color: var(--ion-color-light);
   }
 
   .action-buttons {
@@ -66,7 +66,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      background: var(--ion-color-light);
+      background: var(--ion-color-dark);
       padding: 1rem;
       border-radius: 12px;
       width: 120px;
@@ -85,8 +85,44 @@
 
       span {
         font-size: 0.85rem;
-        color: var(--ion-color-dark);
+        color: var(--ion-color-light);
       }
     }
   }
+}
+
+ion-card {
+  background: var(--ion-color-dark);
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+ion-card:active {
+  transform: scale(0.97);
+}
+
+/* Contenido del card */
+ion-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+}
+
+/* Iconos grandes */
+ion-card ion-icon {
+  font-size: 36px;
+  color: var(--ion-color-primary); // tu naranja
+  margin-bottom: 10px;
+}
+
+/* Texto */
+ion-card p {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #ffffff;
 }
