@@ -10,7 +10,7 @@
 
   p {
     margin-top: 4px;
-    color: var(--ion-color-medium);
+    color: var(--text-muted);
   }
 }
 
@@ -19,7 +19,7 @@
   text-align: center;
   border-radius: 16px;
   padding: 10px;
-  background: var(--ion-color-dark);
+  background: var(--orex-gray);
   box-shadow: none;
   transition: transform 0.15s ease-in-out;
 
@@ -41,7 +41,7 @@
     p {
       margin: 0;
       font-size: 0.9rem;
-      color: var(--ion-color-light);
+      color: var(--text-light);
     }
   }
 }
@@ -54,7 +54,7 @@
     font-size: 1rem;
     font-weight: 600;
     margin-bottom: 0.7rem;
-    color: var(--ion-color-light);
+    color: var(--text-light);
   }
 
   .action-buttons {
@@ -66,7 +66,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      background: var(--ion-color-dark);
+      background: var(--orex-gray);
       padding: 1rem;
       border-radius: 12px;
       width: 120px;
@@ -85,14 +85,14 @@
 
       span {
         font-size: 0.85rem;
-        color: var(--ion-color-light);
+        color: var(--text-light);
       }
     }
   }
 }
 
 ion-card {
-  background: var(--ion-color-dark);
+  background: var(--orex-gray);
   border-radius: 16px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
@@ -115,7 +115,7 @@ ion-card-content {
 /* Iconos grandes */
 ion-card ion-icon {
   font-size: 36px;
-  color: var(--ion-color-primary); // tu naranja
+  color: var(--orex-orange); // tu naranja
   margin-bottom: 10px;
 }
 
