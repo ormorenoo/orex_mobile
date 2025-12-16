@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:223482752244:android:a53879d2dd840d799f42a1",
         "android_client_info": {
-          "package_name": "com.orex.orexmobile"
+          "package_name": "io.ionic.starter"
         }
       },
       "oauth_client": [],
