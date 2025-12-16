@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "223482752244",
+    "project_id": "orexmobile-5ddc1",
+    "storage_bucket": "orexmobile-5ddc1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:223482752244:android:a53879d2dd840d799f42a1",
+        "android_client_info": {
+          "package_name": "com.orex.orexmobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyArzP3YDF5Bn2zdVxOCf7-2mckvSpopffQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
