@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package com.orex.orexmobile;
 
 import com.getcapacitor.BridgeActivity;
 

@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
+  appId: 'com.orex.orexmobile',
   appName: 'orexIonic',
   webDir: 'www',
   bundledWebRuntime: false,
