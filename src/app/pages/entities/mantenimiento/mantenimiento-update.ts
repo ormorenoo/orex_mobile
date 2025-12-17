@@ -160,7 +160,7 @@ export class MantenimientoUpdatePage implements OnInit {
   }
 
   findMesasOffline(correaId: number): MesaTrabajo[] {
-    var mesasTemp = this.entitiesOfflineService.getMesas();
+    const mesasTemp = this.entitiesOfflineService.getMesas();
     return mesasTemp.filter(mesa => mesa.correaTransportadora.id === correaId);
   }
 
@@ -273,9 +273,52 @@ export class MantenimientoUpdatePage implements OnInit {
       }
     } else {
       // --- MODO OFFLINE ---
-      await this.mantenimientoOfflineService.saveOffline(mantenimiento, this.imagenGeneral, this.imagenDetalle);
+      await this.saveOffline(mantenimiento);
     }
   }
+
+  async saveOffline(mantenimiento) {
+    this.isSaving = true;
+
+    if (!mantenimiento.fechaCreacion) {
+      mantenimiento.fechaCreacion = new Date().toISOString();
+    }
+
+    const result = await this.mantenimientoOfflineService.saveOffline(mantenimiento, this.imagenGeneral, this.imagenDetalle);
+
+    if (result.success) {
+      await this.onOfflineSaveSuccess(result.id);
+    } else {
+      await this.onOfflineSaveError(result.error);
+    }
+  }
+
+  async onOfflineSaveSuccess(id: string) {
+    this.isSaving = false;
+
+    const toast = await this.toastCtrl.create({
+      message: 'Mantenimiento guardado offline correctamente.',
+      duration: 2000,
+      position: 'middle',
+    });
+
+    await toast.present();
+    await this.navController.navigateBack('/tabs/entities/mantenimiento');
+  }
+
+  async onOfflineSaveError(error: any) {
+    this.isSaving = false;
+    console.error(error);
+
+    const toast = await this.toastCtrl.create({
+      message: 'Error al guardar el mantenimiento offline.',
+      duration: 2000,
+      position: 'middle',
+    });
+
+    await toast.present();
+  }
+
   onFileSelected(event: Event, tipo: 'general' | 'detalle'): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {

@@ -279,8 +279,46 @@ export class InspeccionUpdatePage implements OnInit {
       }
     } else {
       // --- MODO OFFLINE ---
-      await this.inspeccionOfflineService.saveOffline(inspeccion, this.imagenGeneral, this.imagenDetalle);
+      this.saveOffline(inspeccion);
     }
+  }
+
+  async saveOffline(inspeccion) {
+    this.isSaving = true;
+
+    const result = await this.inspeccionOfflineService.saveOffline(inspeccion, this.imagenGeneral, this.imagenDetalle);
+
+    if (result.success) {
+      await this.onOfflineSaveSuccess(result.id);
+    } else {
+      await this.onOfflineSaveError(result.error);
+    }
+  }
+
+  async onOfflineSaveSuccess(id: string) {
+    this.isSaving = false;
+
+    const toast = await this.toastCtrl.create({
+      message: 'Inspección guardada offline correctamente.',
+      duration: 2000,
+      position: 'middle',
+    });
+
+    await toast.present();
+    await this.navController.navigateBack('/tabs/entities/inspeccion');
+  }
+
+  async onOfflineSaveError(error: any) {
+    this.isSaving = false;
+    console.error(error);
+
+    const toast = await this.toastCtrl.create({
+      message: 'Error al guardar la inspección offline.',
+      duration: 2000,
+      position: 'middle',
+    });
+
+    await toast.present();
   }
 
   async onSaveSuccess(response) {

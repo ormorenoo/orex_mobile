@@ -26,6 +26,7 @@ export const enum Observacion {
 export class Inspeccion implements BaseEntity {
   constructor(
     public id?: number,
+    public idLocal?: string,
     public fechaCreacion?: any,
     public condicionPolin?: CondicionPolin,
     public criticidad?: Criticidad,

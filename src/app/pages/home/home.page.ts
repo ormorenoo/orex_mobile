@@ -34,6 +34,7 @@ export class HomePage implements OnInit {
     this.entititesOffline.loadFaenasOptions();
     alert('Sincronización completada');
   }
+
   isAuthenticated() {
     return this.accountService.isAuthenticated();
   }

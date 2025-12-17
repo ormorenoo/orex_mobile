@@ -16,6 +16,7 @@ import { PolinService } from '#app/pages/entities/polin/polin.service';
 import { Injectable } from '@angular/core';
 import { SqliteService } from './sqlite.service';
 import { Inspeccion } from '#app/pages/entities/inspeccion';
+import { EnityOfflineRecord } from './offline.model';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +29,7 @@ export class EntitiesOfflineService {
   estaciones: Estacion[] = [];
   polins: Polin[];
   mantenimientos: Mantenimiento[];
-  inspeccines: Inspeccion[];
+  inspecciones: Inspeccion[];
 
   constructor(
     private polinService: PolinService,
@@ -46,11 +47,12 @@ export class EntitiesOfflineService {
     this.deletesMantenimientos();
     //consulto mantenimientos
     this.mantenimientoService.query().subscribe(data => (this.mantenimientos = data.body ?? []));
-    //envio mantenimientos
+
+    //envio inspecciones
     this.postInspecciones();
     this.deletesInspecciones();
-    //consulto mantenimientos
-    this.inspeccionService.query().subscribe(data => (this.inspeccines = data.body ?? []));
+    //consulto inspecciones
+    this.inspeccionService.query().subscribe(data => (this.inspecciones = data.body ?? []));
     //consulto listas
     this.loadFaenasOptions();
     this.loadAreasOptions();
@@ -151,6 +153,26 @@ export class EntitiesOfflineService {
     }
   }
 
+  async getMantenimientosLocal(): Promise<Mantenimiento[]> {
+    const result = await this.sqlite.query(`SELECT payload, id FROM mantenimiento WHERE enviado = 0`);
+
+    if (!result?.values?.length) {
+      return [];
+    }
+
+    return result.values.map(row => this.mapPayloadToMantenimiento(row.payload, row.id));
+  }
+
+  async getInspeccionesLocal(): Promise<Inspeccion[]> {
+    const result = await this.sqlite.query(`SELECT payload, id FROM mantenimiento WHERE enviado = 0`);
+
+    if (!result?.values?.length) {
+      return [];
+    }
+
+    return result.values.map(row => this.mapPayloadToInspeccion(row.payload, row.id));
+  }
+
   loadFaenasOptions(): void {
     this.faenaService.query().subscribe(data => (this.faenas = data.body ?? []));
   }
@@ -204,6 +226,9 @@ export class EntitiesOfflineService {
   getMantenimientos() {
     return this.mantenimientos;
   }
+  getInspecciones() {
+    return this.inspecciones;
+  }
 
   fileFromBase64(base64): File | undefined {
     if (!base64) return undefined;
@@ -214,5 +239,40 @@ export class EntitiesOfflineService {
     const u8arr = new Uint8Array(n);
     while (n--) u8arr[n] = bstr.charCodeAt(n);
     return new File([u8arr], 'image.jpg', { type: mime });
+  }
+
+  private mapPayloadToMantenimiento(payloadRaw: string, idLocal: string): Mantenimiento {
+    const payload = JSON.parse(payloadRaw);
+
+    return new Mantenimiento(
+      payload.id ?? undefined,
+      idLocal,
+      payload.fechaCreacion ?? undefined,
+      payload.condicionPolin ?? undefined,
+      payload.rutaFotoGeneral ?? undefined,
+      payload.rutaFotoDetallePolin ?? undefined,
+      payload.polin ?? undefined,
+      payload.inspeccion ?? undefined,
+      payload.applicationUser ?? undefined,
+    );
+  }
+
+  private mapPayloadToInspeccion(payloadRaw: string, idLocal: string): Inspeccion {
+    const payload = JSON.parse(payloadRaw);
+
+    return new Inspeccion(
+      payload.id ?? undefined,
+      idLocal,
+      payload.fechaCreacion ?? undefined,
+      payload.condicionPolin ?? undefined,
+      payload.criticidad ?? undefined,
+      payload.observacion ?? undefined,
+      payload.comentarios ?? undefined,
+      payload.rutaFotoGeneral ?? undefined,
+      payload.rutaFotoDetallePolin ?? undefined,
+      payload.polin ?? undefined,
+      payload.mantenimientos ?? undefined,
+      payload.applicationUser ?? undefined,
+    );
   }
 }

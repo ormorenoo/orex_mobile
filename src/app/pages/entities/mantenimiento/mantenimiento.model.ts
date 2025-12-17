@@ -12,6 +12,7 @@ export const enum CondicionPolin {
 export class Mantenimiento implements BaseEntity {
   constructor(
     public id?: number,
+    public idLocal?: string,
     public fechaCreacion?: any,
     public condicionPolin?: CondicionPolin,
     public rutaFotoGeneral?: string,
