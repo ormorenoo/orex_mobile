@@ -370,7 +370,7 @@ export class MantenimientoUpdatePage implements OnInit {
     return {
       ...new Mantenimiento(),
       id: this.form.get(['id']).value,
-      fechaCreacion: new Date(this.form.get(['fechaCreacion']).value),
+      fechaCreacion: this.form.get(['fechaCreacion']).value ? new Date(this.form.get(['fechaCreacion']).value) : null,
       condicionPolin: this.form.get(['condicionPolin']).value,
       rutaFotoGeneral: this.form.get(['rutaFotoGeneral']).value,
       rutaFotoDetallePolin: this.form.get(['rutaFotoDetallePolin']).value,

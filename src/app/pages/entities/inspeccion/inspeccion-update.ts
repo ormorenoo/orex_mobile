@@ -376,7 +376,7 @@ export class InspeccionUpdatePage implements OnInit {
     return {
       ...new Inspeccion(),
       id: this.form.get(['id']).value,
-      fechaCreacion: new Date(this.form.get(['fechaCreacion']).value),
+      fechaCreacion: this.form.get(['fechaCreacion']).value ? new Date(this.form.get(['fechaCreacion']).value) : null,
       condicionPolin: this.form.get(['condicionPolin']).value,
       criticidad: this.form.get(['criticidad']).value,
       observacion: this.form.get(['observacion']).value,
