@@ -286,6 +286,10 @@ export class InspeccionUpdatePage implements OnInit {
   async saveOffline(inspeccion) {
     this.isSaving = true;
 
+    if (!inspeccion.fechaCreacion) {
+      inspeccion.fechaCreacion = new Date().toISOString();
+    }
+
     const result = await this.inspeccionOfflineService.saveOffline(inspeccion, this.imagenGeneral, this.imagenDetalle);
 
     if (result.success) {
