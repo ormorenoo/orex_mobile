@@ -32,6 +32,7 @@ export class HomePage implements OnInit {
 
   async sync() {
     this.entititesOffline.loadFaenasOptions();
+    await this.entititesOffline.sincronizarMantenimientos();
     alert('Sincronización completada');
   }
 

@@ -62,6 +62,11 @@ export class EntitiesOfflineService {
     this.loadPolinesOptions();
   }
 
+  async sincronizar() {
+    await this.postMantenimientos();
+    await this.postInspecciones();
+  }
+
   async deletesMantenimientos() {
     const rows = await this.sqlite.query(`SELECT * FROM mantenimiento WHERE enviado = 3`);
     for (const row of rows.values) {
@@ -77,7 +82,7 @@ export class EntitiesOfflineService {
     }
     try {
       // Eliminar los enviados
-      await this.sqlite.run(`DELETE mantenimiento WHERE enviado = 1`);
+      await this.sqlite.run(`DELETE FROM mantenimiento WHERE enviado = 1`);
     } catch (e) {
       console.error('Error al eliminar los mantenimiento locales:', e);
     }
@@ -98,7 +103,7 @@ export class EntitiesOfflineService {
     }
     try {
       // Eliminar los enviados
-      await this.sqlite.run(`DELETE inspeccion WHERE enviado = 1`);
+      await this.sqlite.run(`DELETE FROM inspeccion WHERE enviado = 1`);
     } catch (e) {
       console.error('Error al eliminar los inspeccion locales:', e);
     }
@@ -106,12 +111,23 @@ export class EntitiesOfflineService {
   async postInspecciones() {
     const rows = await this.sqlite.query(`SELECT * FROM inspeccion WHERE enviado = 0`);
     for (const row of rows.values) {
-      const data = JSON.parse(row.payload);
-
+      const payload = JSON.parse(row.payload);
+      const inspeccionRequest = {
+        id: undefined,
+        fechaCreacion: payload.fechaCreacion,
+        condicionPolin: payload.condicionPolin,
+        criticidad: payload.criticidad,
+        observacion: payload.observacion,
+        comentarios: payload.comentarios,
+        rutaFotoGeneral: payload.rutaFotoGeneral,
+        rutaFotoDetallePolin: payload.rutaFotoDetallePolin,
+        polin: payload.polin,
+        applicationUser: payload.applicationUser,
+      };
       try {
         // Enviar al backend
         await this.inspeccionService
-          .create(data, this.fileFromBase64(data.imagenGeneral), this.fileFromBase64(data.imagenDetalle))
+          .create(inspeccionRequest, this.fileFromBase64(payload.imagenGeneral), this.fileFromBase64(payload.imagenDetalle))
           .toPromise();
 
         // Marcar como enviado
@@ -122,7 +138,7 @@ export class EntitiesOfflineService {
     }
     try {
       // Eliminar los enviados
-      await this.sqlite.run(`DELETE inspeccion WHERE enviado = 1`);
+      await this.sqlite.run(`DELETE FROM inspeccion WHERE enviado = 1`);
     } catch (e) {
       console.error('Error al eliminar los inspeccion locales:', e);
     }
@@ -131,12 +147,21 @@ export class EntitiesOfflineService {
   async postMantenimientos() {
     const rows = await this.sqlite.query(`SELECT * FROM mantenimiento WHERE enviado = 0`);
     for (const row of rows.values) {
-      const data = JSON.parse(row.payload);
-
+      const payload = JSON.parse(row.payload);
+      const mantenimientoRequest = {
+        id: undefined,
+        fechaCreacion: payload.fechaCreacion,
+        condicionPolin: payload.condicionPolin,
+        rutaFotoGeneral: payload.rutaFotoGeneral,
+        rutaFotoDetallePolin: payload.rutaFotoDetallePolin,
+        polin: payload.polin,
+        inspeccion: payload.inspeccion,
+        applicationUser: payload.applicationUser,
+      };
       try {
         // Enviar al backend
         await this.mantenimientoService
-          .create(data, this.fileFromBase64(data.imagenGeneral), this.fileFromBase64(data.imagenDetalle))
+          .create(mantenimientoRequest, this.fileFromBase64(payload.imagenGeneral), this.fileFromBase64(payload.imagenDetalle))
           .toPromise();
 
         // Marcar como enviado
@@ -147,7 +172,7 @@ export class EntitiesOfflineService {
     }
     try {
       // Eliminar los enviados
-      await this.sqlite.run(`DELETE mantenimiento WHERE enviado = 1`);
+      await this.sqlite.run(`DELETE FROM mantenimiento WHERE enviado = 1`);
     } catch (e) {
       console.error('Error al eliminar los mantenimientos locales:', e);
     }
