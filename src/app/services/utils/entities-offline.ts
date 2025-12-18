@@ -189,7 +189,7 @@ export class EntitiesOfflineService {
   }
 
   async getInspeccionesLocal(): Promise<Inspeccion[]> {
-    const result = await this.sqlite.query(`SELECT payload, id FROM mantenimiento WHERE enviado = 0`);
+    const result = await this.sqlite.query(`SELECT payload, id FROM inspeccion WHERE enviado = 0`);
 
     if (!result?.values?.length) {
       return [];

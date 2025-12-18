@@ -2,6 +2,8 @@ import { Injectable, isDevMode } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { AccountService } from './account.service';
+import { OfflineSessionService } from '../offline/offline-session.service';
+import { NetworkService } from '../utils/network.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,18 +12,23 @@ export class UserRouteAccessService implements CanActivate {
   constructor(
     private router: Router,
     private navController: NavController,
-    private accountService: AccountService, // private stateStorageService: StateStorageService
+    private accountService: AccountService,
+    private offlineSessionService: OfflineSessionService,
+    private networkService: NetworkService,
   ) {}
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Promise<boolean> {
+  async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     const authorities = route.data.authorities;
-    // We need to call the checkLogin / and so the accountService.identity() function, to ensure,
-    // that the client has a principal too, if they already logged in by the server.
-    // This could happen on a page refresh.
-    return this.checkLogin(authorities, state.url);
+    const online = await this.networkService.isOnline();
+
+    if (!online) {
+      return this.checkOfflineAccess(authorities);
+    }
+
+    return this.checkOnlineAccess(authorities, state.url);
   }
 
-  checkLogin(authorities: string[], url: string): Promise<boolean> {
+  private checkOnlineAccess(authorities: string[], url: string): Promise<boolean> {
     return this.accountService.identity().then(account => {
       if (!authorities || authorities.length === 0) {
         return true;
@@ -38,17 +45,18 @@ export class UserRouteAccessService implements CanActivate {
         return false;
       }
 
-      // this.stateStorageService.storeUrl(url);
-      // this.router.navigate(['accessdenied']).then(() => {
-      //     // only show the login dialog, if the user hasn't logged in yet
-      //     if (!account) {
-      //         // this.loginModalService.open();
-      //         console.log('go to login page');
-      //     }
-      // });
       this.navController.navigateRoot('/accessdenied');
-
       return false;
     });
+  }
+
+  private async checkOfflineAccess(authorities: string[]): Promise<boolean> {
+    const hasOfflineSession = await this.offlineSessionService.exists();
+
+    if (!hasOfflineSession) {
+      this.navController.navigateRoot('/login');
+      return false;
+    }
+    return true;
   }
 }
