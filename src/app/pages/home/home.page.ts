@@ -4,6 +4,7 @@ import { Account } from 'src/model/account.model';
 import { AccountService } from '#app/services/auth/account.service';
 import { LoginService } from '#app/services/login/login.service';
 import { EntitiesOfflineService } from '#app/services/utils/entities-offline';
+import { NetworkService } from '#app/services/utils/network.service';
 
 @Component({
   selector: 'app-home',
@@ -18,16 +19,17 @@ export class HomePage implements OnInit {
     private accountService: AccountService,
     private loginService: LoginService,
     private entititesOffline: EntitiesOfflineService,
+    private networkService: NetworkService,
   ) {}
 
-  ngOnInit() {
-    this.accountService.identity().then(account => {
-      if (account === null) {
-        this.goBackToHomePage();
-      } else {
-        this.account = account;
-      }
-    });
+  async ngOnInit() {
+    const online = await this.networkService.isOnline();
+
+    if (online) {
+      this.account = await this.accountService.identity();
+    } else {
+      this.account = null;
+    }
   }
 
   async sync() {

@@ -30,10 +30,10 @@ export class WelcomePage implements OnInit {
     const offlineSession = await this.offlineSessionService.load();
 
     if (!online && offlineSession) {
-      return;
+      this.navController.navigateRoot('/tabs');
     }
 
-    if (!online && !offlineSession) {
+    if (online) {
       this.navController.navigateRoot('/login');
     }
   }
