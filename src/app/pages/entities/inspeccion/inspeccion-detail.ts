@@ -3,7 +3,7 @@ import { AlertController, IonModal, NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { Inspeccion } from './inspeccion.model';
 import { InspeccionService } from './inspeccion.service';
-import { InspeccionOfflineService } from './inspeccion-offline-service';
+import { InspeccionOfflineSaveService } from './inspeccion-offline-save-service';
 import { NetworkService } from '#app/services/utils/network.service';
 
 @Component({
@@ -24,7 +24,7 @@ export class InspeccionDetailPage implements OnInit {
     private activatedRoute: ActivatedRoute,
     private alertController: AlertController,
     private networkService: NetworkService,
-    private inspeccionOffline: InspeccionOfflineService,
+    private inspeccionOffline: InspeccionOfflineSaveService,
   ) {}
 
   ngOnInit(): void {

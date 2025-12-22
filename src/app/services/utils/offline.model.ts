@@ -1,12 +1,7 @@
-export interface OfflineSaveResult {
+export interface SaveResult {
   success: boolean;
-  id?: string;
+  id?: string | number;
+  mode?: 'ONLINE' | 'OFFLINE';
+  message?: string;
   error?: any;
-}
-
-export interface EnityOfflineRecord {
-  idLocal: string;
-  estado: 'PENDIENTE' | 'ERROR' | 'ENVIADO';
-  enviado: boolean;
-  payload: any;
 }

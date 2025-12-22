@@ -5,7 +5,7 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Polin, PolinService } from '../polin';
-import { Inspeccion, InspeccionService } from '../inspeccion';
+import { Inspeccion } from '../inspeccion';
 import { Mantenimiento } from './mantenimiento.model';
 import { MantenimientoService } from './mantenimiento.service';
 import { Area, AreaService } from '../area';
@@ -17,6 +17,7 @@ import { CondicionPolin } from '../enumerations/condicion-polin.model';
 import { NetworkService } from '#app/services/utils/network.service';
 import { MantenimientoOfflineService } from './mantenimiento-offline-service';
 import { EntitiesOfflineService } from '#app/services/utils/entities-offline';
+import { MantenimientoDataService } from './mantenimiento-data.service';
 
 @Component({
   selector: 'page-mantenimiento-update',
@@ -63,7 +64,6 @@ export class MantenimientoUpdatePage implements OnInit {
     public platform: Platform,
     protected toastCtrl: ToastController,
     private polinService: PolinService,
-    private inspeccionService: InspeccionService,
     private mantenimientoService: MantenimientoService,
     private faenaService: FaenaService,
     private areaService: AreaService,
@@ -73,8 +73,8 @@ export class MantenimientoUpdatePage implements OnInit {
     private networkService: NetworkService,
     private mantenimientoOfflineService: MantenimientoOfflineService,
     private entitiesOfflineService: EntitiesOfflineService,
+    private manteminientoDataService: MantenimientoDataService,
   ) {
-    // Watch the form for changes, and
     this.form.valueChanges.subscribe(v => {
       this.isReadyToSave = this.form.valid;
     });
@@ -263,60 +263,41 @@ export class MantenimientoUpdatePage implements OnInit {
 
   async save() {
     this.isSaving = true;
-    const mantenimiento = this.createFromForm();
-    const online = await this.networkService.isOnline();
-    if (online) {
-      if (!this.isNew) {
-        this.subscribeToSaveResponse(this.mantenimientoService.update(mantenimiento));
-      } else {
-        this.subscribeToSaveResponse(this.mantenimientoService.create(mantenimiento, this.imagenGeneral, this.imagenDetalle));
+
+    const manteminiento = this.createFromForm();
+
+    if (!manteminiento.fechaCreacion) {
+      manteminiento.fechaCreacion = new Date().toISOString();
+    }
+
+    try {
+      const result = await this.manteminientoDataService.save(manteminiento, this.imagenGeneral, this.imagenDetalle);
+
+      this.isSaving = false;
+
+      const toast = await this.toastCtrl.create({
+        message: result.message ?? 'Operación realizada correctamente',
+        duration: 2000,
+        position: 'middle',
+      });
+
+      await toast.present();
+
+      if (result.success) {
+        await this.navController.navigateBack('/tabs/entities/manteminiento');
       }
-    } else {
-      // --- MODO OFFLINE ---
-      await this.saveOffline(mantenimiento);
+    } catch (error) {
+      this.isSaving = false;
+      console.error(error);
+
+      const toast = await this.toastCtrl.create({
+        message: 'Error inesperado al guardar el manteminiento',
+        duration: 2000,
+        position: 'middle',
+      });
+
+      await toast.present();
     }
-  }
-
-  async saveOffline(mantenimiento) {
-    this.isSaving = true;
-
-    if (!mantenimiento.fechaCreacion) {
-      mantenimiento.fechaCreacion = new Date().toISOString();
-    }
-
-    const result = await this.mantenimientoOfflineService.saveOffline(mantenimiento, this.imagenGeneral, this.imagenDetalle);
-
-    if (result.success) {
-      await this.onOfflineSaveSuccess(result.id);
-    } else {
-      await this.onOfflineSaveError(result.error);
-    }
-  }
-
-  async onOfflineSaveSuccess(id: string) {
-    this.isSaving = false;
-
-    const toast = await this.toastCtrl.create({
-      message: 'Mantenimiento guardado offline correctamente.',
-      duration: 2000,
-      position: 'middle',
-    });
-
-    await toast.present();
-    await this.navController.navigateBack('/tabs/entities/mantenimiento');
-  }
-
-  async onOfflineSaveError(error: any) {
-    this.isSaving = false;
-    console.error(error);
-
-    const toast = await this.toastCtrl.create({
-      message: 'Error al guardar el mantenimiento offline.',
-      duration: 2000,
-      position: 'middle',
-    });
-
-    await toast.present();
   }
 
   onFileSelected(event: Event, tipo: 'general' | 'detalle'): void {
@@ -337,33 +318,8 @@ export class MantenimientoUpdatePage implements OnInit {
     }
   }
 
-  async onSaveSuccess(response) {
-    let action = 'updated';
-    if (response.status === 201) {
-      action = 'created';
-    }
-    this.isSaving = false;
-    const toast = await this.toastCtrl.create({ message: `Mantenimiento ${action} successfully.`, duration: 2000, position: 'middle' });
-    await toast.present();
-    await this.navController.navigateBack('/tabs/entities/mantenimiento');
-  }
-
   previousState() {
     window.history.back();
-  }
-
-  async onError(error) {
-    this.isSaving = false;
-    console.error(error);
-    const toast = await this.toastCtrl.create({ message: 'Failed to load data', duration: 2000, position: 'middle' });
-    await toast.present();
-  }
-
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<Mantenimiento>>) {
-    result.subscribe(
-      (res: HttpResponse<Mantenimiento>) => this.onSaveSuccess(res),
-      (res: HttpErrorResponse) => this.onError(res.error),
-    );
   }
 
   private createFromForm(): Mantenimiento {
