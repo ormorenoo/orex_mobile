@@ -1,14 +1,11 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { UntypedFormBuilder as FormBuilder } from '@angular/forms';
 import { NavController, Platform, ToastController } from '@ionic/angular';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
 import { Polin, PolinService } from '../polin';
 import { Inspeccion } from './inspeccion.model';
-import { InspeccionService } from './inspeccion.service';
 import { Estacion, EstacionService } from '../estacion';
-import { Faena, FaenaService } from '../faena';
+import { Faena } from '../faena';
 import { Area, AreaService } from '../area';
 import { CorreaTransportadora, CorreaTransportadoraService } from '../correa-transportadora';
 import { MesaTrabajo, MesaTrabajoService } from '../mesa-trabajo';
@@ -17,7 +14,8 @@ import { CondicionPolin } from '../enumerations/condicion-polin.model';
 import { Observacion } from '../enumerations/observacion.model';
 import { NetworkService } from '#app/services/utils/network.service';
 import { EntitiesOfflineService } from '#app/services/utils/entities-offline';
-import { InspeccionOfflineService } from './inspeccion-offline-service';
+import { FaenaDataService } from '../faena/faena-data.service';
+import { InspeccionDataService } from './inspeccion-data.service';
 
 @Component({
   selector: 'page-inspeccion-update',
@@ -69,15 +67,14 @@ export class InspeccionUpdatePage implements OnInit {
     public platform: Platform,
     protected toastCtrl: ToastController,
     private polinService: PolinService,
-    private faenaService: FaenaService,
-    private inspeccionService: InspeccionService,
+    private faenaDataService: FaenaDataService,
+    private inspeccionDataService: InspeccionDataService,
     private areaService: AreaService,
     private correaTransportadoraService: CorreaTransportadoraService,
     private mesaTrabajoService: MesaTrabajoService,
     private estacionService: EstacionService,
     private networkService: NetworkService,
     private entitiesOfflineService: EntitiesOfflineService,
-    private inspeccionOfflineService: InspeccionOfflineService,
   ) {
     this.form.valueChanges.subscribe(v => {
       this.isReadyToSave = this.form.valid;
@@ -94,12 +91,7 @@ export class InspeccionUpdatePage implements OnInit {
   }
 
   async loadFaenasOptions(): Promise<void> {
-    const online = await this.networkService.isOnline();
-    if (online) {
-      this.faenaService.query().subscribe(data => (this.faenas = data.body ?? []));
-    } else {
-      this.faenas = this.entitiesOfflineService.getFaenas();
-    }
+    this.faenas = await this.faenaDataService.getAll();
     if (this.form.get(['faena']).value) {
       this.loadAreasOptions(this.form.get(['faena']).value);
     }
@@ -269,71 +261,41 @@ export class InspeccionUpdatePage implements OnInit {
 
   async save() {
     this.isSaving = true;
-    const inspeccion = this.createFromForm();
-    const online = await this.networkService.isOnline();
-    if (online) {
-      if (!this.isNew) {
-        this.subscribeToSaveResponse(this.inspeccionService.update(inspeccion));
-      } else {
-        this.subscribeToSaveResponse(this.inspeccionService.create(inspeccion, this.imagenGeneral, this.imagenDetalle));
-      }
-    } else {
-      // --- MODO OFFLINE ---
-      this.saveOffline(inspeccion);
-    }
-  }
 
-  async saveOffline(inspeccion) {
-    this.isSaving = true;
+    const inspeccion = this.createFromForm();
 
     if (!inspeccion.fechaCreacion) {
       inspeccion.fechaCreacion = new Date().toISOString();
     }
 
-    const result = await this.inspeccionOfflineService.saveOffline(inspeccion, this.imagenGeneral, this.imagenDetalle);
+    try {
+      const result = await this.inspeccionDataService.save(inspeccion, this.imagenGeneral, this.imagenDetalle);
 
-    if (result.success) {
-      await this.onOfflineSaveSuccess(result.id);
-    } else {
-      await this.onOfflineSaveError(result.error);
+      this.isSaving = false;
+
+      const toast = await this.toastCtrl.create({
+        message: result.message ?? 'Operación realizada correctamente',
+        duration: 2000,
+        position: 'middle',
+      });
+
+      await toast.present();
+
+      if (result.success) {
+        await this.navController.navigateBack('/tabs/entities/inspeccion');
+      }
+    } catch (error) {
+      this.isSaving = false;
+      console.error(error);
+
+      const toast = await this.toastCtrl.create({
+        message: 'Error inesperado al guardar la inspección',
+        duration: 2000,
+        position: 'middle',
+      });
+
+      await toast.present();
     }
-  }
-
-  async onOfflineSaveSuccess(id: string) {
-    this.isSaving = false;
-
-    const toast = await this.toastCtrl.create({
-      message: 'Inspección guardada offline correctamente.',
-      duration: 2000,
-      position: 'middle',
-    });
-
-    await toast.present();
-    await this.navController.navigateBack('/tabs/entities/inspeccion');
-  }
-
-  async onOfflineSaveError(error: any) {
-    this.isSaving = false;
-    console.error(error);
-
-    const toast = await this.toastCtrl.create({
-      message: 'Error al guardar la inspección offline.',
-      duration: 2000,
-      position: 'middle',
-    });
-
-    await toast.present();
-  }
-
-  async onSaveSuccess(response) {
-    let action = 'updated';
-    if (response.status === 201) {
-      action = 'created';
-    }
-    this.isSaving = false;
-    const toast = await this.toastCtrl.create({ message: `Inspeccion ${action} successfully.`, duration: 2000, position: 'middle' });
-    await toast.present();
-    await this.navController.navigateBack('/tabs/entities/inspeccion');
   }
 
   previousState() {
@@ -356,20 +318,6 @@ export class InspeccionUpdatePage implements OnInit {
         this.imagenDetalle = file;
       }
     }
-  }
-
-  async onError(error) {
-    this.isSaving = false;
-    console.error(error);
-    const toast = await this.toastCtrl.create({ message: 'Failed to load data', duration: 2000, position: 'middle' });
-    await toast.present();
-  }
-
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<Inspeccion>>) {
-    result.subscribe(
-      (res: HttpResponse<Inspeccion>) => this.onSaveSuccess(res),
-      (res: HttpErrorResponse) => this.onError(res.error),
-    );
   }
 
   private createFromForm(): Inspeccion {

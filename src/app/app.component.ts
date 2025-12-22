@@ -4,7 +4,7 @@ import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { Platform } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
-import { SqliteService } from './services/utils/sqlite.service';
+import { SqliteService } from './services/sqlite/sqlite.service';
 
 @Component({
   selector: 'app-root',

@@ -1,5 +1,5 @@
-import { OfflineSaveResult } from '#app/services/utils/offline.model';
-import { SqliteService } from '#app/services/utils/sqlite.service';
+import { SaveResult } from '#app/services/utils/offline.model';
+import { SqliteService } from '#app/services/sqlite/sqlite.service';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 export class MantenimientoOfflineService {
   constructor(private sqlite: SqliteService) {}
 
-  async saveOffline(mantenimiento: any, imagenGeneral?: File, imagenDetalle?: File): Promise<OfflineSaveResult> {
+  async saveOffline(mantenimiento: any, imagenGeneral?: File, imagenDetalle?: File): Promise<SaveResult> {
     try {
       const idTemp = crypto.randomUUID();
       const imgGeneral64 = imagenGeneral ? await this.toBase64(imagenGeneral) : null;

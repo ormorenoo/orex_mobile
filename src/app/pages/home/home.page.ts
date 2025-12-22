@@ -5,6 +5,8 @@ import { AccountService } from '#app/services/auth/account.service';
 import { LoginService } from '#app/services/login/login.service';
 import { EntitiesOfflineService } from '#app/services/utils/entities-offline';
 import { NetworkService } from '#app/services/utils/network.service';
+import { FaenaOfflineRepository } from '#app/repositories/faena-offline.repository';
+import { OfflineSyncService } from '#app/services/offline/offline-sync.service';
 
 @Component({
   selector: 'app-home',
@@ -20,6 +22,7 @@ export class HomePage implements OnInit {
     private loginService: LoginService,
     private entititesOffline: EntitiesOfflineService,
     private networkService: NetworkService,
+    private offlineSyncService: OfflineSyncService,
   ) {}
 
   async ngOnInit() {
@@ -33,8 +36,7 @@ export class HomePage implements OnInit {
   }
 
   async sync() {
-    this.entititesOffline.loadFaenasOptions();
-    await this.entititesOffline.sincronizar();
+    await this.offlineSyncService.syncAll();
     alert('Sincronización completada');
   }
 

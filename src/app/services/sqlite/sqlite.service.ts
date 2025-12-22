@@ -15,12 +15,10 @@ export class SqliteService {
   async init() {
     this.sqliteConnection = new SQLiteConnection(CapacitorSQLite);
 
-    // Abrir o crear DB
     this.db = await this.sqliteConnection.createConnection('localdb', false, 'no-encryption', 1, false);
 
     await this.db.open();
 
-    // Aquí creas tus tablas
     await this.createTables();
   }
 
@@ -51,19 +49,25 @@ export class SqliteService {
       );
     `;
 
+    const createFaenaTable = `
+      CREATE TABLE IF NOT EXISTS faena (
+        id INTEGER PRIMARY KEY,
+        nombre TEXT NOT NULL
+      );
+    `;
+
     await this.db.execute(createMantenimientoTable);
     await this.db.execute(createInspeccionTable);
     await this.db.execute(createQueueTable);
+    await this.db.execute(createFaenaTable);
 
     console.log('Tablas creadas/existentes OK');
   }
 
-  // Metodo para ejecutar INSERT/UPDATE/DELETE
   async run(query: string, params: any[] = []) {
     return this.db.run(query, params);
   }
 
-  // Método para SELECT
   async query(query: string, params: any[] = []) {
     return this.db.query(query, params);
   }

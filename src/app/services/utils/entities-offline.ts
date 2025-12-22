@@ -14,10 +14,8 @@ import { MesaTrabajoService } from '#app/pages/entities/mesa-trabajo/mesa-trabaj
 import { Polin } from '#app/pages/entities/polin/polin.model';
 import { PolinService } from '#app/pages/entities/polin/polin.service';
 import { Injectable } from '@angular/core';
-import { SqliteService } from './sqlite.service';
+import { SqliteService } from '../sqlite/sqlite.service';
 import { Inspeccion } from '#app/pages/entities/inspeccion';
-import { EnityOfflineRecord } from './offline.model';
-
 @Injectable({
   providedIn: 'root',
 })
