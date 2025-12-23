@@ -59,9 +59,6 @@ export class MesaTrabajoUpdatePage implements OnInit {
     this.form.patchValue({
       id: mesaTrabajo.id,
       identificador: mesaTrabajo.identificador,
-      descripcion: mesaTrabajo.descripcion,
-      tipo: mesaTrabajo.tipo,
-      correaTransportadoraId: mesaTrabajo.correaTransportadoraId,
     });
   }
 
@@ -117,9 +114,6 @@ export class MesaTrabajoUpdatePage implements OnInit {
       ...new MesaTrabajo(),
       id: this.form.get(['id']).value,
       identificador: this.form.get(['identificador']).value,
-      descripcion: this.form.get(['descripcion']).value,
-      tipo: this.form.get(['tipo']).value,
-      correaTransportadoraId: this.form.get(['correaTransportadoraId']).value,
     };
   }
 }

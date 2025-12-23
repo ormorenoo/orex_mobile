@@ -2,20 +2,23 @@ import { Component, OnInit, inject } from '@angular/core';
 import { UntypedFormBuilder as FormBuilder } from '@angular/forms';
 import { NavController, Platform, ToastController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
-import { Polin, PolinService } from '../polin';
+import { Polin } from '../polin';
 import { Inspeccion } from './inspeccion.model';
-import { Estacion, EstacionService } from '../estacion';
+import { Estacion } from '../estacion';
 import { Faena } from '../faena';
-import { Area, AreaService } from '../area';
-import { CorreaTransportadora, CorreaTransportadoraService } from '../correa-transportadora';
-import { MesaTrabajo, MesaTrabajoService } from '../mesa-trabajo';
+import { Area } from '../area';
+import { CorreaTransportadora } from '../correa-transportadora';
+import { MesaTrabajo } from '../mesa-trabajo';
 import { Criticidad } from '../enumerations/criticidad.model';
 import { CondicionPolin } from '../enumerations/condicion-polin.model';
 import { Observacion } from '../enumerations/observacion.model';
-import { NetworkService } from '#app/services/utils/network.service';
-import { EntitiesOfflineService } from '#app/services/utils/entities-offline';
 import { FaenaDataService } from '../faena/faena-data.service';
 import { InspeccionDataService } from './inspeccion-data.service';
+import { AreaFaenaDataService } from '../area-faena/area-faena-data.service';
+import { CorreaTransportadoraDataService } from '../correa-transportadora/correa-transportadora-data.service';
+import { MesaTrabajoDataService } from '../mesa-trabajo/mesa-trabajo-data.service';
+import { EstacionDataService } from '../estacion/estacion-data.service';
+import { PolinDataService } from '../polin/polin-data.service';
 
 @Component({
   selector: 'page-inspeccion-update',
@@ -66,15 +69,13 @@ export class InspeccionUpdatePage implements OnInit {
     protected navController: NavController,
     public platform: Platform,
     protected toastCtrl: ToastController,
-    private polinService: PolinService,
+    private polinDataService: PolinDataService,
     private faenaDataService: FaenaDataService,
     private inspeccionDataService: InspeccionDataService,
-    private areaService: AreaService,
-    private correaTransportadoraService: CorreaTransportadoraService,
-    private mesaTrabajoService: MesaTrabajoService,
-    private estacionService: EstacionService,
-    private networkService: NetworkService,
-    private entitiesOfflineService: EntitiesOfflineService,
+    private areaFaenaDataService: AreaFaenaDataService,
+    private correaTransportadoraDataService: CorreaTransportadoraDataService,
+    private mesaTrabajoDataService: MesaTrabajoDataService,
+    private estacionDataService: EstacionDataService,
   ) {
     this.form.valueChanges.subscribe(v => {
       this.isReadyToSave = this.form.valid;
@@ -98,102 +99,45 @@ export class InspeccionUpdatePage implements OnInit {
   }
 
   async loadAreasOptions(faena: Faena | null): Promise<void> {
-    const online = await this.networkService.isOnline();
     if (faena?.id) {
-      if (online) {
-        this.areaService.findByFaenaId(faena.id).subscribe(data => {
-          this.areas = data.body ?? [];
-          if (this.form.get(['area']).value && this.form.get(['faena']).value) {
-            this.loadCorreasTransportadorasOptions(this.form.get(['area']).value, this.form.get(['faena']).value);
-          }
-        });
-      } else {
-        this.areas = this.findAreasOffline(faena.id);
+      this.areas = await this.areaFaenaDataService.findAreasByFaenaId(faena.id);
+      if (this.form.get(['area']).value && this.form.get(['faena']).value) {
+        this.loadCorreasTransportadorasOptions(this.form.get(['area']).value, this.form.get(['faena']).value);
       }
     }
-  }
-
-  findAreasOffline(faenaId: number): Area[] {
-    var areasTemp = this.entitiesOfflineService.getAreas();
-    return areasTemp.filter(area => area.faenas?.some(f => f.id === faenaId));
   }
 
   async loadCorreasTransportadorasOptions(area: Area | null, faena: Faena | null): Promise<void> {
-    const online = await this.networkService.isOnline();
     if (area?.id && faena?.id) {
-      if (online) {
-        this.correaTransportadoraService.findByAreaIdAndFaenaId(area.id, faena.id).subscribe(data => {
-          this.correas = data.body ?? [];
-          if (this.form.get(['correa']).value) {
-            this.loadMesasTrabajoOptions(this.form.get(['correa']).value);
-          }
-        });
-      } else {
-        this.correas = this.findCorreasOffline(faena.id, area.id);
+      this.correas = await this.correaTransportadoraDataService.findCorreaByAreaIdAndFaenaId(area.id, faena.id);
+      if (this.form.get(['correa']).value) {
+        this.loadMesasTrabajoOptions(this.form.get(['correa']).value);
       }
     }
-  }
-
-  findCorreasOffline(faenaId: number, areaId: number): CorreaTransportadora[] {
-    const correasTemp = this.entitiesOfflineService.getCorreas() ?? [];
-    return correasTemp.filter(correa => correa.areaFaena && correa.areaFaena.faena?.id === faenaId && correa.areaFaena.area?.id === areaId);
   }
 
   async loadMesasTrabajoOptions(correa: CorreaTransportadora | null): Promise<void> {
-    const online = await this.networkService.isOnline();
     if (correa?.id) {
-      if (online) {
-        this.mesaTrabajoService.findByCorreaId(correa.id).subscribe(data => {
-          this.mesas = data.body ?? [];
-          if (this.form.get(['mesa']).value) {
-            this.loadEstacionesOptions(this.form.get(['mesa']).value);
-          }
-        });
-      } else {
-        this.mesas = this.findMesasOffline(correa.id);
+      this.mesas = await this.mesaTrabajoDataService.findByCorreaId(correa.id);
+      if (this.form.get(['mesa']).value) {
+        this.loadEstacionesOptions(this.form.get(['mesa']).value);
       }
     }
-  }
-
-  findMesasOffline(correaId: number): MesaTrabajo[] {
-    var mesasTemp = this.entitiesOfflineService.getMesas();
-    return mesasTemp.filter(mesa => mesa.correaTransportadora.id === correaId);
   }
 
   async loadEstacionesOptions(mesa: MesaTrabajo | null): Promise<void> {
-    const online = await this.networkService.isOnline();
     if (mesa?.id) {
-      if (online) {
-        this.estacionService.findByMesaId(mesa.id).subscribe(data => {
-          this.estaciones = data.body ?? [];
-          if (this.form.get(['estacion']).value) {
-            this.loadPolinesOptions(this.form.get(['estacion']).value);
-          }
-        });
-      } else {
-        this.estaciones = this.findEstacionesOffline(mesa.id);
+      this.estaciones = await this.estacionDataService.findByMesaId(mesa.id);
+      if (this.form.get(['estacion']).value) {
+        this.loadPolinesOptions(this.form.get(['estacion']).value);
       }
     }
-  }
-
-  findEstacionesOffline(id: number): Estacion[] {
-    var estacionesTemp = this.entitiesOfflineService.getEstaciones();
-    return estacionesTemp.filter(mesa => mesa.mesaTrabajo.id === id);
   }
 
   async loadPolinesOptions(estacion: Estacion | null): Promise<void> {
-    const online = await this.networkService.isOnline();
     if (estacion?.id) {
-      if (online) {
-        this.polinService.findByEstacionId(estacion.id).subscribe(data => (this.polins = data.body ?? []));
-      } else {
-        this.polins = this.findPolinesOffline(estacion.id);
-      }
+      this.polins = await this.polinDataService.findByEstacionId(estacion.id);
     }
-  }
-  findPolinesOffline(id: number): Polin[] {
-    var polinesTemp = this.entitiesOfflineService.getPolins();
-    return polinesTemp.filter(mesa => mesa.estacion.id === id);
   }
 
   compareFaena(first: Faena, second: Faena): boolean {

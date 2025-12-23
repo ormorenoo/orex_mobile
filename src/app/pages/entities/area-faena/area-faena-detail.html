@@ -15,22 +15,6 @@
         <span id="id-content">{{ areaFaena.id }}</span>
       </div>
     </ion-item>
-    <ion-item>
-      <ion-label>Area</ion-label>
-      @if (areaFaena.areaId) {
-        <div item-content>
-          <a>{{ areaFaena.areaundefined }}</a>
-        </div>
-      }
-    </ion-item>
-    <ion-item>
-      <ion-label>Faena</ion-label>
-      @if (areaFaena.faenaId) {
-        <div item-content>
-          <a>{{ areaFaena.faenaundefined }}</a>
-        </div>
-      }
-    </ion-item>
   </ion-list>
 
   <ion-button expand="block" color="primary" (click)="open(areaFaena)">{{ 'EDIT_BUTTON' | translate }}</ion-button>

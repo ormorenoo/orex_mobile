@@ -85,7 +85,7 @@ export class InspeccionDetailPage implements OnInit {
                 this.navController.navigateForward('/tabs/entities/inspeccion');
               });
             } else {
-              await this.inspeccionOffline.deleteOffline(item.id);
+              await this.inspeccionOffline.deleteOffline(item.idLocal);
             }
           },
         },

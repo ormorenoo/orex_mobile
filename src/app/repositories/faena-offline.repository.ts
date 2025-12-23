@@ -7,8 +7,6 @@ export class FaenaOfflineRepository {
   constructor(private sqlite: SqliteService) {}
 
   async replaceAll(faenas: Faena[]): Promise<void> {
-    await this.sqlite.run('DELETE FROM faena');
-
     for (const faena of faenas) {
       await this.sqlite.run(`INSERT INTO faena (id, nombre) VALUES (?, ?)`, [faena.id, faena.nombre]);
     }

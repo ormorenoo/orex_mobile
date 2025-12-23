@@ -65,8 +65,6 @@ export class AreaFaenaUpdatePage implements OnInit {
   updateForm(areaFaena: AreaFaena) {
     this.form.patchValue({
       id: areaFaena.id,
-      areaId: areaFaena.areaId,
-      faenaId: areaFaena.faenaId,
     });
   }
 
@@ -128,8 +126,6 @@ export class AreaFaenaUpdatePage implements OnInit {
     return {
       ...new AreaFaena(),
       id: this.form.get(['id']).value,
-      areaId: this.form.get(['areaId']).value,
-      faenaId: this.form.get(['faenaId']).value,
     };
   }
 }

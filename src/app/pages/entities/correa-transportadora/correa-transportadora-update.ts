@@ -58,8 +58,6 @@ export class CorreaTransportadoraUpdatePage implements OnInit {
     this.form.patchValue({
       id: correaTransportadora.id,
       tagId: correaTransportadora.tagId,
-      descripcion: correaTransportadora.descripcion,
-      areaFaenaId: correaTransportadora.areaFaenaId,
     });
   }
 
@@ -119,8 +117,6 @@ export class CorreaTransportadoraUpdatePage implements OnInit {
       ...new CorreaTransportadora(),
       id: this.form.get(['id']).value,
       tagId: this.form.get(['tagId']).value,
-      descripcion: this.form.get(['descripcion']).value,
-      areaFaenaId: this.form.get(['areaFaenaId']).value,
     };
   }
 }

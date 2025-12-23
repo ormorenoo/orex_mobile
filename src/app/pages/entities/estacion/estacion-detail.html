@@ -21,38 +21,6 @@
         <span id="identificador-content">{{ estacion.identificador }}</span>
       </div>
     </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Descripcion</ion-label>
-      <div item-content>
-        <span id="descripcion-content">{{ estacion.descripcion }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Tipo Estacion</ion-label>
-      <div item-content>
-        <span id="tipoEstacion-content">{{ estacion.tipoEstacion }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Tipo Estacion Polin</ion-label>
-      <div item-content>
-        <span id="tipoEstacionPolin-content">{{ estacion.tipoEstacionPolin }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Estado</ion-label>
-      <div item-content>
-        <span id="estado-content">{{ estacion.estado }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label>Mesa Trabajo</ion-label>
-      @if (estacion.mesaTrabajoId) {
-        <div item-content>
-          <a>{{ estacion.mesaTrabajoundefined }}</a>
-        </div>
-      }
-    </ion-item>
   </ion-list>
 
   <ion-button expand="block" color="primary" (click)="open(estacion)">{{ 'EDIT_BUTTON' | translate }}</ion-button>
