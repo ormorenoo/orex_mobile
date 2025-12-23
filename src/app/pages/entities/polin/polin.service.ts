@@ -23,9 +23,8 @@ export class PolinService {
     return this.http.get(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  query(req?: any): Observable<HttpResponse<Polin[]>> {
-    const options = createRequestOption(req);
-    return this.http.get<Polin[]>(this.resourceUrl, { params: options, observe: 'response' });
+  query(): Observable<HttpResponse<Polin[]>> {
+    return this.http.get<Polin[]>(`${this.resourceUrl}-no-page`, { observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<any>> {

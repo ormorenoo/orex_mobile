@@ -23,9 +23,8 @@ export class CorreaTransportadoraService {
     return this.http.get(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  query(req?: any): Observable<HttpResponse<CorreaTransportadora[]>> {
-    const options = createRequestOption(req);
-    return this.http.get<CorreaTransportadora[]>(this.resourceUrl, { params: options, observe: 'response' });
+  query(): Observable<HttpResponse<CorreaTransportadora[]>> {
+    return this.http.get<CorreaTransportadora[]>(`${this.resourceUrl}-no-page`, { observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<any>> {

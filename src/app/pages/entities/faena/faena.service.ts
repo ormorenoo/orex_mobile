@@ -23,9 +23,8 @@ export class FaenaService {
     return this.http.get(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  query(req?: any): Observable<HttpResponse<Faena[]>> {
-    const options = createRequestOption(req);
-    return this.http.get<Faena[]>(this.resourceUrl, { params: options, observe: 'response' });
+  query(): Observable<HttpResponse<Faena[]>> {
+    return this.http.get<Faena[]>(`${this.resourceUrl}-no-page`, { observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<any>> {

@@ -54,6 +54,10 @@ export class InspeccionOfflineRepository {
     return this.mapPayloadToInspeccion(result.values[0].payload, result.values[1].id);
   }
 
+  async deleteById(idLocal: string): Promise<void> {
+    await this.sqlite.run(`DELETE FROM inspeccion WHERE id = ?`, [idLocal]);
+  }
+
   private mapPayloadToInspeccion(payloadRaw: string, idLocal: string): Inspeccion {
     const payload = JSON.parse(payloadRaw);
 
