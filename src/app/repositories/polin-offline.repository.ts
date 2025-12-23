@@ -18,7 +18,7 @@ export class PolinOfflineRepository {
   async findByEstacionId(idEstacion: number): Promise<Polin[]> {
     const result = await this.sqlite.query(
       `
-    SELECT e.id, e.identificador, descripcion, tipo_polin, estado
+    SELECT p.id, p.identificador, p.descripcion, p.tipo_polin, p.estado
     FROM polin p
     JOIN estacion e ON e.id = p.estacion_id
     WHERE p.estacion_id = ?
