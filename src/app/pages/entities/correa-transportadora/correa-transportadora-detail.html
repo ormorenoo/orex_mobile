@@ -21,20 +21,6 @@
         <span id="tagId-content">{{ correaTransportadora.tagId }}</span>
       </div>
     </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Descripcion</ion-label>
-      <div item-content>
-        <span id="descripcion-content">{{ correaTransportadora.descripcion }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label>Area Faena</ion-label>
-      @if (correaTransportadora.areaFaenaId) {
-        <div item-content>
-          <a>{{ correaTransportadora.areaFaenaundefined }}</a>
-        </div>
-      }
-    </ion-item>
   </ion-list>
 
   <ion-button expand="block" color="primary" (click)="open(correaTransportadora)">{{ 'EDIT_BUTTON' | translate }}</ion-button>

@@ -21,26 +21,6 @@
         <span id="identificador-content">{{ mesaTrabajo.identificador }}</span>
       </div>
     </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Descripcion</ion-label>
-      <div item-content>
-        <span id="descripcion-content">{{ mesaTrabajo.descripcion }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Tipo</ion-label>
-      <div item-content>
-        <span id="tipo-content">{{ mesaTrabajo.tipo }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label>Correa Transportadora</ion-label>
-      @if (mesaTrabajo.correaTransportadoraId) {
-        <div item-content>
-          <a>{{ mesaTrabajo.correaTransportadoraundefined }}</a>
-        </div>
-      }
-    </ion-item>
   </ion-list>
 
   <ion-button expand="block" color="primary" (click)="open(mesaTrabajo)">{{ 'EDIT_BUTTON' | translate }}</ion-button>

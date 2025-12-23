@@ -39,14 +39,6 @@
         <span id="estado-content">{{ polin.estado }}</span>
       </div>
     </ion-item>
-    <ion-item>
-      <ion-label>Estacion</ion-label>
-      @if (polin.estacionId) {
-        <div item-content>
-          <a>{{ polin.estacionundefined }}</a>
-        </div>
-      }
-    </ion-item>
   </ion-list>
 
   <ion-button expand="block" color="primary" (click)="open(polin)">{{ 'EDIT_BUTTON' | translate }}</ion-button>

@@ -61,11 +61,6 @@ export class EstacionUpdatePage implements OnInit {
     this.form.patchValue({
       id: estacion.id,
       identificador: estacion.identificador,
-      descripcion: estacion.descripcion,
-      tipoEstacion: estacion.tipoEstacion,
-      tipoEstacionPolin: estacion.tipoEstacionPolin,
-      estado: estacion.estado,
-      mesaTrabajoId: estacion.mesaTrabajoId,
     });
   }
 
@@ -121,11 +116,6 @@ export class EstacionUpdatePage implements OnInit {
       ...new Estacion(),
       id: this.form.get(['id']).value,
       identificador: this.form.get(['identificador']).value,
-      descripcion: this.form.get(['descripcion']).value,
-      tipoEstacion: this.form.get(['tipoEstacion']).value,
-      tipoEstacionPolin: this.form.get(['tipoEstacionPolin']).value,
-      estado: this.form.get(['estado']).value,
-      mesaTrabajoId: this.form.get(['mesaTrabajoId']).value,
     };
   }
 }

@@ -30,13 +30,6 @@ export class Estacion implements BaseEntity {
   constructor(
     public id?: number,
     public identificador?: string,
-    public descripcion?: string,
-    public tipoEstacion?: TipoEstacion,
-    public tipoEstacionPolin?: TipoEstacionPolin,
-    public estado?: Estado,
-    public mesaTrabajoundefined?: string,
-    public mesaTrabajoId?: number,
     public mesaTrabajo?: MesaTrabajo,
-    public polins?: Polin[],
   ) {}
 }

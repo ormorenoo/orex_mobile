@@ -63,7 +63,6 @@ export class PolinUpdatePage implements OnInit {
       descripcion: polin.descripcion,
       tipoPolin: polin.tipoPolin,
       estado: polin.estado,
-      estacionId: polin.estacionId,
     });
   }
 
@@ -122,7 +121,6 @@ export class PolinUpdatePage implements OnInit {
       descripcion: this.form.get(['descripcion']).value,
       tipoPolin: this.form.get(['tipoPolin']).value,
       estado: this.form.get(['estado']).value,
-      estacionId: this.form.get(['estacionId']).value,
     };
   }
 }
