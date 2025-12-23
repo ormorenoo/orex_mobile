@@ -51,8 +51,16 @@ export class InspeccionSyncService {
 
       await this.inspeccionRepository.markAsSent(idLocal);
     } catch (error) {
+      if (this.isInvalidPolinError(error)) {
+        console.warn(`Inspección ${idLocal} eliminada: polín inexistente en servidor`);
+        await this.inspeccionRepository.deleteById(idLocal);
+      }
       console.error('[SYNC][INSPECCION] Error sincronizando', idLocal, error);
     }
+  }
+
+  private isInvalidPolinError(err: any): boolean {
+    return err?.status === 500;
   }
 
   private fileFromBase64(base64?: string): File | undefined {

@@ -1,8 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
-      Hola, {{ account?.firstName }}
-    </ion-title>
+    <ion-title> Hola, {{ account?.firstName }} </ion-title>
 
     <ion-buttons slot="end">
       <ion-button fill="clear" (click)="logout()">
@@ -13,7 +11,6 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-
   <!-- Sección de bienvenida -->
   <div class="welcome-section">
     <h2>Bienvenido</h2>
@@ -59,8 +56,10 @@
       </div>
     </div>
   </div>
-  <div class="quick-actions-secondary">
-      <ion-button style="width: 100%!important" (click)="sync()">Sincronizar</ion-button>
+  <div *ngIf="online" class="quick-actions-secondary">
+    <ion-button style="width: 100% !important" [disabled]="isLoading" (click)="sync()">
+      <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+      <span *ngIf="!isLoading">Sincronizar</span>
+    </ion-button>
   </div>
-
 </ion-content>

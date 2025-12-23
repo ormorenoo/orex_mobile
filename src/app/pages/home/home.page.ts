@@ -3,9 +3,7 @@ import { NavController } from '@ionic/angular';
 import { Account } from 'src/model/account.model';
 import { AccountService } from '#app/services/auth/account.service';
 import { LoginService } from '#app/services/login/login.service';
-import { EntitiesOfflineService } from '#app/services/utils/entities-offline';
 import { NetworkService } from '#app/services/utils/network.service';
-import { FaenaOfflineRepository } from '#app/repositories/faena-offline.repository';
 import { OfflineSyncService } from '#app/services/offline/offline-sync.service';
 
 @Component({
@@ -15,20 +13,21 @@ import { OfflineSyncService } from '#app/services/offline/offline-sync.service';
 })
 export class HomePage implements OnInit {
   account: Account;
+  isLoading = false;
+  online = true;
 
   constructor(
     public navController: NavController,
     private accountService: AccountService,
     private loginService: LoginService,
-    private entititesOffline: EntitiesOfflineService,
     private networkService: NetworkService,
     private offlineSyncService: OfflineSyncService,
   ) {}
 
   async ngOnInit() {
-    const online = await this.networkService.isOnline();
+    this.online = await this.networkService.isOnline();
 
-    if (online) {
+    if (this.online) {
       this.account = await this.accountService.identity();
     } else {
       this.account = null;
@@ -36,7 +35,9 @@ export class HomePage implements OnInit {
   }
 
   async sync() {
+    this.isLoading = true;
     await this.offlineSyncService.syncAll();
+    this.isLoading = false;
     alert('Sincronización completada');
   }
 

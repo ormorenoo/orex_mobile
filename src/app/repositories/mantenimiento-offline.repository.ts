@@ -54,6 +54,10 @@ export class MantenimientoOfflineRepository {
     return this.mapPayloadToMantenimiento(result.values[0].payload, result.values[1].id);
   }
 
+  async deleteById(idLocal: string): Promise<void> {
+    await this.sqlite.run(`DELETE FROM mantenimiento WHERE id = ?`, [idLocal]);
+  }
+
   private mapPayloadToMantenimiento(payloadRaw: string, idLocal: string): Mantenimiento {
     const payload = JSON.parse(payloadRaw);
 

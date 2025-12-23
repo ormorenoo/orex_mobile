@@ -51,8 +51,16 @@ export class MantenimientoSyncService {
 
       await this.mantenimientoRepository.markAsSent(idLocal);
     } catch (error) {
+      if (this.isInvalidPolinError(error)) {
+        console.warn(`Mantenimiento ${idLocal} eliminado: polín inexistente en servidor`);
+        await this.mantenimientoRepository.deleteById(idLocal);
+      }
       console.error('[SYNC][MANTENIMIENTO] Error sincronizando', idLocal, error);
     }
+  }
+
+  private isInvalidPolinError(err: any): boolean {
+    return err?.status === 500;
   }
 
   private fileFromBase64(base64?: string): File | undefined {

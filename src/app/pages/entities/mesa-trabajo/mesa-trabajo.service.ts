@@ -23,9 +23,8 @@ export class MesaTrabajoService {
     return this.http.get(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  query(req?: any): Observable<HttpResponse<MesaTrabajo[]>> {
-    const options = createRequestOption(req);
-    return this.http.get<MesaTrabajo[]>(this.resourceUrl, { params: options, observe: 'response' });
+  query(): Observable<HttpResponse<MesaTrabajo[]>> {
+    return this.http.get<MesaTrabajo[]>(`${this.resourceUrl}-no-page`, { observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<any>> {

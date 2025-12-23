@@ -23,9 +23,8 @@ export class EstacionService {
     return this.http.get(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  query(req?: any): Observable<HttpResponse<Estacion[]>> {
-    const options = createRequestOption(req);
-    return this.http.get<Estacion[]>(this.resourceUrl, { params: options, observe: 'response' });
+  query(): Observable<HttpResponse<Estacion[]>> {
+    return this.http.get<Estacion[]>(`${this.resourceUrl}-no-page`, { observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<any>> {
