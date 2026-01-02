@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "262270254212",
-    "project_id": "orexionic",
-    "storage_bucket": "orexionic.firebasestorage.app"
+    "project_number": "725961864740",
+    "project_id": "orex-5cc1a",
+    "storage_bucket": "orex-5cc1a.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:262270254212:android:cbe32e1385b8100cfc96d1",
+        "mobilesdk_app_id": "1:725961864740:android:89f5303cf64afd6784cab1",
         "android_client_info": {
           "package_name": "io.ionic.starter"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBCNTbo95H6ZLgd9fBdbpben9V4YNQuNk8"
+          "current_key": "AIzaSyAgku8oq5_jgGw_byYN3o-_hyKJGFgF3ZU"
         }
       ],
       "services": {
