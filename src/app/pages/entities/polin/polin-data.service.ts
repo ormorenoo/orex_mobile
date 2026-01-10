@@ -3,6 +3,7 @@ import { NetworkService } from '#app/services/utils/network.service';
 import { PolinOfflineRepository } from '#app/repositories/polin-offline.repository';
 import { PolinService } from './polin.service';
 import { Polin } from '.';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class PolinDataService {
@@ -16,9 +17,8 @@ export class PolinDataService {
     const online = await this.networkService.isOnline();
 
     if (online) {
-      this.polinService.findByEstacionId(idEstacion).subscribe(data => {
-        return data.body ?? [];
-      });
+      const response = await firstValueFrom(this.polinService.findByEstacionId(idEstacion));
+      return response.body ?? [];
     }
 
     return this.polinOfflineRepository.findByEstacionId(idEstacion);

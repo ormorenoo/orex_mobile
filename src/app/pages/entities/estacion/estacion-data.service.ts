@@ -3,6 +3,7 @@ import { NetworkService } from '#app/services/utils/network.service';
 import { EstacionOfflineRepository } from '#app/repositories/estacion-offline.repository';
 import { EstacionService } from './estacion.service';
 import { Estacion } from '.';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class EstacionDataService {
@@ -16,9 +17,8 @@ export class EstacionDataService {
     const online = await this.networkService.isOnline();
 
     if (online) {
-      this.estacionService.findByMesaId(idMesa).subscribe(data => {
-        return data.body ?? [];
-      });
+      const response = await firstValueFrom(this.estacionService.findByMesaId(idMesa));
+      return response.body ?? [];
     }
 
     return this.estacionOfflineRepository.findByMesaId(idMesa);

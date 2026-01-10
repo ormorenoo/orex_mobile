@@ -19,9 +19,9 @@ export class AreaFaenaDataService {
     const online = await this.networkService.isOnline();
 
     if (online) {
-      this.areaService.findByFaenaId(faenaId).subscribe(data => {
-        return data.body ?? [];
-      });
+      const response = await firstValueFrom(this.areaService.findByFaenaId(faenaId));
+
+      return response.body ?? [];
     }
 
     return this.areaFaenaOfflineRepository.findAreaByFaenaId(faenaId);

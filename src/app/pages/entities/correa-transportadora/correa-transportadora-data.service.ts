@@ -3,6 +3,7 @@ import { NetworkService } from '#app/services/utils/network.service';
 import { CorreaTransportadoraOfflineRepository } from '#app/repositories/correa-transportadora-offline.repository';
 import { CorreaTransportadoraService } from './correa-transportadora.service';
 import { CorreaTransportadora } from './correa-transportadora.model';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class CorreaTransportadoraDataService {
@@ -16,9 +17,8 @@ export class CorreaTransportadoraDataService {
     const online = await this.networkService.isOnline();
 
     if (online) {
-      this.correaTransportadora.findByAreaIdAndFaenaId(areaId, faenaId).subscribe(data => {
-        return data.body ?? [];
-      });
+      const response = await firstValueFrom(this.correaTransportadora.findByAreaIdAndFaenaId(areaId, faenaId));
+      return response.body ?? [];
     }
 
     return this.correaTransportadoraOfflineRepository.findCorreaByAreaIdAndFaenaId(areaId, faenaId);

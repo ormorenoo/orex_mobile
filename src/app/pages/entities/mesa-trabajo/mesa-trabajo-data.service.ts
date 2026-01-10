@@ -3,6 +3,7 @@ import { NetworkService } from '#app/services/utils/network.service';
 import { MesaTrabajoOfflineRepository } from '#app/repositories/mesa-trabajo-offline.repository';
 import { MesaTrabajoService } from './mesa-trabajo.service';
 import { MesaTrabajo } from './mesa-trabajo.model';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class MesaTrabajoDataService {
@@ -16,9 +17,8 @@ export class MesaTrabajoDataService {
     const online = await this.networkService.isOnline();
 
     if (online) {
-      this.mesaTrabajoService.findByCorreaId(idCorrea).subscribe(data => {
-        return data.body ?? [];
-      });
+      const response = await firstValueFrom(this.mesaTrabajoService.findByCorreaId(idCorrea));
+      return response.body ?? [];
     }
 
     return this.mesaTrabajoOfflineRepository.findByCorreaId(idCorrea);
