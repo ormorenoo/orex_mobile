@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { UntypedFormBuilder as FormBuilder } from '@angular/forms';
 import { NavController, Platform, ToastController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { Polin } from '../polin';
 import { Inspeccion } from './inspeccion.model';
 import { Estacion } from '../estacion';
@@ -45,6 +46,10 @@ export class InspeccionUpdatePage implements OnInit {
   observacionKeys = Object.keys(Observacion);
   imagenGeneral: File | undefined = undefined;
   imagenDetalle: File | undefined = undefined;
+  previewGeneral?: string;
+  previewDetalle?: string;
+  metodoGeneral: 'camara' | 'archivo' = 'camara';
+  metodoDetalle: 'camara' | 'archivo' = 'camara';
 
   form = inject(FormBuilder).group({
     id: [null, []],
@@ -248,20 +253,56 @@ export class InspeccionUpdatePage implements OnInit {
 
   onFileSelected(event: Event, tipo: 'general' | 'detalle'): void {
     const input = event.target as HTMLInputElement;
+
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
+
       if (!file.type.startsWith('image/')) {
-        alert('Por favor, selecciona un archivo de imagen válido.');
+        alert('Por favor, selecciona una imagen válida.');
         input.value = '';
         return;
       }
 
+      const previewUrl = URL.createObjectURL(file);
+
       if (tipo === 'general') {
         this.imagenGeneral = file;
+        this.previewGeneral = previewUrl;
       } else {
         this.imagenDetalle = file;
+        this.previewDetalle = previewUrl;
       }
     }
+  }
+
+  async takePhoto(tipo: 'general' | 'detalle') {
+    const photo = await Camera.getPhoto({
+      quality: 70,
+      allowEditing: false,
+      resultType: CameraResultType.Uri,
+      source: CameraSource.Camera,
+    });
+
+    const file = await this.uriToFile(photo.webPath, `foto-${tipo}.jpg`);
+    const previewUrl = URL.createObjectURL(file);
+
+    if (tipo === 'general') {
+      this.imagenGeneral = file;
+      this.previewGeneral = previewUrl;
+    } else {
+      this.imagenDetalle = file;
+      this.previewDetalle = previewUrl;
+    }
+  }
+
+  onMetodoGeneralChange(event: CustomEvent) {
+    const value = event.detail.value as 'camara' | 'archivo';
+    this.metodoGeneral = value;
+  }
+
+  onMetodoDetalleChange(event: CustomEvent) {
+    const value = event.detail.value as 'camara' | 'archivo';
+    this.metodoDetalle = value;
   }
 
   private createFromForm(): Inspeccion {
@@ -278,5 +319,11 @@ export class InspeccionUpdatePage implements OnInit {
       polin: this.form.get(['polin']).value,
       applicationUser: this.form.get(['applicationUser']).value,
     };
+  }
+
+  private async uriToFile(uri: string, fileName: string): Promise<File> {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    return new File([blob], fileName, { type: blob.type });
   }
 }

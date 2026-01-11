@@ -39,7 +39,7 @@ export class MantenimientoDetailPage implements OnInit {
 
   loadThumbnails(id: number) {
     this.loadImage(id, 'general', 'thumbnailGeneral');
-    this.loadImage(id, 'detallePolin', 'thumbnailDetallePolin');
+    this.loadImage(id, 'detalle', 'thumbnailDetallePolin');
   }
 
   loadImage(id: number, tipo: string, destino: 'thumbnailGeneral' | 'thumbnailDetallePolin') {

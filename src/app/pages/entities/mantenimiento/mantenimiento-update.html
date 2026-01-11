@@ -115,19 +115,43 @@
 
           <ion-item class="form-item">
             <ion-label position="stacked">Imagen General</ion-label>
-            <input type="file" accept="image/*" (change)="onFileSelected($event, 'general')" />
+
+            <ion-segment [value]="metodoGeneral" (ionChange)="onMetodoGeneralChange($event)">
+              <ion-segment-button value="camara"> Cámara </ion-segment-button>
+
+              <ion-segment-button value="archivo"> Subir </ion-segment-button>
+            </ion-segment>
+
+            <ion-button *ngIf="metodoGeneral === 'camara'" expand="block" (click)="takePhoto('general')"> Tomar foto </ion-button>
+
+            <input *ngIf="metodoGeneral === 'archivo'" type="file" accept="image/*" (change)="onFileSelected($event, 'general')" />
+
+            <img *ngIf="previewGeneral" [src]="previewGeneral" class="image-preview" />
           </ion-item>
 
           <ion-item class="form-item">
             <ion-label position="stacked">Imagen Detalle</ion-label>
-            <input type="file" accept="image/*" (change)="onFileSelected($event, 'detalle')" />
+
+            <ion-segment [value]="metodoDetalle" (ionChange)="onMetodoDetalleChange($event)">
+              <ion-segment-button value="camara"> Cámara </ion-segment-button>
+
+              <ion-segment-button value="archivo"> Subir </ion-segment-button>
+            </ion-segment>
+
+            <ion-button *ngIf="metodoDetalle === 'camara'" expand="block" (click)="takePhoto('detalle')"> Tomar foto </ion-button>
+
+            <input *ngIf="metodoDetalle === 'archivo'" type="file" accept="image/*" (change)="onFileSelected($event, 'detalle')" />
+
+            <img *ngIf="previewDetalle" [src]="previewDetalle" class="image-preview" />
           </ion-item>
         }
       </ion-list>
 
       <!-- BOTÓN GUARDAR -->
       <div class="save-container">
-        <ion-button expand="block" shape="round" size="large" [disabled]="!isReadyToSave" (click)="save()"> Guardar Mantenimiento </ion-button>
+        <ion-button expand="block" shape="round" size="large" [disabled]="!isReadyToSave" (click)="save()">
+          Guardar Mantenimiento
+        </ion-button>
       </div>
     </form>
   }
