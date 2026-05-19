@@ -31,12 +31,12 @@ export class MantenimientoSyncService {
       id: undefined,
       fechaCreacion: payload.fechaCreacion,
       condicionPolin: payload.condicionPolin,
-      criticidad: payload.criticidad,
-      observacion: payload.observacion,
-      comentarios: payload.comentarios,
+      tipoFalla: payload.tipoFalla,
+      tipoServicio: payload.tipoServicio,
       rutaFotoGeneral: payload.rutaFotoGeneral,
       rutaFotoDetallePolin: payload.rutaFotoDetallePolin,
       polin: payload.polin,
+      inspeccion: payload.inspeccion,
       applicationUser: payload.applicationUser,
     };
 

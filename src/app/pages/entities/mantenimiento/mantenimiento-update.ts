@@ -12,6 +12,8 @@ import { CorreaTransportadora } from '../correa-transportadora';
 import { MesaTrabajo } from '../mesa-trabajo';
 import { Estacion } from '../estacion';
 import { CondicionPolin } from '../enumerations/condicion-polin.model';
+import { TipoFalla } from '../enumerations/tipo-falla.model';
+import { TipoServicio } from '../enumerations/tipo-servicio.model';
 import { MantenimientoDataService } from './mantenimiento-data.service';
 import { FaenaDataService } from '../faena/faena-data.service';
 import { AreaFaenaDataService } from '../area-faena/area-faena-data.service';
@@ -40,6 +42,10 @@ export class MantenimientoUpdatePage implements OnInit, OnDestroy {
   isReadyToSave: boolean;
   condicion = CondicionPolin;
   condicionKeys = Object.keys(CondicionPolin);
+  tipoFalla = TipoFalla;
+  tipoFallaKeys = Object.keys(TipoFalla);
+  tipoServicio = TipoServicio;
+  tipoServicioKeys = Object.keys(TipoServicio);
   imagenGeneral: File | undefined = undefined;
   imagenDetalle: File | undefined = undefined;
   previewGeneral?: string;
@@ -51,6 +57,8 @@ export class MantenimientoUpdatePage implements OnInit, OnDestroy {
     id: [null, []],
     fechaCreacion: [null, []],
     condicionPolin: [null, []],
+    tipoFalla: [null, []],
+    tipoServicio: [null, []],
     rutaFotoGeneral: [null, []],
     rutaFotoDetallePolin: [null, []],
     inspeccion: [null, []],
@@ -201,6 +209,8 @@ export class MantenimientoUpdatePage implements OnInit, OnDestroy {
       id: mantenimiento.id,
       fechaCreacion: mantenimiento.fechaCreacion,
       condicionPolin: mantenimiento.condicionPolin,
+      tipoFalla: mantenimiento.tipoFalla,
+      tipoServicio: mantenimiento.tipoServicio,
       rutaFotoGeneral: mantenimiento.rutaFotoGeneral,
       rutaFotoDetallePolin: mantenimiento.rutaFotoDetallePolin,
       polin: mantenimiento.polin,
@@ -312,6 +322,8 @@ export class MantenimientoUpdatePage implements OnInit, OnDestroy {
       id: this.form.get(['id']).value,
       fechaCreacion: this.form.get(['fechaCreacion']).value ? new Date(this.form.get(['fechaCreacion']).value) : null,
       condicionPolin: this.form.get(['condicionPolin']).value,
+      tipoFalla: this.form.get(['tipoFalla']).value,
+      tipoServicio: this.form.get(['tipoServicio']).value,
       rutaFotoGeneral: this.form.get(['rutaFotoGeneral']).value,
       rutaFotoDetallePolin: this.form.get(['rutaFotoDetallePolin']).value,
       polin: this.form.get(['polin']).value,

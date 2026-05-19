@@ -25,6 +25,7 @@ export class Polin implements BaseEntity {
     public descripcion?: string,
     public tipoPolin?: TipoPolin,
     public estado?: Estado,
+    public codigoSap?: string,
     public estacion?: Estacion,
   ) {}
 }

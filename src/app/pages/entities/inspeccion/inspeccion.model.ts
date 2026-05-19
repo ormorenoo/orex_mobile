@@ -15,12 +15,15 @@ export const enum Criticidad {
   'PLANIFICADO',
 }
 
-export const enum Observacion {
-  'DESGASTE',
-  'DANIO',
-  'OXIDACION',
-  'BLOQUEADO',
-  'DESALINEADO',
+export const enum TipoFalla {
+  'CARGA_ACUMULADA',
+  'DESBOCADO',
+  'DANIADO',
+  'DESGASTADO',
+  'TRABADO',
+  'INADECUADO',
+  'DIAMETRO_INCORRECTO',
+  'OXIDADO',
 }
 
 export class Inspeccion implements BaseEntity {
@@ -30,7 +33,7 @@ export class Inspeccion implements BaseEntity {
     public fechaCreacion?: any,
     public condicionPolin?: CondicionPolin,
     public criticidad?: Criticidad,
-    public observacion?: Observacion,
+    public tipoFalla?: TipoFalla,
     public comentarios?: string,
     public rutaFotoGeneral?: string,
     public rutaFotoDetallePolin?: string,

@@ -39,6 +39,12 @@
         <span id="estado-content">{{ polin.estado }}</span>
       </div>
     </ion-item>
+    <ion-item *ngIf="polin.codigoSap">
+      <ion-label position="fixed">Código SAP</ion-label>
+      <div item-content>
+        <span id="codigoSap-content">{{ polin.codigoSap }}</span>
+      </div>
+    </ion-item>
   </ion-list>
 
   <ion-button expand="block" color="primary" (click)="open(polin)">{{ 'EDIT_BUTTON' | translate }}</ion-button>

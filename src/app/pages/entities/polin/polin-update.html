@@ -53,6 +53,10 @@
           </ion-select>
         </ion-item>
         <ion-item>
+          <ion-label position="floating">Código SAP</ion-label>
+          <ion-input type="text" name="codigoSap" formControlName="codigoSap" placeholder="Opcional"></ion-input>
+        </ion-item>
+        <ion-item>
           <ion-label>Estacion</ion-label>
           <ion-select id="field_estacion" formControlName="estacionId" [compareWith]="compareEstacion">
             <ion-select-option [value]="null"></ion-select-option>

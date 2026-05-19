@@ -28,16 +28,26 @@
       <div class="field">
         <div class="field-label">Condición del Polín</div>
         <ion-chip color="danger" *ngIf="mantenimiento.condicionPolin.toString() === 'NO_OPERATIVO'">
-          <ion-label class="chip-text">Inmediato</ion-label>
+          <ion-label class="chip-text">No operativo</ion-label>
         </ion-chip>
 
         <ion-chip color="warning" *ngIf="mantenimiento.condicionPolin.toString() === 'OBSERVACION'">
-          <ion-label class="chip-text">Urgente</ion-label>
+          <ion-label class="chip-text">Observación</ion-label>
         </ion-chip>
 
         <ion-chip color="success" *ngIf="mantenimiento.condicionPolin.toString() === 'OPERATIVO'">
-          <ion-label class="chip-text">Planificado</ion-label>
+          <ion-label class="chip-text">Operativo</ion-label>
         </ion-chip>
+      </div>
+
+      <div class="field" *ngIf="mantenimiento.tipoFalla">
+        <div class="field-label">Tipo de falla</div>
+        <p>{{ mantenimiento.tipoFalla }}</p>
+      </div>
+
+      <div class="field" *ngIf="mantenimiento.tipoServicio">
+        <div class="field-label">Tipo de servicio</div>
+        <p>{{ mantenimiento.tipoServicio }}</p>
       </div>
     </ion-card-content>
   </ion-card>

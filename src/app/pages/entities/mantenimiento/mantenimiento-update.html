@@ -114,6 +114,24 @@
           </ion-item>
 
           <ion-item class="form-item">
+            <ion-label position="stacked">Tipo de falla</ion-label>
+            <ion-select interface="popover" formControlName="tipoFalla">
+              @for (key of tipoFallaKeys; track $index) {
+                <ion-select-option [value]="key">{{ tipoFalla[key] }}</ion-select-option>
+              }
+            </ion-select>
+          </ion-item>
+
+          <ion-item class="form-item">
+            <ion-label position="stacked">Tipo de servicio</ion-label>
+            <ion-select interface="popover" formControlName="tipoServicio">
+              @for (key of tipoServicioKeys; track $index) {
+                <ion-select-option [value]="key">{{ tipoServicio[key] }}</ion-select-option>
+              }
+            </ion-select>
+          </ion-item>
+
+          <ion-item class="form-item">
             <ion-label position="stacked">Imagen General</ion-label>
 
             <ion-segment [value]="metodoGeneral" (ionChange)="onMetodoGeneralChange($event)">

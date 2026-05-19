@@ -12,7 +12,7 @@ import { CorreaTransportadora } from '../correa-transportadora';
 import { MesaTrabajo } from '../mesa-trabajo';
 import { Criticidad } from '../enumerations/criticidad.model';
 import { CondicionPolin } from '../enumerations/condicion-polin.model';
-import { Observacion } from '../enumerations/observacion.model';
+import { TipoFalla } from '../enumerations/tipo-falla.model';
 import { FaenaDataService } from '../faena/faena-data.service';
 import { InspeccionDataService } from './inspeccion-data.service';
 import { AreaFaenaDataService } from '../area-faena/area-faena-data.service';
@@ -42,8 +42,8 @@ export class InspeccionUpdatePage implements OnInit {
   criticidadKeys = Object.keys(Criticidad);
   condicion = CondicionPolin;
   condicionKeys = Object.keys(CondicionPolin);
-  observacion = Observacion;
-  observacionKeys = Object.keys(Observacion);
+  tipoFalla = TipoFalla;
+  tipoFallaKeys = Object.keys(TipoFalla);
   imagenGeneral: File | undefined = undefined;
   imagenDetalle: File | undefined = undefined;
   previewGeneral?: string;
@@ -56,7 +56,7 @@ export class InspeccionUpdatePage implements OnInit {
     fechaCreacion: [null, []],
     condicionPolin: [null, []],
     criticidad: [null, []],
-    observacion: [null, []],
+    tipoFalla: [null, []],
     comentarios: [null, []],
     rutaFotoGeneral: [null, []],
     rutaFotoDetallePolin: [null, []],
@@ -199,7 +199,7 @@ export class InspeccionUpdatePage implements OnInit {
       fechaCreacion: inspeccion.fechaCreacion,
       condicionPolin: inspeccion.condicionPolin,
       criticidad: inspeccion.criticidad,
-      observacion: inspeccion.observacion,
+      tipoFalla: inspeccion.tipoFalla,
       comentarios: inspeccion.comentarios,
       rutaFotoGeneral: inspeccion.rutaFotoGeneral,
       rutaFotoDetallePolin: inspeccion.rutaFotoDetallePolin,
@@ -312,7 +312,7 @@ export class InspeccionUpdatePage implements OnInit {
       fechaCreacion: this.form.get(['fechaCreacion']).value ? new Date(this.form.get(['fechaCreacion']).value) : null,
       condicionPolin: this.form.get(['condicionPolin']).value,
       criticidad: this.form.get(['criticidad']).value,
-      observacion: this.form.get(['observacion']).value,
+      tipoFalla: this.form.get(['tipoFalla']).value,
       comentarios: this.form.get(['comentarios']).value,
       rutaFotoGeneral: this.form.get(['rutaFotoGeneral']).value,
       rutaFotoDetallePolin: this.form.get(['rutaFotoDetallePolin']).value,

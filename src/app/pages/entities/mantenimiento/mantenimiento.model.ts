@@ -9,12 +9,31 @@ export const enum CondicionPolin {
   'OBSERVACION',
 }
 
+export const enum TipoFalla {
+  'CARGA_ACUMULADA',
+  'DESBOCADO',
+  'DANIADO',
+  'DESGASTADO',
+  'TRABADO',
+  'INADECUADO',
+  'DIAMETRO_INCORRECTO',
+  'OXIDADO',
+}
+
+export const enum TipoServicio {
+  'OUTAGE',
+  'SHUT_DOWN',
+  'WEEKEND',
+}
+
 export class Mantenimiento implements BaseEntity {
   constructor(
     public id?: number,
     public idLocal?: string,
     public fechaCreacion?: any,
     public condicionPolin?: CondicionPolin,
+    public tipoFalla?: TipoFalla,
+    public tipoServicio?: TipoServicio,
     public rutaFotoGeneral?: string,
     public rutaFotoDetallePolin?: string,
     public polin?: Polin,

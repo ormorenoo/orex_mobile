@@ -109,6 +109,7 @@ export class SqliteService {
         descripcion TEXT,
         tipo_polin TEXT,
         estado TEXT,
+        codigo_sap TEXT,
         estacion_id INTEGER,
         FOREIGN KEY (estacion_id) REFERENCES estacion(id)
       );

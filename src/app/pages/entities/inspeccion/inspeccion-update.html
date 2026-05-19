@@ -123,10 +123,10 @@
           </ion-item>
 
           <ion-item class="form-item">
-            <ion-label position="stacked">Observación</ion-label>
-            <ion-select interface="popover" formControlName="observacion">
-              @for (key of observacionKeys; track $index) {
-                <ion-select-option [value]="key">{{ observacion[key] }}</ion-select-option>
+            <ion-label position="stacked">Tipo de falla</ion-label>
+            <ion-select interface="popover" formControlName="tipoFalla">
+              @for (key of tipoFallaKeys; track $index) {
+                <ion-select-option [value]="key">{{ tipoFalla[key] }}</ion-select-option>
               }
             </ion-select>
           </ion-item>

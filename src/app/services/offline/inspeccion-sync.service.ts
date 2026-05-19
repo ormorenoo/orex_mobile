@@ -32,7 +32,7 @@ export class InspeccionSyncService {
       fechaCreacion: payload.fechaCreacion,
       condicionPolin: payload.condicionPolin,
       criticidad: payload.criticidad,
-      observacion: payload.observacion,
+      tipoFalla: payload.tipoFalla,
       comentarios: payload.comentarios,
       rutaFotoGeneral: payload.rutaFotoGeneral,
       rutaFotoDetallePolin: payload.rutaFotoDetallePolin,
