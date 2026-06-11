@@ -14,6 +14,7 @@ import { Estacion } from '../estacion';
 import { CondicionPolin } from '../enumerations/condicion-polin.model';
 import { TipoFalla } from '../enumerations/tipo-falla.model';
 import { TipoServicio } from '../enumerations/tipo-servicio.model';
+import { TipoMantenimiento } from '../enumerations/tipo-mantenimiento.model';
 import { MantenimientoDataService } from './mantenimiento-data.service';
 import { FaenaDataService } from '../faena/faena-data.service';
 import { AreaFaenaDataService } from '../area-faena/area-faena-data.service';
@@ -46,6 +47,8 @@ export class MantenimientoUpdatePage implements OnInit, OnDestroy {
   tipoFallaKeys = Object.keys(TipoFalla);
   tipoServicio = TipoServicio;
   tipoServicioKeys = Object.keys(TipoServicio);
+  tipoMantenimiento = TipoMantenimiento;
+  tipoMantenimientoKeys = Object.keys(TipoMantenimiento);
   imagenGeneral: File | undefined = undefined;
   imagenDetalle: File | undefined = undefined;
   previewGeneral?: string;
@@ -56,11 +59,13 @@ export class MantenimientoUpdatePage implements OnInit, OnDestroy {
   form = inject(FormBuilder).group({
     id: [null, []],
     fechaCreacion: [null, []],
-    condicionPolin: [null, []],
+    condicion: [null, []],
     tipoFalla: [null, []],
     tipoServicio: [null, []],
+    tipoMantenimiento: [null, []],
+    comentarios: [null, []],
     rutaFotoGeneral: [null, []],
-    rutaFotoDetallePolin: [null, []],
+    rutaFotoDetalle: [null, []],
     inspeccion: [null, []],
     polin: [null, []],
     faena: [null, []],
@@ -208,11 +213,13 @@ export class MantenimientoUpdatePage implements OnInit, OnDestroy {
     this.form.patchValue({
       id: mantenimiento.id,
       fechaCreacion: mantenimiento.fechaCreacion,
-      condicionPolin: mantenimiento.condicionPolin,
+      condicion: mantenimiento.condicion,
       tipoFalla: mantenimiento.tipoFalla,
       tipoServicio: mantenimiento.tipoServicio,
+      tipoMantenimiento: mantenimiento.tipoMantenimiento,
+      comentarios: mantenimiento.comentarios,
       rutaFotoGeneral: mantenimiento.rutaFotoGeneral,
-      rutaFotoDetallePolin: mantenimiento.rutaFotoDetallePolin,
+      rutaFotoDetalle: mantenimiento.rutaFotoDetalle,
       polin: mantenimiento.polin,
       inspeccion: mantenimiento.inspeccion,
       applicationUser: mantenimiento.applicationUser,
@@ -321,11 +328,13 @@ export class MantenimientoUpdatePage implements OnInit, OnDestroy {
       ...new Mantenimiento(),
       id: this.form.get(['id']).value,
       fechaCreacion: this.form.get(['fechaCreacion']).value ? new Date(this.form.get(['fechaCreacion']).value) : null,
-      condicionPolin: this.form.get(['condicionPolin']).value,
+      condicion: this.form.get(['condicion']).value,
       tipoFalla: this.form.get(['tipoFalla']).value,
       tipoServicio: this.form.get(['tipoServicio']).value,
+      tipoMantenimiento: this.form.get(['tipoMantenimiento']).value,
+      comentarios: this.form.get(['comentarios']).value,
       rutaFotoGeneral: this.form.get(['rutaFotoGeneral']).value,
-      rutaFotoDetallePolin: this.form.get(['rutaFotoDetallePolin']).value,
+      rutaFotoDetalle: this.form.get(['rutaFotoDetalle']).value,
       polin: this.form.get(['polin']).value,
       applicationUser: this.form.get(['applicationUser']).value,
       inspeccion: this.form.get(['inspeccion']).value,

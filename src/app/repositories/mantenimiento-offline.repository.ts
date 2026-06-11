@@ -65,11 +65,15 @@ export class MantenimientoOfflineRepository {
       payload.id ?? undefined,
       idLocal,
       payload.fechaCreacion ?? undefined,
-      payload.condicionPolin ?? undefined,
+      payload.condicion ?? undefined,
+      payload.tipoFalla ?? undefined,
+      payload.tipoServicio ?? undefined,
+      payload.tipoMantenimiento ?? undefined,
       payload.rutaFotoGeneral ?? undefined,
-      payload.rutaFotoDetallePolin ?? undefined,
+      payload.rutaFotoDetalle ?? undefined,
+      payload.comentarios ?? undefined,
       payload.polin ?? undefined,
-      payload.mantenimientos ?? undefined,
+      payload.inspeccion ?? undefined,
       payload.applicationUser ?? undefined,
     );
   }

@@ -13,6 +13,7 @@ import { MesaTrabajo } from '../mesa-trabajo';
 import { Criticidad } from '../enumerations/criticidad.model';
 import { CondicionPolin } from '../enumerations/condicion-polin.model';
 import { TipoFalla } from '../enumerations/tipo-falla.model';
+import { TipoServicio } from '../enumerations/tipo-servicio.model';
 import { FaenaDataService } from '../faena/faena-data.service';
 import { InspeccionDataService } from './inspeccion-data.service';
 import { AreaFaenaDataService } from '../area-faena/area-faena-data.service';
@@ -44,6 +45,8 @@ export class InspeccionUpdatePage implements OnInit {
   condicionKeys = Object.keys(CondicionPolin);
   tipoFalla = TipoFalla;
   tipoFallaKeys = Object.keys(TipoFalla);
+  tipoServicio = TipoServicio;
+  tipoServicioKeys = Object.keys(TipoServicio);
   imagenGeneral: File | undefined = undefined;
   imagenDetalle: File | undefined = undefined;
   previewGeneral?: string;
@@ -54,12 +57,13 @@ export class InspeccionUpdatePage implements OnInit {
   form = inject(FormBuilder).group({
     id: [null, []],
     fechaCreacion: [null, []],
-    condicionPolin: [null, []],
+    condicion: [null, []],
     criticidad: [null, []],
     tipoFalla: [null, []],
+    tipoServicio: [null, []],
     comentarios: [null, []],
     rutaFotoGeneral: [null, []],
-    rutaFotoDetallePolin: [null, []],
+    rutaFotoDetalle: [null, []],
     polin: [null, []],
     faena: [null, []],
     area: [null, []],
@@ -197,12 +201,13 @@ export class InspeccionUpdatePage implements OnInit {
     this.form.patchValue({
       id: inspeccion.id,
       fechaCreacion: inspeccion.fechaCreacion,
-      condicionPolin: inspeccion.condicionPolin,
+      condicion: inspeccion.condicion,
       criticidad: inspeccion.criticidad,
       tipoFalla: inspeccion.tipoFalla,
+      tipoServicio: inspeccion.tipoServicio,
       comentarios: inspeccion.comentarios,
       rutaFotoGeneral: inspeccion.rutaFotoGeneral,
-      rutaFotoDetallePolin: inspeccion.rutaFotoDetallePolin,
+      rutaFotoDetalle: inspeccion.rutaFotoDetalle,
       polin: inspeccion.polin,
       applicationUser: inspeccion.applicationUser,
     });
@@ -310,12 +315,13 @@ export class InspeccionUpdatePage implements OnInit {
       ...new Inspeccion(),
       id: this.form.get(['id']).value,
       fechaCreacion: this.form.get(['fechaCreacion']).value ? new Date(this.form.get(['fechaCreacion']).value) : null,
-      condicionPolin: this.form.get(['condicionPolin']).value,
+      condicion: this.form.get(['condicion']).value,
       criticidad: this.form.get(['criticidad']).value,
       tipoFalla: this.form.get(['tipoFalla']).value,
+      tipoServicio: this.form.get(['tipoServicio']).value,
       comentarios: this.form.get(['comentarios']).value,
       rutaFotoGeneral: this.form.get(['rutaFotoGeneral']).value,
-      rutaFotoDetallePolin: this.form.get(['rutaFotoDetallePolin']).value,
+      rutaFotoDetalle: this.form.get(['rutaFotoDetalle']).value,
       polin: this.form.get(['polin']).value,
       applicationUser: this.form.get(['applicationUser']).value,
     };

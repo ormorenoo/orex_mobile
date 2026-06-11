@@ -30,15 +30,15 @@
 
         <ion-card-content (click)="view(inspeccion)" class="card-body-clickable">
           <div class="chips-row">
-            <ion-chip color="danger" outline *ngIf="inspeccion.condicionPolin.toString() === 'NO_OPERATIVO'">
+            <ion-chip color="danger" outline *ngIf="inspeccion.condicion.toString() === 'NO_OPERATIVO'">
               <ion-label class="chip-text">Condición: No Operativo</ion-label>
             </ion-chip>
 
-            <ion-chip color="warning" outline *ngIf="inspeccion.condicionPolin.toString() === 'OBSERVACION'">
+            <ion-chip color="warning" outline *ngIf="inspeccion.condicion.toString() === 'OBSERVACION'">
               <ion-label class="chip-text">Condición: Observación</ion-label>
             </ion-chip>
 
-            <ion-chip color="success" outline *ngIf="inspeccion.condicionPolin.toString() === 'OPERATIVO'">
+            <ion-chip color="success" outline *ngIf="inspeccion.condicion.toString() === 'OPERATIVO'">
               <ion-label class="chip-text">Condición: Operativo</ion-label>
             </ion-chip>
 

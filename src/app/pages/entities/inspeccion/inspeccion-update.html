@@ -106,7 +106,7 @@
         @if (form.get('polin').value) {
           <ion-item class="form-item">
             <ion-label position="stacked">Condición del polín</ion-label>
-            <ion-select interface="popover" formControlName="condicionPolin">
+            <ion-select interface="popover" formControlName="condicion">
               @for (key of condicionKeys; track $index) {
                 <ion-select-option [value]="key">{{ condicion[key] }}</ion-select-option>
               }
@@ -127,6 +127,15 @@
             <ion-select interface="popover" formControlName="tipoFalla">
               @for (key of tipoFallaKeys; track $index) {
                 <ion-select-option [value]="key">{{ tipoFalla[key] }}</ion-select-option>
+              }
+            </ion-select>
+          </ion-item>
+
+          <ion-item class="form-item">
+            <ion-label position="stacked">Tipo de servicio</ion-label>
+            <ion-select interface="popover" formControlName="tipoServicio">
+              @for (key of tipoServicioKeys; track $index) {
+                <ion-select-option [value]="key">{{ tipoServicio[key] }}</ion-select-option>
               }
             </ion-select>
           </ion-item>

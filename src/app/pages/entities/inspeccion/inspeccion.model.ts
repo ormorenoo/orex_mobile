@@ -3,10 +3,11 @@ import { Mantenimiento } from '#app/pages/entities/mantenimiento/mantenimiento.m
 import { Polin } from '../polin';
 import { ApplicationUser } from '../application-user/application-user.model';
 
-export const enum CondicionPolin {
+export const enum Condicion {
   'OPERATIVO',
   'NO_OPERATIVO',
   'OBSERVACION',
+  'SIN_ESTADO',
 }
 
 export const enum Criticidad {
@@ -16,14 +17,27 @@ export const enum Criticidad {
 }
 
 export const enum TipoFalla {
-  'CARGA_ACUMULADA',
+  'DESGASTE',
+  'DANIO',
+  'OXIDACION',
+  'BLOQUEADO',
+  'DESALINEADO',
+  'CON_CARGA_ACUMULADA',
+  'CON_RUIDO_Y_GOLPETEO',
+  'CON_TEMPERATURA',
+  'DE_IMPACTO_SIN_REVESTIMIENTO',
   'DESBOCADO',
-  'DANIADO',
   'DESGASTADO',
-  'TRABADO',
-  'INADECUADO',
   'DIAMETRO_INCORRECTO',
-  'OXIDADO',
+  'INADECUADO',
+  'INEXISTENTE',
+  'TRABADO',
+}
+
+export const enum TipoServicio {
+  'OUTAGE',
+  'SHUT_DOWN',
+  'WEEKEND',
 }
 
 export class Inspeccion implements BaseEntity {
@@ -31,12 +45,13 @@ export class Inspeccion implements BaseEntity {
     public id?: number,
     public idLocal?: string,
     public fechaCreacion?: any,
-    public condicionPolin?: CondicionPolin,
+    public condicion?: Condicion,
     public criticidad?: Criticidad,
     public tipoFalla?: TipoFalla,
+    public tipoServicio?: TipoServicio,
     public comentarios?: string,
     public rutaFotoGeneral?: string,
-    public rutaFotoDetallePolin?: string,
+    public rutaFotoDetalle?: string,
     public polin?: Polin,
     public mantenimientos?: Mantenimiento[],
     public applicationUser?: ApplicationUser,

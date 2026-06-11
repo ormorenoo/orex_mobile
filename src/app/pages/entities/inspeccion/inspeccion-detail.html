@@ -27,7 +27,7 @@
 
       <div class="field">
         <div class="field-label">Condición del Polín</div>
-        <p>{{ inspeccion.condicionPolin }}</p>
+        <p>{{ inspeccion.condicion }}</p>
       </div>
 
       <div class="field">
@@ -48,6 +48,11 @@
       <div class="field">
         <div class="field-label">Tipo de falla</div>
         <p>{{ inspeccion.tipoFalla }}</p>
+      </div>
+
+      <div class="field" *ngIf="inspeccion.tipoServicio">
+        <div class="field-label">Tipo de servicio</div>
+        <p>{{ inspeccion.tipoServicio }}</p>
       </div>
 
       <div class="field">
