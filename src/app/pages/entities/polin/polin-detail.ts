@@ -3,13 +3,19 @@ import { AlertController, NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { Polin } from './polin.model';
 import { PolinService } from './polin.service';
+import { estadoClase, estadoLabel, posicionLabel, tipoPolinLabel } from '#app/shared/utils/polin-ui.utils';
 
 @Component({
   selector: 'page-polin-detail',
   templateUrl: 'polin-detail.html',
+  styleUrls: ['polin-detail.scss'],
 })
 export class PolinDetailPage implements OnInit {
   polin: Polin = {};
+  estadoClase = estadoClase;
+  estadoLabel = estadoLabel;
+  posicionLabel = posicionLabel;
+  tipoPolinLabel = tipoPolinLabel;
 
   constructor(
     private navController: NavController,
@@ -30,15 +36,15 @@ export class PolinDetailPage implements OnInit {
 
   async deleteModal(item: Polin) {
     const alert = await this.alertController.create({
-      header: 'Confirm the deletion?',
+      header: '¿Eliminar este registro?',
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
           cssClass: 'secondary',
         },
         {
-          text: 'Delete',
+          text: 'Eliminar',
           handler: () => {
             this.polinService.delete(item.id).subscribe(() => {
               this.navController.navigateForward('/tabs/entities/polin');

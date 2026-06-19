@@ -5,15 +5,19 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-list>
+  <div class="reg-list">
     @for (entity of entities; track entity.id) {
-      <ion-item (click)="openPage(entity)">
-        <h2>{{ entity.name }}</h2>
-      </ion-item>
+      <button type="button" class="reg-card" (click)="openPage(entity)">
+        <span class="reg-card__bar"></span>
+        <span class="reg-card__main">
+          <span class="reg-card__code">{{ entity.name }}</span>
+        </span>
+        <ion-icon name="chevron-forward"></ion-icon>
+      </button>
     }
-  </ion-list>
+  </div>
 
   @if (entities.length === 0) {
-    <div>{{ 'EMPTY_ENTITIES_MESSAGE' | translate }}</div>
+    <div class="reg-empty">{{ 'EMPTY_ENTITIES_MESSAGE' | translate }}</div>
   }
 </ion-content>

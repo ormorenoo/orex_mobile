@@ -8,6 +8,7 @@ import { CorreaTransportadoraService } from './correa-transportadora.service';
 @Component({
   selector: 'page-correa-transportadora',
   templateUrl: 'correa-transportadora.html',
+  styleUrls: ['correa-transportadora.scss'],
 })
 export class CorreaTransportadoraPage {
   correaTransportadoras: CorreaTransportadora[];
@@ -45,7 +46,7 @@ export class CorreaTransportadoraPage {
         },
         async error => {
           console.error(error);
-          const toast = await this.toastCtrl.create({ message: 'Failed to load data', duration: 2000, position: 'middle' });
+          const toast = await this.toastCtrl.create({ message: 'No se pudieron cargar los datos', duration: 2000, position: 'middle' });
           await toast.present();
         },
       );
@@ -68,7 +69,7 @@ export class CorreaTransportadoraPage {
     this.correaTransportadoraService.delete(correaTransportadora.id).subscribe(
       async () => {
         const toast = await this.toastCtrl.create({
-          message: 'CorreaTransportadora deleted successfully.',
+          message: 'Registro eliminado correctamente.',
           duration: 3000,
           position: 'middle',
         });

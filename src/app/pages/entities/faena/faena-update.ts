@@ -11,6 +11,7 @@ import { FaenaService } from './faena.service';
 @Component({
   selector: 'page-faena-update',
   templateUrl: 'faena-update.html',
+  styleUrls: ['faena-update.scss'],
 })
 export class FaenaUpdatePage implements OnInit {
   faena: Faena;
@@ -72,12 +73,12 @@ export class FaenaUpdatePage implements OnInit {
   }
 
   async onSaveSuccess(response) {
-    let action = 'updated';
+    let action = 'actualizado';
     if (response.status === 201) {
-      action = 'created';
+      action = 'creado';
     }
     this.isSaving = false;
-    const toast = await this.toastCtrl.create({ message: `Faena ${action} successfully.`, duration: 2000, position: 'middle' });
+    const toast = await this.toastCtrl.create({ message: `Registro ${action} correctamente.`, duration: 2000, position: 'middle' });
     await toast.present();
     await this.navController.navigateBack('/tabs/entities/faena');
   }
@@ -89,7 +90,7 @@ export class FaenaUpdatePage implements OnInit {
   async onError(error) {
     this.isSaving = false;
     console.error(error);
-    const toast = await this.toastCtrl.create({ message: 'Failed to load data', duration: 2000, position: 'middle' });
+    const toast = await this.toastCtrl.create({ message: 'No se pudieron cargar los datos', duration: 2000, position: 'middle' });
     await toast.present();
   }
 

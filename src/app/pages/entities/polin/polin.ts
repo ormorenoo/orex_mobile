@@ -4,13 +4,19 @@ import { filter, map } from 'rxjs/operators';
 import { HttpResponse } from '@angular/common/http';
 import { Polin } from './polin.model';
 import { PolinService } from './polin.service';
+import { estadoClase, estadoLabel, posicionLabel, tipoPolinLabel } from '#app/shared/utils/polin-ui.utils';
 
 @Component({
   selector: 'page-polin',
   templateUrl: 'polin.html',
+  styleUrls: ['polin.scss'],
 })
 export class PolinPage {
   polins: Polin[];
+  estadoClase = estadoClase;
+  estadoLabel = estadoLabel;
+  posicionLabel = posicionLabel;
+  tipoPolinLabel = tipoPolinLabel;
 
   // todo: add pagination
 
@@ -45,7 +51,7 @@ export class PolinPage {
         },
         async error => {
           console.error(error);
-          const toast = await this.toastCtrl.create({ message: 'Failed to load data', duration: 2000, position: 'middle' });
+          const toast = await this.toastCtrl.create({ message: 'No se pudieron cargar los datos', duration: 2000, position: 'middle' });
           await toast.present();
         },
       );
@@ -67,7 +73,7 @@ export class PolinPage {
   async delete(polin) {
     this.polinService.delete(polin.id).subscribe(
       async () => {
-        const toast = await this.toastCtrl.create({ message: 'Polin deleted successfully.', duration: 3000, position: 'middle' });
+        const toast = await this.toastCtrl.create({ message: 'Registro eliminado correctamente.', duration: 3000, position: 'middle' });
         await toast.present();
         await this.loadAll();
       },

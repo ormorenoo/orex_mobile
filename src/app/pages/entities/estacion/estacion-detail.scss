@@ -1,0 +1,156 @@
+/* ===== Cabecera ===== */
+.est-head {
+  background: var(--ink);
+  color: #fff;
+  border-radius: var(--r);
+  margin: 16px 16px 0;
+  padding: 18px;
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__id {
+    font-size: 24px;
+    font-weight: 800;
+  }
+
+  &__badge {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.18);
+
+    &.estado--ok {
+      background: var(--green);
+    }
+    &.estado--obs {
+      background: var(--amber);
+    }
+    &.estado--no {
+      background: var(--red);
+    }
+  }
+
+  &__sub {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(255, 255, 255, 0.62);
+    margin-top: 2px;
+  }
+
+  &__crumb {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 12px;
+
+    span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    ion-icon {
+      color: var(--orange);
+      font-size: 15px;
+    }
+  }
+}
+
+.page {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.seccion-titulo {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--faint);
+  margin-bottom: 10px;
+}
+
+/* ===== Grid de polines ===== */
+.polin-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.polin-btn {
+  cursor: pointer;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: var(--r);
+  padding: 10px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+
+  &.estado--ok {
+    border-color: var(--green);
+  }
+  &.estado--obs {
+    border-color: var(--amber);
+  }
+  &.estado--no {
+    border-color: var(--red);
+  }
+
+  &__dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--faint);
+
+    &.estado--ok {
+      background: var(--green);
+    }
+    &.estado--obs {
+      background: var(--amber);
+    }
+    &.estado--no {
+      background: var(--red);
+    }
+  }
+
+  &__id {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--ink);
+  }
+
+  &__pos {
+    font-size: 9px;
+    color: var(--muted);
+  }
+
+  &__tipo {
+    font-size: 9px;
+    color: var(--faint);
+  }
+}
+
+.estado-vacio {
+  text-align: center;
+  color: var(--faint);
+  font-size: 14px;
+  padding: 26px 0;
+}
+
+.btn-eliminar {
+  margin-top: 22px;
+}

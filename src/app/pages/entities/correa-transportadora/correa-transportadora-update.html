@@ -3,46 +3,45 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Correa Transportadora</ion-title>
-
-    <ion-buttons slot="end">
-      <ion-button [disabled]="!isReadyToSave" (click)="save()" color="primary">
-        @if (platform.is('ios')) {
-          <span>{{ 'DONE_BUTTON' | translate }}</span>
-        } @else {
-          <ion-icon name="checkmark"></ion-icon>
-        }
-      </ion-button>
-    </ion-buttons>
+    <ion-title>{{ isNew ? 'Nueva correa' : 'Editar correa' }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content>
   @if (form) {
     <form name="form" [formGroup]="form" (ngSubmit)="save()">
-      <ion-list>
-        <ion-item [hidden]="!form.id">
-          <ion-label>ID</ion-label>
-          <ion-input type="hidden" id="id" formControlName="id" readonly></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Tag Id</ion-label>
-          <ion-input type="text" name="tagId" formControlName="tagId"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Descripcion</ion-label>
-          <ion-input type="text" name="descripcion" formControlName="descripcion"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>Area Faena</ion-label>
-          <ion-select id="field_areaFaena" formControlName="areaFaenaId" [compareWith]="compareAreaFaena">
-            <ion-select-option [value]="null"></ion-select-option>
-            @for (areaFaenaOption of areaFaenas; track trackAreaFaenaById($index, areaFaenaOption)) {
-              <ion-select-option [value]="areaFaenaOption.id">{{ areaFaenaOption.id }}</ion-select-option>
-            }
-          </ion-select>
-        </ion-item>
-      </ion-list>
+      <div class="form-body">
+        <ion-list class="form-list">
+          <ion-item class="form-item" [hidden]="!form.id">
+            <ion-label>ID</ion-label>
+            <ion-input type="hidden" id="id" formControlName="id" readonly></ion-input>
+          </ion-item>
+          <ion-item class="form-item">
+            <ion-label position="stacked">Tag ID</ion-label>
+            <ion-input type="text" name="tagId" formControlName="tagId" placeholder="Ej. CT-001"></ion-input>
+          </ion-item>
+          <ion-item class="form-item">
+            <ion-label position="stacked">Descripción</ion-label>
+            <ion-input type="text" name="descripcion" formControlName="descripcion" placeholder="Descripción..."></ion-input>
+          </ion-item>
+          <ion-item class="form-item">
+            <ion-label position="stacked">Área faena</ion-label>
+            <ion-select interface="popover" id="field_areaFaena" formControlName="areaFaenaId" [compareWith]="compareAreaFaena">
+              <ion-select-option [value]="null">Seleccione...</ion-select-option>
+              @for (areaFaenaOption of areaFaenas; track trackAreaFaenaById($index, areaFaenaOption)) {
+                <ion-select-option [value]="areaFaenaOption.id">{{ areaFaenaOption.id }}</ion-select-option>
+              }
+            </ion-select>
+          </ion-item>
+        </ion-list>
+      </div>
+
+      <!-- GUARDAR (sticky) -->
+      <div class="save-bar">
+        <ion-button expand="block" shape="round" size="large" [disabled]="!isReadyToSave || isSaving" (click)="save()">
+          Guardar correa
+        </ion-button>
+      </div>
     </form>
   }
 </ion-content>

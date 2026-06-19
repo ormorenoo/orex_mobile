@@ -1,0 +1,11 @@
+/* La lista usa las clases globales .reg-list / .reg-card / .badge / .reg-empty.
+   Solo ajustamos el contenedor deslizable para que la tarjeta ocupe todo el ancho. */
+ion-item-sliding {
+  background: transparent;
+  border-radius: var(--r);
+  overflow: hidden;
+}
+
+.reg-list ion-item-sliding {
+  display: block;
+}

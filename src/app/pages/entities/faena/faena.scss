@@ -1,0 +1,11 @@
+/* Catálogo Faena — lista neutra (sin estado de color).
+   .reg-list / .reg-card / .reg-empty viven en global.scss. */
+
+ion-item-sliding {
+  background: transparent;
+}
+
+/* Barra neutra: este catálogo no tiene estado operativo */
+.reg-card--plain .reg-card__bar {
+  background: var(--line);
+}

@@ -7,6 +7,7 @@ import { FaenaService } from './faena.service';
 @Component({
   selector: 'page-faena-detail',
   templateUrl: 'faena-detail.html',
+  styleUrls: ['faena-detail.scss'],
 })
 export class FaenaDetailPage implements OnInit {
   faena: Faena = {};
@@ -30,15 +31,15 @@ export class FaenaDetailPage implements OnInit {
 
   async deleteModal(item: Faena) {
     const alert = await this.alertController.create({
-      header: 'Confirm the deletion?',
+      header: '¿Eliminar este registro?',
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
           cssClass: 'secondary',
         },
         {
-          text: 'Delete',
+          text: 'Eliminar',
           handler: () => {
             this.faenaService.delete(item.id).subscribe(() => {
               this.navController.navigateForward('/tabs/entities/faena');

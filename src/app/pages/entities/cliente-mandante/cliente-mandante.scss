@@ -1,0 +1,10 @@
+/* Lista de clientes mandantes (catálogo neutro) */
+.reg-list ion-item-sliding {
+  --background: transparent;
+  background: transparent;
+  margin-bottom: 8px;
+}
+
+.reg-list ion-item-sliding .reg-card {
+  width: 100%;
+}

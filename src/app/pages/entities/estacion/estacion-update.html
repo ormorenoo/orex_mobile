@@ -3,76 +3,80 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Estacion</ion-title>
-
-    <ion-buttons slot="end">
-      <ion-button [disabled]="!isReadyToSave" (click)="save()" color="primary">
-        @if (platform.is('ios')) {
-          <span>{{ 'DONE_BUTTON' | translate }}</span>
-        } @else {
-          <ion-icon name="checkmark"></ion-icon>
-        }
-      </ion-button>
-    </ion-buttons>
+    <ion-title>{{ isNew ? 'Nueva estación' : 'Editar estación' }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content>
   @if (form) {
     <form name="form" [formGroup]="form" (ngSubmit)="save()">
-      <ion-list>
-        <ion-item [hidden]="!form.id">
-          <ion-label>ID</ion-label>
-          <ion-input type="hidden" id="id" formControlName="id" readonly></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Identificador</ion-label>
-          <ion-input type="text" name="identificador" formControlName="identificador"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Descripcion</ion-label>
-          <ion-input type="text" name="descripcion" formControlName="descripcion"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>Tipo Estacion</ion-label>
-          <ion-select formControlName="tipoEstacion" id="field_tipoEstacion">
-            <ion-select-option value="CARGA">{{ 'TipoEstacion.CARGA' | translate }}</ion-select-option>
-            <ion-select-option value="RETORNO">{{ 'TipoEstacion.RETORNO' | translate }}</ion-select-option>
-            <ion-select-option value="IMPACTO">{{ 'TipoEstacion.IMPACTO' | translate }}</ion-select-option>
-          </ion-select>
-        </ion-item>
-        <ion-item>
-          <ion-label>Tipo Estacion Polin</ion-label>
-          <ion-select formControlName="tipoEstacionPolin" id="field_tipoEstacionPolin">
-            <ion-select-option value="ARTESA_3_RODILLOS">{{ 'TipoEstacionPolin.ARTESA_3_RODILLOS' | translate }}</ion-select-option>
-            <ion-select-option value="ARTESA_5_RODILLOS">{{ 'TipoEstacionPolin.ARTESA_5_RODILLOS' | translate }}</ion-select-option>
-            <ion-select-option value="IMPACTO_3_RODILLOS">{{ 'TipoEstacionPolin.IMPACTO_3_RODILLOS' | translate }}</ion-select-option>
-            <ion-select-option value="IMPACTO_5_RODILLOS">{{ 'TipoEstacionPolin.IMPACTO_5_RODILLOS' | translate }}</ion-select-option>
-            <ion-select-option value="RETORNO_UNICO">{{ 'TipoEstacionPolin.RETORNO_UNICO' | translate }}</ion-select-option>
-            <ion-select-option value="RETORNO_V_INVERTIDA">{{ 'TipoEstacionPolin.RETORNO_V_INVERTIDA' | translate }}</ion-select-option>
-            <ion-select-option value="ALINEAMIENTO_CARGA">{{ 'TipoEstacionPolin.ALINEAMIENTO_CARGA' | translate }}</ion-select-option>
-            <ion-select-option value="ALINEAMIENTO_RETORNO">{{ 'TipoEstacionPolin.ALINEAMIENTO_RETORNO' | translate }}</ion-select-option>
-            <ion-select-option value="TRANSICION">{{ 'TipoEstacionPolin.TRANSICION' | translate }}</ion-select-option>
-          </ion-select>
-        </ion-item>
-        <ion-item>
-          <ion-label>Estado</ion-label>
-          <ion-select formControlName="estado" id="field_estado">
-            <ion-select-option value="OPERATIVO">{{ 'Estado.OPERATIVO' | translate }}</ion-select-option>
-            <ion-select-option value="OBSERVACION">{{ 'Estado.OBSERVACION' | translate }}</ion-select-option>
-            <ion-select-option value="NO_OPERATIVO">{{ 'Estado.NO_OPERATIVO' | translate }}</ion-select-option>
-          </ion-select>
-        </ion-item>
-        <ion-item>
-          <ion-label>Mesa Trabajo</ion-label>
-          <ion-select id="field_mesaTrabajo" formControlName="mesaTrabajoId" [compareWith]="compareMesaTrabajo">
-            <ion-select-option [value]="null"></ion-select-option>
-            @for (mesaTrabajoOption of mesaTrabajos; track trackMesaTrabajoById($index, mesaTrabajoOption)) {
-              <ion-select-option [value]="mesaTrabajoOption.id">{{ mesaTrabajoOption.id }}</ion-select-option>
+      <div class="form-body">
+        <ion-input class="form-hidden" type="hidden" id="id" formControlName="id" readonly></ion-input>
+
+        <ion-list class="form-list">
+          <ion-item class="form-item">
+            <ion-label position="stacked">Identificador</ion-label>
+            <ion-input type="text" name="identificador" formControlName="identificador"></ion-input>
+          </ion-item>
+          <ion-item class="form-item">
+            <ion-label position="stacked">Descripción</ion-label>
+            <ion-input type="text" name="descripcion" formControlName="descripcion"></ion-input>
+          </ion-item>
+        </ion-list>
+
+        <!-- ESTADO (segmented de color) -->
+        <div class="field">
+          <div class="field__label">Estado</div>
+          <div class="seg-row">
+            @for (op of estadoOpciones; track op.key) {
+              <button type="button" class="seg {{ op.clase }}" [class.active]="esControl('estado', op.key)" (click)="setControl('estado', op.key)">
+                {{ op.label }}
+              </button>
             }
-          </ion-select>
-        </ion-item>
-      </ion-list>
+          </div>
+        </div>
+
+        <ion-list class="form-list">
+          <ion-item class="form-item">
+            <ion-label position="stacked">Tipo de estación</ion-label>
+            <ion-select interface="popover" formControlName="tipoEstacion" id="field_tipoEstacion">
+              <ion-select-option value="CARGA">{{ 'TipoEstacion.CARGA' | translate }}</ion-select-option>
+              <ion-select-option value="RETORNO">{{ 'TipoEstacion.RETORNO' | translate }}</ion-select-option>
+              <ion-select-option value="IMPACTO">{{ 'TipoEstacion.IMPACTO' | translate }}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item class="form-item">
+            <ion-label position="stacked">Tipo de estación polín</ion-label>
+            <ion-select interface="popover" formControlName="tipoEstacionPolin" id="field_tipoEstacionPolin">
+              <ion-select-option value="ARTESA_3_RODILLOS">{{ 'TipoEstacionPolin.ARTESA_3_RODILLOS' | translate }}</ion-select-option>
+              <ion-select-option value="ARTESA_5_RODILLOS">{{ 'TipoEstacionPolin.ARTESA_5_RODILLOS' | translate }}</ion-select-option>
+              <ion-select-option value="IMPACTO_3_RODILLOS">{{ 'TipoEstacionPolin.IMPACTO_3_RODILLOS' | translate }}</ion-select-option>
+              <ion-select-option value="IMPACTO_5_RODILLOS">{{ 'TipoEstacionPolin.IMPACTO_5_RODILLOS' | translate }}</ion-select-option>
+              <ion-select-option value="RETORNO_UNICO">{{ 'TipoEstacionPolin.RETORNO_UNICO' | translate }}</ion-select-option>
+              <ion-select-option value="RETORNO_V_INVERTIDA">{{ 'TipoEstacionPolin.RETORNO_V_INVERTIDA' | translate }}</ion-select-option>
+              <ion-select-option value="ALINEAMIENTO_CARGA">{{ 'TipoEstacionPolin.ALINEAMIENTO_CARGA' | translate }}</ion-select-option>
+              <ion-select-option value="ALINEAMIENTO_RETORNO">{{ 'TipoEstacionPolin.ALINEAMIENTO_RETORNO' | translate }}</ion-select-option>
+              <ion-select-option value="TRANSICION">{{ 'TipoEstacionPolin.TRANSICION' | translate }}</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item class="form-item">
+            <ion-label position="stacked">Mesa de trabajo</ion-label>
+            <ion-select interface="popover" id="field_mesaTrabajo" formControlName="mesaTrabajoId" [compareWith]="compareMesaTrabajo">
+              <ion-select-option [value]="null">Seleccione...</ion-select-option>
+              @for (mesaTrabajoOption of mesaTrabajos; track trackMesaTrabajoById($index, mesaTrabajoOption)) {
+                <ion-select-option [value]="mesaTrabajoOption.id">{{ mesaTrabajoOption.identificador || mesaTrabajoOption.id }}</ion-select-option>
+              }
+            </ion-select>
+          </ion-item>
+        </ion-list>
+      </div>
+
+      <!-- GUARDAR (sticky) -->
+      <div class="save-bar">
+        <ion-button expand="block" shape="round" size="large" [disabled]="!isReadyToSave || isSaving" (click)="save()">
+          {{ isNew ? 'Crear estación' : 'Guardar cambios' }}
+        </ion-button>
+      </div>
     </form>
   }
 </ion-content>

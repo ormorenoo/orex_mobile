@@ -4,13 +4,17 @@ import { filter, map } from 'rxjs/operators';
 import { HttpResponse } from '@angular/common/http';
 import { Estacion } from './estacion.model';
 import { EstacionService } from './estacion.service';
+import { estadoClase, estadoLabel } from '#app/shared/utils/polin-ui.utils';
 
 @Component({
   selector: 'page-estacion',
   templateUrl: 'estacion.html',
+  styleUrls: ['estacion.scss'],
 })
 export class EstacionPage {
   estacions: Estacion[];
+  estadoClase = estadoClase;
+  estadoLabel = estadoLabel;
 
   // todo: add pagination
 
@@ -45,7 +49,7 @@ export class EstacionPage {
         },
         async error => {
           console.error(error);
-          const toast = await this.toastCtrl.create({ message: 'Failed to load data', duration: 2000, position: 'middle' });
+          const toast = await this.toastCtrl.create({ message: 'No se pudieron cargar los datos', duration: 2000, position: 'middle' });
           await toast.present();
         },
       );
@@ -67,7 +71,7 @@ export class EstacionPage {
   async delete(estacion) {
     this.estacionService.delete(estacion.id).subscribe(
       async () => {
-        const toast = await this.toastCtrl.create({ message: 'Estacion deleted successfully.', duration: 3000, position: 'middle' });
+        const toast = await this.toastCtrl.create({ message: 'Registro eliminado correctamente.', duration: 3000, position: 'middle' });
         await toast.present();
         await this.loadAll();
       },

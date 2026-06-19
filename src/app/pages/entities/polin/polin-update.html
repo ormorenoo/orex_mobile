@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Polin</ion-title>
+    <ion-title>Polín</ion-title>
 
     <ion-buttons slot="end">
       <ion-button [disabled]="!isReadyToSave" (click)="save()" color="primary">
@@ -17,55 +17,78 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content>
   @if (form) {
     <form name="form" [formGroup]="form" (ngSubmit)="save()">
-      <ion-list>
-        <ion-item [hidden]="!form.id">
-          <ion-label>ID</ion-label>
+      <div class="form-body">
+        <ion-item [hidden]="true">
           <ion-input type="hidden" id="id" formControlName="id" readonly></ion-input>
         </ion-item>
-        <ion-item>
-          <ion-label position="floating">Identificador</ion-label>
+
+        <ion-item class="form-item">
+          <ion-label position="stacked">Identificador</ion-label>
           <ion-input type="text" name="identificador" formControlName="identificador"></ion-input>
         </ion-item>
-        <ion-item>
-          <ion-label position="floating">Descripcion</ion-label>
+
+        <ion-item class="form-item">
+          <ion-label position="stacked">Descripción</ion-label>
           <ion-input type="text" name="descripcion" formControlName="descripcion"></ion-input>
         </ion-item>
-        <ion-item>
-          <ion-label>Tipo Polin</ion-label>
-          <ion-select formControlName="tipoPolin" id="field_tipoPolin">
-            <ion-select-option value="UNICO">{{ 'TipoPolin.UNICO' | translate }}</ion-select-option>
-            <ion-select-option value="CENTRAL">{{ 'TipoPolin.CENTRAL' | translate }}</ion-select-option>
-            <ion-select-option value="CENTRAL_DERECHO">{{ 'TipoPolin.CENTRAL_DERECHO' | translate }}</ion-select-option>
-            <ion-select-option value="CENTRAL_IZQUIERDO">{{ 'TipoPolin.CENTRAL_IZQUIERDO' | translate }}</ion-select-option>
-            <ion-select-option value="DERECHO">{{ 'TipoPolin.DERECHO' | translate }}</ion-select-option>
-            <ion-select-option value="IZQUIERDO">{{ 'TipoPolin.IZQUIERDO' | translate }}</ion-select-option>
+
+        <ion-item class="form-item">
+          <ion-label position="stacked">Posición del polín</ion-label>
+          <ion-select interface="popover" formControlName="posicionPolin" id="field_posicionPolin">
+            @for (opt of posicionPolinOptions; track opt.value) {
+              <ion-select-option [value]="opt.value">{{ opt.label | translate }}</ion-select-option>
+            }
           </ion-select>
         </ion-item>
-        <ion-item>
-          <ion-label>Estado</ion-label>
-          <ion-select formControlName="estado" id="field_estado">
-            <ion-select-option value="OPERATIVO">{{ 'Estado.OPERATIVO' | translate }}</ion-select-option>
-            <ion-select-option value="OBSERVACION">{{ 'Estado.OBSERVACION' | translate }}</ion-select-option>
-            <ion-select-option value="NO_OPERATIVO">{{ 'Estado.NO_OPERATIVO' | translate }}</ion-select-option>
+
+        <ion-item class="form-item">
+          <ion-label position="stacked">Tipo de polín</ion-label>
+          <ion-select interface="popover" formControlName="tipoPolin" id="field_tipoPolin">
+            @for (opt of tipoPolinOptions; track opt.value) {
+              <ion-select-option [value]="opt.value">{{ opt.label | translate }}</ion-select-option>
+            }
           </ion-select>
         </ion-item>
-        <ion-item>
-          <ion-label position="floating">Código SAP</ion-label>
+
+        <div class="field">
+          <div class="field__label">Estado</div>
+          <div class="seg-row">
+            <button type="button" class="seg seg--ok" [class.active]="form.get('estado').value === 'OPERATIVO'" (click)="form.get('estado').setValue('OPERATIVO')">
+              {{ 'Estado.OPERATIVO' | translate }}
+            </button>
+            <button type="button" class="seg seg--obs" [class.active]="form.get('estado').value === 'OBSERVACION'" (click)="form.get('estado').setValue('OBSERVACION')">
+              {{ 'Estado.OBSERVACION' | translate }}
+            </button>
+            <button type="button" class="seg seg--no" [class.active]="form.get('estado').value === 'NO_OPERATIVO'" (click)="form.get('estado').setValue('NO_OPERATIVO')">
+              {{ 'Estado.NO_OPERATIVO' | translate }}
+            </button>
+          </div>
+        </div>
+
+        <ion-item class="form-item">
+          <ion-label position="stacked">Código SAP</ion-label>
           <ion-input type="text" name="codigoSap" formControlName="codigoSap" placeholder="Opcional"></ion-input>
         </ion-item>
-        <ion-item>
-          <ion-label>Estacion</ion-label>
-          <ion-select id="field_estacion" formControlName="estacionId" [compareWith]="compareEstacion">
-            <ion-select-option [value]="null"></ion-select-option>
+
+        <ion-item class="form-item">
+          <ion-label position="stacked">Estación</ion-label>
+          <ion-select interface="popover" id="field_estacion" formControlName="estacionId" [compareWith]="compareEstacion">
+            <ion-select-option [value]="null">Seleccione...</ion-select-option>
             @for (estacionOption of estacions; track trackEstacionById($index, estacionOption)) {
               <ion-select-option [value]="estacionOption.id">{{ estacionOption.id }}</ion-select-option>
             }
           </ion-select>
         </ion-item>
-      </ion-list>
+      </div>
+
+      <div class="save-bar">
+        <ion-button expand="block" shape="round" size="large" [disabled]="!isReadyToSave" (click)="save()">
+          Guardar polín
+        </ion-button>
+      </div>
     </form>
   }
 </ion-content>

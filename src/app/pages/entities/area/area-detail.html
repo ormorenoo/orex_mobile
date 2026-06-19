@@ -3,26 +3,38 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Area</ion-title>
+    <ion-title>Área</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-list>
-    <ion-item>
-      <ion-label position="fixed">ID</ion-label>
-      <div item-content>
-        <span id="id-content">{{ area.id }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Nombre</ion-label>
-      <div item-content>
-        <span id="nombre-content">{{ area.nombre }}</span>
-      </div>
-    </ion-item>
-  </ion-list>
+<ion-content>
+  <!-- CABECERA -->
+  <div class="det-head">
+    <div class="det-head__row">
+      <span class="det-head__id mono">AREA #{{ area.id }}</span>
+    </div>
+    <div class="det-head__sub">{{ area.nombre || '—' }}</div>
+  </div>
 
-  <ion-button expand="block" color="primary" (click)="open(area)">{{ 'EDIT_BUTTON' | translate }}</ion-button>
-  <ion-button expand="block" color="danger" (click)="deleteModal(area)">{{ 'DELETE_BUTTON' | translate }}</ion-button>
+  <div class="page">
+    <!-- DATOS -->
+    <ion-card>
+      <ion-card-header><ion-card-title>Datos del área</ion-card-title></ion-card-header>
+      <ion-card-content>
+        <div class="field">
+          <div class="field-label">ID</div>
+          <p class="mono" id="id-content">{{ area.id }}</p>
+        </div>
+        <div class="field">
+          <div class="field-label">Nombre</div>
+          <p id="nombre-content">{{ area.nombre || '—' }}</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-button expand="block" (click)="open(area)">Editar</ion-button>
+    <ion-button class="btn-eliminar" expand="block" fill="outline" color="danger" (click)="deleteModal(area)">
+      Eliminar
+    </ion-button>
+  </div>
 </ion-content>

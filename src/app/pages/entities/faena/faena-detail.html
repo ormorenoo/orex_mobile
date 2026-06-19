@@ -4,33 +4,48 @@
       <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-title>Faena</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="open(faena)">
+        <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-list>
-    <ion-item>
-      <ion-label position="fixed">ID</ion-label>
-      <div item-content>
-        <span id="id-content">{{ faena.id }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Nombre</ion-label>
-      <div item-content>
-        <span id="nombre-content">{{ faena.nombre }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label>Cliente Mandante</ion-label>
-      @if (faena.clienteMandanteId) {
-        <div item-content>
-          <a>{{ faena.clienteMandanteundefined }}</a>
-        </div>
-      }
-    </ion-item>
-  </ion-list>
+<ion-content>
+  <!-- CABECERA -->
+  <div class="det-head">
+    <div class="det-head__row">
+      <span class="det-head__id mono">FAENA #{{ faena.id }}</span>
+    </div>
+    <div class="det-head__sub">{{ faena.nombre || '—' }}</div>
+  </div>
 
-  <ion-button expand="block" color="primary" (click)="open(faena)">{{ 'EDIT_BUTTON' | translate }}</ion-button>
-  <ion-button expand="block" color="danger" (click)="deleteModal(faena)">{{ 'DELETE_BUTTON' | translate }}</ion-button>
+  <div class="page">
+    <ion-card>
+      <ion-card-header><ion-card-title>Datos</ion-card-title></ion-card-header>
+      <ion-card-content>
+        <div class="field">
+          <div class="field-label">ID</div>
+          <p class="mono">{{ faena.id }}</p>
+        </div>
+        <div class="field">
+          <div class="field-label">Nombre</div>
+          <p>{{ faena.nombre || '—' }}</p>
+        </div>
+        <div class="field">
+          <div class="field-label">Cliente mandante</div>
+          @if (faena.clienteMandanteId) {
+            <p>{{ faena.clienteMandanteundefined }}</p>
+          } @else {
+            <p>—</p>
+          }
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-button class="btn-eliminar" expand="block" fill="outline" color="danger" (click)="deleteModal(faena)">
+      Eliminar
+    </ion-button>
+  </div>
 </ion-content>

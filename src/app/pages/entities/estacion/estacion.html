@@ -3,40 +3,46 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Estacions</ion-title>
+    <ion-title>Estaciones</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<!-- todo: add elasticsearch support -->
 <ion-content class="ion-padding">
   <ion-refresher [disabled]="plt.is('desktop')" slot="fixed" (ionRefresh)="loadAll($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-list>
+  <div class="reg-list">
     @for (estacion of estacions; track trackId($index, estacion)) {
       <ion-item-sliding #slidingItem>
-        <ion-item (click)="view(estacion)">
-          <ion-label text-wrap>
-            <p>{{ estacion.id }}</p>
-            <p>{{ estacion.identificador }}</p>
-          </ion-label>
-        </ion-item>
+        <button type="button" class="reg-card {{ estadoClase(estacion.estado) }}" (click)="view(estacion)">
+          <span class="reg-card__bar"></span>
+          <span class="reg-card__main">
+            <span class="reg-card__top">
+              <span class="reg-card__code mono">{{ estacion.identificador || ('EST #' + estacion.id) }}</span>
+              <span class="badge {{ estadoClase(estacion.estado) }}">{{ estadoLabel(estacion.estado) }}</span>
+            </span>
+            @if (estacion.tipoEstacion) {
+              <span class="reg-card__detail">{{ 'TipoEstacion.' + estacion.tipoEstacion | translate }}</span>
+            }
+            <span class="reg-card__sub">ID {{ estacion.id }}</span>
+          </span>
+          <ion-icon name="chevron-forward"></ion-icon>
+        </button>
         <ion-item-options side="end">
           <ion-item-option color="primary" (click)="edit(slidingItem, estacion)">
-            {{ 'EDIT_BUTTON' | translate }}
+            Editar
           </ion-item-option>
           <ion-item-option color="danger" (click)="delete(estacion)">
-            {{ 'DELETE_BUTTON' | translate }}
+            Eliminar
           </ion-item-option>
         </ion-item-options>
       </ion-item-sliding>
     }
-  </ion-list>
+  </div>
+
   @if (!estacions?.length) {
-    <ion-item>
-      <ion-label> No Estacions found. </ion-label>
-    </ion-item>
+    <div class="reg-empty">No hay estaciones registradas.</div>
   }
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">

@@ -3,33 +3,30 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Area</ion-title>
-
-    <ion-buttons slot="end">
-      <ion-button [disabled]="!isReadyToSave" (click)="save()" color="primary">
-        @if (platform.is('ios')) {
-          <span>{{ 'DONE_BUTTON' | translate }}</span>
-        } @else {
-          <ion-icon name="checkmark"></ion-icon>
-        }
-      </ion-button>
-    </ion-buttons>
+    <ion-title>{{ isNew ? 'Nueva área' : 'Editar área' }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content>
   @if (form) {
     <form name="form" [formGroup]="form" (ngSubmit)="save()">
-      <ion-list>
-        <ion-item [hidden]="!form.id">
-          <ion-label>ID</ion-label>
-          <ion-input type="hidden" id="id" formControlName="id" readonly></ion-input>
+      <div class="form-body">
+        <ion-item class="form-item" [hidden]="!form.get('id').value">
+          <ion-label position="stacked">ID</ion-label>
+          <ion-input type="text" id="id" formControlName="id" readonly></ion-input>
         </ion-item>
-        <ion-item>
-          <ion-label position="floating">Nombre</ion-label>
+        <ion-item class="form-item">
+          <ion-label position="stacked">Nombre</ion-label>
           <ion-input type="text" name="nombre" formControlName="nombre"></ion-input>
         </ion-item>
-      </ion-list>
+      </div>
+
+      <!-- GUARDAR (sticky) -->
+      <div class="save-bar">
+        <ion-button expand="block" shape="round" size="large" [disabled]="!isReadyToSave || isSaving" (click)="save()">
+          Guardar área
+        </ion-button>
+      </div>
     </form>
   }
 </ion-content>

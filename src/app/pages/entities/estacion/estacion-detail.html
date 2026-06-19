@@ -3,26 +3,60 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Estacion</ion-title>
+    <ion-title>Estación</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="open(estacion)">
+        <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-list>
-    <ion-item>
-      <ion-label position="fixed">ID</ion-label>
-      <div item-content>
-        <span id="id-content">{{ estacion.id }}</span>
+<ion-content>
+  <!-- CABECERA -->
+  <div class="est-head">
+    <div class="est-head__row">
+      <span class="est-head__id mono">{{ estacion.identificador }}</span>
+      <span class="est-head__badge" [ngClass]="estadoClase(estado)">{{ estadoShort }}</span>
+    </div>
+    <div class="est-head__sub">Estación · ID {{ estacion.id }}</div>
+    @if (faena || correa || mesa) {
+      <div class="est-head__crumb">
+        @if (faena) {
+          <span><ion-icon name="business-outline"></ion-icon>{{ faena }}</span>
+        }
+        @if (correa) {
+          <span><ion-icon name="git-branch-outline"></ion-icon>{{ correa }}</span>
+        }
+        @if (mesa) {
+          <span><ion-icon name="grid-outline"></ion-icon>{{ mesa }}</span>
+        }
       </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Identificador</ion-label>
-      <div item-content>
-        <span id="identificador-content">{{ estacion.identificador }}</span>
-      </div>
-    </ion-item>
-  </ion-list>
+    }
+  </div>
 
-  <ion-button expand="block" color="primary" (click)="open(estacion)">{{ 'EDIT_BUTTON' | translate }}</ion-button>
-  <ion-button expand="block" color="danger" (click)="deleteModal(estacion)">{{ 'DELETE_BUTTON' | translate }}</ion-button>
+  <div class="page">
+    <!-- POLINES -->
+    <div class="seccion-titulo">Polines ({{ polines.length }})</div>
+    @if (cargandoPolines) {
+      <div class="estado-vacio"><ion-spinner name="crescent"></ion-spinner></div>
+    } @else if (!polines.length) {
+      <div class="estado-vacio">Esta estación no tiene polines registrados.</div>
+    } @else {
+      <div class="polin-grid">
+        @for (polin of polines; track polin.id) {
+          <button type="button" class="polin-btn" [ngClass]="estadoClase(polin.estado)" (click)="abrirPolin(polin)">
+            <span class="polin-btn__dot" [ngClass]="estadoClase(polin.estado)"></span>
+            <span class="polin-btn__id mono">{{ polin.identificador }}</span>
+            <span class="polin-btn__pos">{{ posicionLabel(polin.posicionPolin) }}</span>
+            <span class="polin-btn__tipo">{{ tipoPolinLabel(polin.tipoPolin) }}</span>
+          </button>
+        }
+      </div>
+    }
+
+    <ion-button class="btn-eliminar" expand="block" fill="outline" color="danger" (click)="deleteModal(estacion)">
+      Eliminar
+    </ion-button>
+  </div>
 </ion-content>

@@ -7,10 +7,12 @@ import { Observable } from 'rxjs';
 import { MesaTrabajo, MesaTrabajoService } from '../mesa-trabajo';
 import { Estacion } from './estacion.model';
 import { EstacionService } from './estacion.service';
+import { estadoClase, estadoLabel } from '#app/shared/utils/polin-ui.utils';
 
 @Component({
   selector: 'page-estacion-update',
   templateUrl: 'estacion-update.html',
+  styleUrl: 'estacion-update.scss',
 })
 export class EstacionUpdatePage implements OnInit {
   estacion: Estacion;
@@ -18,6 +20,26 @@ export class EstacionUpdatePage implements OnInit {
   isSaving = false;
   isNew = true;
   isReadyToSave: boolean;
+
+  // Helpers de presentación: clases y etiquetas de estado.
+  estadoClase = estadoClase;
+  estadoLabel = estadoLabel;
+
+  // Opciones del segmented de Estado (color).
+  estadoOpciones = [
+    { key: 'OPERATIVO', label: 'Operativo', clase: 'seg--ok' },
+    { key: 'OBSERVACION', label: 'Observación', clase: 'seg--obs' },
+    { key: 'NO_OPERATIVO', label: 'No operativo', clase: 'seg--no' },
+  ];
+
+  /** Setter para el control segmented de estado. */
+  setControl(control: string, value: string): void {
+    this.form.get(control)?.setValue(value);
+  }
+
+  esControl(control: string, value: string): boolean {
+    return this.form.get(control)?.value === value;
+  }
 
   form = inject(FormBuilder).group({
     id: [null, []],
@@ -75,12 +97,12 @@ export class EstacionUpdatePage implements OnInit {
   }
 
   async onSaveSuccess(response) {
-    let action = 'updated';
+    let action = 'actualizado';
     if (response.status === 201) {
-      action = 'created';
+      action = 'creado';
     }
     this.isSaving = false;
-    const toast = await this.toastCtrl.create({ message: `Estacion ${action} successfully.`, duration: 2000, position: 'middle' });
+    const toast = await this.toastCtrl.create({ message: `Registro ${action} correctamente.`, duration: 2000, position: 'middle' });
     await toast.present();
     await this.navController.navigateBack('/tabs/entities/estacion');
   }
@@ -92,7 +114,7 @@ export class EstacionUpdatePage implements OnInit {
   async onError(error) {
     this.isSaving = false;
     console.error(error);
-    const toast = await this.toastCtrl.create({ message: 'Failed to load data', duration: 2000, position: 'middle' });
+    const toast = await this.toastCtrl.create({ message: 'No se pudieron cargar los datos', duration: 2000, position: 'middle' });
     await toast.present();
   }
 

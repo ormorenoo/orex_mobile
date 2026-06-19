@@ -11,6 +11,7 @@ import { PolinService } from './polin.service';
 @Component({
   selector: 'page-polin-update',
   templateUrl: 'polin-update.html',
+  styleUrls: ['polin-update.scss'],
 })
 export class PolinUpdatePage implements OnInit {
   polin: Polin;
@@ -19,10 +20,28 @@ export class PolinUpdatePage implements OnInit {
   isNew = true;
   isReadyToSave: boolean;
 
+  readonly posicionPolinOptions: { value: string; label: string }[] = [
+    { value: 'UNICO', label: 'PosicionPolin.UNICO' },
+    { value: 'CENTRAL', label: 'PosicionPolin.CENTRAL' },
+    { value: 'CENTRAL_DERECHO', label: 'PosicionPolin.CENTRAL_DERECHO' },
+    { value: 'CENTRAL_IZQUIERDO', label: 'PosicionPolin.CENTRAL_IZQUIERDO' },
+    { value: 'DERECHO', label: 'PosicionPolin.DERECHO' },
+    { value: 'IZQUIERDO', label: 'PosicionPolin.IZQUIERDO' },
+  ];
+
+  readonly tipoPolinOptions: { value: string; label: string }[] = [
+    { value: 'IMPACTO', label: 'TipoPolin.IMPACTO' },
+    { value: 'RETORNO', label: 'TipoPolin.RETORNO' },
+    { value: 'CARGA', label: 'TipoPolin.CARGA' },
+    { value: 'PESOMETRICO', label: 'TipoPolin.PESOMETRICO' },
+    { value: 'AUTOLINEANTE', label: 'TipoPolin.AUTOLINEANTE' },
+  ];
+
   form = inject(FormBuilder).group({
     id: [null, []],
     identificador: [null, []],
     descripcion: [null, []],
+    posicionPolin: [null, []],
     tipoPolin: [null, []],
     estado: [null, []],
     codigoSap: [null, []],
@@ -62,6 +81,7 @@ export class PolinUpdatePage implements OnInit {
       id: polin.id,
       identificador: polin.identificador,
       descripcion: polin.descripcion,
+      posicionPolin: polin.posicionPolin,
       tipoPolin: polin.tipoPolin,
       estado: polin.estado,
       codigoSap: polin.codigoSap,
@@ -79,12 +99,12 @@ export class PolinUpdatePage implements OnInit {
   }
 
   async onSaveSuccess(response) {
-    let action = 'updated';
+    let action = 'actualizado';
     if (response.status === 201) {
-      action = 'created';
+      action = 'creado';
     }
     this.isSaving = false;
-    const toast = await this.toastCtrl.create({ message: `Polin ${action} successfully.`, duration: 2000, position: 'middle' });
+    const toast = await this.toastCtrl.create({ message: `Registro ${action} correctamente.`, duration: 2000, position: 'middle' });
     await toast.present();
     await this.navController.navigateBack('/tabs/entities/polin');
   }
@@ -96,7 +116,7 @@ export class PolinUpdatePage implements OnInit {
   async onError(error) {
     this.isSaving = false;
     console.error(error);
-    const toast = await this.toastCtrl.create({ message: 'Failed to load data', duration: 2000, position: 'middle' });
+    const toast = await this.toastCtrl.create({ message: 'No se pudieron cargar los datos', duration: 2000, position: 'middle' });
     await toast.present();
   }
 
@@ -121,6 +141,7 @@ export class PolinUpdatePage implements OnInit {
       id: this.form.get(['id']).value,
       identificador: this.form.get(['identificador']).value,
       descripcion: this.form.get(['descripcion']).value,
+      posicionPolin: this.form.get(['posicionPolin']).value,
       tipoPolin: this.form.get(['tipoPolin']).value,
       estado: this.form.get(['estado']).value,
       codigoSap: this.form.get(['codigoSap']).value,

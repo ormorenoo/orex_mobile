@@ -8,6 +8,7 @@ import { EmpresaClienteService } from './empresa-cliente.service';
 @Component({
   selector: 'page-empresa-cliente',
   templateUrl: 'empresa-cliente.html',
+  styleUrls: ['empresa-cliente.scss'],
 })
 export class EmpresaClientePage {
   empresaClientes: EmpresaCliente[];
@@ -45,7 +46,7 @@ export class EmpresaClientePage {
         },
         async error => {
           console.error(error);
-          const toast = await this.toastCtrl.create({ message: 'Failed to load data', duration: 2000, position: 'middle' });
+          const toast = await this.toastCtrl.create({ message: 'No se pudieron cargar los datos', duration: 2000, position: 'middle' });
           await toast.present();
         },
       );
@@ -67,7 +68,7 @@ export class EmpresaClientePage {
   async delete(empresaCliente) {
     this.empresaClienteService.delete(empresaCliente.id).subscribe(
       async () => {
-        const toast = await this.toastCtrl.create({ message: 'EmpresaCliente deleted successfully.', duration: 3000, position: 'middle' });
+        const toast = await this.toastCtrl.create({ message: 'Registro eliminado correctamente.', duration: 3000, position: 'middle' });
         await toast.present();
         await this.loadAll();
       },

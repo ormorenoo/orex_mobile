@@ -8,6 +8,7 @@ import { FaenaService } from './faena.service';
 @Component({
   selector: 'page-faena',
   templateUrl: 'faena.html',
+  styleUrls: ['faena.scss'],
 })
 export class FaenaPage {
   faenas: Faena[];
@@ -45,7 +46,7 @@ export class FaenaPage {
         },
         async error => {
           console.error(error);
-          const toast = await this.toastCtrl.create({ message: 'Failed to load data', duration: 2000, position: 'middle' });
+          const toast = await this.toastCtrl.create({ message: 'No se pudieron cargar los datos', duration: 2000, position: 'middle' });
           await toast.present();
         },
       );
@@ -67,7 +68,7 @@ export class FaenaPage {
   async delete(faena) {
     this.faenaService.delete(faena.id).subscribe(
       async () => {
-        const toast = await this.toastCtrl.create({ message: 'Faena deleted successfully.', duration: 3000, position: 'middle' });
+        const toast = await this.toastCtrl.create({ message: 'Registro eliminado correctamente.', duration: 3000, position: 'middle' });
         await toast.present();
         await this.loadAll();
       },

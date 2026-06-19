@@ -7,6 +7,7 @@ import { AreaService } from './area.service';
 @Component({
   selector: 'page-area-detail',
   templateUrl: 'area-detail.html',
+  styleUrl: 'area-detail.scss',
 })
 export class AreaDetailPage implements OnInit {
   area: Area = {};
@@ -30,15 +31,15 @@ export class AreaDetailPage implements OnInit {
 
   async deleteModal(item: Area) {
     const alert = await this.alertController.create({
-      header: 'Confirm the deletion?',
+      header: '¿Eliminar este registro?',
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
           cssClass: 'secondary',
         },
         {
-          text: 'Delete',
+          text: 'Eliminar',
           handler: () => {
             this.areaService.delete(item.id).subscribe(() => {
               this.navController.navigateForward('/tabs/entities/area');

@@ -3,45 +3,46 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Polins</ion-title>
+    <ion-title>Polines</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<!-- todo: add elasticsearch support -->
 <ion-content class="ion-padding">
   <ion-refresher [disabled]="plt.is('desktop')" slot="fixed" (ionRefresh)="loadAll($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-list>
+  <div class="reg-list">
     @for (polin of polins; track trackId($index, polin)) {
       <ion-item-sliding #slidingItem>
-        <ion-item (click)="view(polin)">
-          <ion-label text-wrap>
-            <p>{{ polin.id }}</p>
-            <p>{{ polin.identificador }}</p>
-            <p>{{ polin.descripcion }}</p>
-            <!-- todo: special handling for translating enum - {{'TipoPolin.' + polin.tipoPolin}}" -->
-            <p>{{ polin.tipoPolin }}</p>
-            <!-- todo: special handling for translating enum - {{'Estado.' + polin.estado}}" -->
-            <p>{{ polin.estado }}</p>
-          </ion-label>
-        </ion-item>
+        <button type="button" class="reg-card {{ estadoClase(polin.estado) }}" (click)="view(polin)">
+          <span class="reg-card__bar"></span>
+          <span class="reg-card__main">
+            <span class="reg-card__top">
+              <span class="reg-card__code mono">{{ polin.identificador }}</span>
+              <span class="badge {{ estadoClase(polin.estado) }}">{{ estadoLabel(polin.estado) }}</span>
+            </span>
+            <span class="reg-card__detail">{{ posicionLabel(polin.posicionPolin) }} · {{ tipoPolinLabel(polin.tipoPolin) }}</span>
+            @if (polin.descripcion) {
+              <span class="reg-card__sub">{{ polin.descripcion }}</span>
+            }
+          </span>
+          <ion-icon name="chevron-forward"></ion-icon>
+        </button>
         <ion-item-options side="end">
           <ion-item-option color="primary" (click)="edit(slidingItem, polin)">
-            {{ 'EDIT_BUTTON' | translate }}
+            Editar
           </ion-item-option>
           <ion-item-option color="danger" (click)="delete(polin)">
-            {{ 'DELETE_BUTTON' | translate }}
+            Eliminar
           </ion-item-option>
         </ion-item-options>
       </ion-item-sliding>
     }
-  </ion-list>
+  </div>
+
   @if (!polins?.length) {
-    <ion-item>
-      <ion-label> No Polins found. </ion-label>
-    </ion-item>
+    <div class="reg-empty">No hay polines registrados.</div>
   }
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">

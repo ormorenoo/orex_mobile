@@ -1,0 +1,10 @@
+/* Lista de correas: usa las clases globales .reg-list / .reg-card.
+   La correa no tiene estado operativo, por lo que la barra se muestra en acero. */
+.reg-card.estado--steel .reg-card__bar {
+  background: var(--blue);
+}
+
+ion-fab-button {
+  --background: var(--orange);
+  --color: #fff;
+}

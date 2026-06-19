@@ -13,40 +13,45 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-list>
+  <div class="reg-list">
     @for (clienteMandante of clienteMandantes; track trackId($index, clienteMandante)) {
       <ion-item-sliding #slidingItem>
-        <ion-item (click)="view(clienteMandante)">
-          <ion-label text-wrap>
-            <p>{{ clienteMandante.id }}</p>
-            <p>{{ clienteMandante.rut }}</p>
-            <p>{{ clienteMandante.razonSocial }}</p>
-            <p>{{ clienteMandante.direccion }}</p>
-            <p>{{ clienteMandante.nombreContacto }}</p>
-            <p>{{ clienteMandante.telefono }}</p>
-            <p>{{ clienteMandante.correo }}</p>
-          </ion-label>
-        </ion-item>
+        <button type="button" class="reg-card" (click)="view(clienteMandante)">
+          <span class="reg-card__bar"></span>
+          <span class="reg-card__main">
+            <span class="reg-card__top">
+              <span class="reg-card__code mono">#{{ clienteMandante.id }}</span>
+              <span class="reg-card__detail">{{ clienteMandante.razonSocial || '—' }}</span>
+            </span>
+            <span class="reg-card__sub mono">{{ clienteMandante.rut || 'Sin RUT' }}</span>
+            <span class="reg-card__sub">
+              {{ clienteMandante.nombreContacto || 'Sin contacto' }}
+              @if (clienteMandante.telefono) {
+                · {{ clienteMandante.telefono }}
+              }
+            </span>
+          </span>
+          <ion-icon name="chevron-forward"></ion-icon>
+        </button>
         <ion-item-options side="end">
           <ion-item-option color="primary" (click)="edit(slidingItem, clienteMandante)">
-            {{ 'EDIT_BUTTON' | translate }}
+            Editar
           </ion-item-option>
           <ion-item-option color="danger" (click)="delete(clienteMandante)">
-            {{ 'DELETE_BUTTON' | translate }}
+            Eliminar
           </ion-item-option>
         </ion-item-options>
       </ion-item-sliding>
     }
-  </ion-list>
+  </div>
+
   @if (!clienteMandantes?.length) {
-    <ion-item>
-      <ion-label> No Cliente Mandantes found. </ion-label>
-    </ion-item>
+    <div class="reg-empty">No hay clientes mandantes registrados.</div>
   }
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="new()">
-      <ion-icon name="add"></ion-icon>
+      <ion-icon class="add" name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </ion-content>

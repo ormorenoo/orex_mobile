@@ -7,6 +7,7 @@ import { AreaFaenaService } from './area-faena.service';
 @Component({
   selector: 'page-area-faena-detail',
   templateUrl: 'area-faena-detail.html',
+  styleUrl: 'area-faena-detail.scss',
 })
 export class AreaFaenaDetailPage implements OnInit {
   areaFaena: AreaFaena = {};
@@ -30,15 +31,15 @@ export class AreaFaenaDetailPage implements OnInit {
 
   async deleteModal(item: AreaFaena) {
     const alert = await this.alertController.create({
-      header: 'Confirm the deletion?',
+      header: '¿Eliminar este registro?',
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
           cssClass: 'secondary',
         },
         {
-          text: 'Delete',
+          text: 'Eliminar',
           handler: () => {
             this.areaFaenaService.delete(item.id).subscribe(() => {
               this.navController.navigateForward('/tabs/entities/area-faena');

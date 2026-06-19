@@ -4,55 +4,69 @@
       <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-title>Cliente Mandante</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="open(clienteMandante)">
+        <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-list>
-    <ion-item>
-      <ion-label position="fixed">ID</ion-label>
-      <div item-content>
-        <span id="id-content">{{ clienteMandante.id }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Rut</ion-label>
-      <div item-content>
-        <span id="rut-content">{{ clienteMandante.rut }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Razon Social</ion-label>
-      <div item-content>
-        <span id="razonSocial-content">{{ clienteMandante.razonSocial }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Direccion</ion-label>
-      <div item-content>
-        <span id="direccion-content">{{ clienteMandante.direccion }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Nombre Contacto</ion-label>
-      <div item-content>
-        <span id="nombreContacto-content">{{ clienteMandante.nombreContacto }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Telefono</ion-label>
-      <div item-content>
-        <span id="telefono-content">{{ clienteMandante.telefono }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Correo</ion-label>
-      <div item-content>
-        <span id="correo-content">{{ clienteMandante.correo }}</span>
-      </div>
-    </ion-item>
-  </ion-list>
+<ion-content>
+  <!-- CABECERA -->
+  <div class="det-head">
+    <div class="det-head__row">
+      <span class="det-head__id">{{ clienteMandante.razonSocial || 'Cliente mandante' }}</span>
+    </div>
+    <div class="det-head__sub">
+      <span class="mono">#{{ clienteMandante.id }}</span>
+      @if (clienteMandante.rut) {
+        · <span class="mono">{{ clienteMandante.rut }}</span>
+      }
+    </div>
+  </div>
 
-  <ion-button expand="block" color="primary" (click)="open(clienteMandante)">{{ 'EDIT_BUTTON' | translate }}</ion-button>
-  <ion-button expand="block" color="danger" (click)="deleteModal(clienteMandante)">{{ 'DELETE_BUTTON' | translate }}</ion-button>
+  <div class="page">
+    <!-- IDENTIFICACIÓN -->
+    <ion-card>
+      <ion-card-header><ion-card-title>Identificación</ion-card-title></ion-card-header>
+      <ion-card-content>
+        <div class="field">
+          <div class="field-label">RUT</div>
+          <p class="mono" id="rut-content">{{ clienteMandante.rut || '—' }}</p>
+        </div>
+        <div class="field">
+          <div class="field-label">Razón social</div>
+          <p id="razonSocial-content">{{ clienteMandante.razonSocial || '—' }}</p>
+        </div>
+        <div class="field">
+          <div class="field-label">Dirección</div>
+          <p id="direccion-content">{{ clienteMandante.direccion || '—' }}</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- CONTACTO -->
+    <ion-card>
+      <ion-card-header><ion-card-title>Contacto</ion-card-title></ion-card-header>
+      <ion-card-content>
+        <div class="field">
+          <div class="field-label">Nombre de contacto</div>
+          <p id="nombreContacto-content">{{ clienteMandante.nombreContacto || '—' }}</p>
+        </div>
+        <div class="field">
+          <div class="field-label">Teléfono</div>
+          <p class="mono" id="telefono-content">{{ clienteMandante.telefono || '—' }}</p>
+        </div>
+        <div class="field">
+          <div class="field-label">Correo</div>
+          <p id="correo-content">{{ clienteMandante.correo || '—' }}</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-button class="btn-eliminar" expand="block" fill="outline" color="danger" (click)="deleteModal(clienteMandante)">
+      Eliminar
+    </ion-button>
+  </div>
 </ion-content>

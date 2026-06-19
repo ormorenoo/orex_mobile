@@ -8,6 +8,7 @@ import { AreaService } from './area.service';
 @Component({
   selector: 'page-area',
   templateUrl: 'area.html',
+  styleUrl: 'area.scss',
 })
 export class AreaPage {
   areas: Area[];
@@ -45,7 +46,7 @@ export class AreaPage {
         },
         async error => {
           console.error(error);
-          const toast = await this.toastCtrl.create({ message: 'Failed to load data', duration: 2000, position: 'middle' });
+          const toast = await this.toastCtrl.create({ message: 'No se pudieron cargar los datos', duration: 2000, position: 'middle' });
           await toast.present();
         },
       );
@@ -67,7 +68,7 @@ export class AreaPage {
   async delete(area) {
     this.areaService.delete(area.id).subscribe(
       async () => {
-        const toast = await this.toastCtrl.create({ message: 'Area deleted successfully.', duration: 3000, position: 'middle' });
+        const toast = await this.toastCtrl.create({ message: 'Registro eliminado correctamente.', duration: 3000, position: 'middle' });
         await toast.present();
         await this.loadAll();
       },

@@ -1,0 +1,15 @@
+/* La lista reutiliza .reg-list / .reg-card / .badge de global.scss.
+   Solo se ajusta el ion-item-sliding para que cada tarjeta respire dentro de la lista. */
+
+.reg-list ion-item-sliding {
+  border-radius: var(--r);
+  overflow: hidden;
+}
+
+.reg-list .reg-card {
+  border: 1px solid var(--line);
+}
+
+ion-item-option {
+  font-weight: 700;
+}

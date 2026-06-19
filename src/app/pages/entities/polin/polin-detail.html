@@ -3,50 +3,52 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Polin</ion-title>
+    <ion-title>Polín</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-list>
-    <ion-item>
-      <ion-label position="fixed">ID</ion-label>
-      <div item-content>
-        <span id="id-content">{{ polin.id }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Identificador</ion-label>
-      <div item-content>
-        <span id="identificador-content">{{ polin.identificador }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Descripcion</ion-label>
-      <div item-content>
-        <span id="descripcion-content">{{ polin.descripcion }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Tipo Polin</ion-label>
-      <div item-content>
-        <span id="tipoPolin-content">{{ polin.tipoPolin }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Estado</ion-label>
-      <div item-content>
-        <span id="estado-content">{{ polin.estado }}</span>
-      </div>
-    </ion-item>
-    <ion-item *ngIf="polin.codigoSap">
-      <ion-label position="fixed">Código SAP</ion-label>
-      <div item-content>
-        <span id="codigoSap-content">{{ polin.codigoSap }}</span>
-      </div>
-    </ion-item>
-  </ion-list>
+<ion-content>
+  <!-- CABECERA -->
+  <div class="det-head">
+    <div class="det-head__row">
+      <span class="det-head__id mono">{{ polin.identificador }}</span>
+      <span class="det-head__badge" [ngClass]="estadoClase(polin.estado)">{{ estadoLabel(polin.estado) }}</span>
+    </div>
+    <div class="det-head__sub">{{ posicionLabel(polin.posicionPolin) }} · {{ tipoPolinLabel(polin.tipoPolin) }}</div>
+  </div>
 
-  <ion-button expand="block" color="primary" (click)="open(polin)">{{ 'EDIT_BUTTON' | translate }}</ion-button>
-  <ion-button expand="block" color="danger" (click)="deleteModal(polin)">{{ 'DELETE_BUTTON' | translate }}</ion-button>
+  <div class="page">
+    <ion-card>
+      <ion-card-header><ion-card-title>Datos del polín</ion-card-title></ion-card-header>
+      <ion-card-content>
+        <div class="field">
+          <div class="field-label">Identificador</div>
+          <p class="mono">{{ polin.identificador }}</p>
+        </div>
+        <div class="field" *ngIf="polin.descripcion">
+          <div class="field-label">Descripción</div>
+          <p>{{ polin.descripcion }}</p>
+        </div>
+        <div class="field">
+          <div class="field-label">Posición</div>
+          <p>{{ posicionLabel(polin.posicionPolin) }}</p>
+        </div>
+        <div class="field">
+          <div class="field-label">Tipo</div>
+          <p>{{ tipoPolinLabel(polin.tipoPolin) }}</p>
+        </div>
+        <div class="field">
+          <div class="field-label">Estado</div>
+          <span class="badge {{ estadoClase(polin.estado) }}">{{ estadoLabel(polin.estado) }}</span>
+        </div>
+        <div class="field" *ngIf="polin.codigoSap">
+          <div class="field-label">Código SAP</div>
+          <p class="mono">{{ polin.codigoSap }}</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-button expand="block" color="primary" (click)="open(polin)">Editar</ion-button>
+    <ion-button class="btn-eliminar" expand="block" fill="outline" color="danger" (click)="deleteModal(polin)">Eliminar</ion-button>
+  </div>
 </ion-content>

@@ -1,0 +1,6 @@
+/* Lista de áreas — reutiliza .reg-list / .reg-card globales (catálogo neutro, sin estado).
+   El sliding envuelve la tarjeta; el gap de .reg-list lo aplica sobre cada item-sliding. */
+ion-item-sliding {
+  border-radius: var(--r);
+  overflow: hidden;
+}

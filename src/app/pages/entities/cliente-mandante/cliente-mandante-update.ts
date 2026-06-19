@@ -10,6 +10,7 @@ import { ClienteMandanteService } from './cliente-mandante.service';
 @Component({
   selector: 'page-cliente-mandante-update',
   templateUrl: 'cliente-mandante-update.html',
+  styleUrls: ['cliente-mandante-update.scss'],
 })
 export class ClienteMandanteUpdatePage implements OnInit {
   clienteMandante: ClienteMandante;
@@ -71,12 +72,12 @@ export class ClienteMandanteUpdatePage implements OnInit {
   }
 
   async onSaveSuccess(response) {
-    let action = 'updated';
+    let action = 'actualizado';
     if (response.status === 201) {
-      action = 'created';
+      action = 'creado';
     }
     this.isSaving = false;
-    const toast = await this.toastCtrl.create({ message: `ClienteMandante ${action} successfully.`, duration: 2000, position: 'middle' });
+    const toast = await this.toastCtrl.create({ message: `Registro ${action} correctamente.`, duration: 2000, position: 'middle' });
     await toast.present();
     await this.navController.navigateBack('/tabs/entities/cliente-mandante');
   }
@@ -88,7 +89,7 @@ export class ClienteMandanteUpdatePage implements OnInit {
   async onError(error) {
     this.isSaving = false;
     console.error(error);
-    const toast = await this.toastCtrl.create({ message: 'Failed to load data', duration: 2000, position: 'middle' });
+    const toast = await this.toastCtrl.create({ message: 'No se pudieron cargar los datos', duration: 2000, position: 'middle' });
     await toast.present();
   }
 

@@ -7,6 +7,7 @@ import { CorreaTransportadoraService } from './correa-transportadora.service';
 @Component({
   selector: 'page-correa-transportadora-detail',
   templateUrl: 'correa-transportadora-detail.html',
+  styleUrl: 'correa-transportadora-detail.scss',
 })
 export class CorreaTransportadoraDetailPage implements OnInit {
   correaTransportadora: CorreaTransportadora = {};
@@ -30,15 +31,15 @@ export class CorreaTransportadoraDetailPage implements OnInit {
 
   async deleteModal(item: CorreaTransportadora) {
     const alert = await this.alertController.create({
-      header: 'Confirm the deletion?',
+      header: '¿Eliminar este registro?',
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
           cssClass: 'secondary',
         },
         {
-          text: 'Delete',
+          text: 'Eliminar',
           handler: () => {
             this.correaTransportadoraService.delete(item.id).subscribe(() => {
               this.navController.navigateForward('/tabs/entities/correa-transportadora');

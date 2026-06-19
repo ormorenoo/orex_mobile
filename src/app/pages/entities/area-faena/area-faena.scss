@@ -1,0 +1,20 @@
+/* Lista neutra de relaciones área/faena (sin estado de color).
+   .reg-list / .reg-card / .reg-empty vienen del global. */
+
+ion-item-sliding {
+  background: transparent;
+  margin-bottom: 8px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.reg-list ion-item-sliding .reg-card {
+  margin-bottom: 0;
+  width: 100%;
+}
+
+ion-item-option {
+  font-weight: 700;
+}

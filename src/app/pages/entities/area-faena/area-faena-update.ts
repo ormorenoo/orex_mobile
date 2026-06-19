@@ -12,6 +12,7 @@ import { AreaFaenaService } from './area-faena.service';
 @Component({
   selector: 'page-area-faena-update',
   templateUrl: 'area-faena-update.html',
+  styleUrl: 'area-faena-update.scss',
 })
 export class AreaFaenaUpdatePage implements OnInit {
   areaFaena: AreaFaena;
@@ -79,12 +80,12 @@ export class AreaFaenaUpdatePage implements OnInit {
   }
 
   async onSaveSuccess(response) {
-    let action = 'updated';
+    let action = 'actualizado';
     if (response.status === 201) {
-      action = 'created';
+      action = 'creado';
     }
     this.isSaving = false;
-    const toast = await this.toastCtrl.create({ message: `AreaFaena ${action} successfully.`, duration: 2000, position: 'middle' });
+    const toast = await this.toastCtrl.create({ message: `Registro ${action} correctamente.`, duration: 2000, position: 'middle' });
     await toast.present();
     await this.navController.navigateBack('/tabs/entities/area-faena');
   }
@@ -96,7 +97,7 @@ export class AreaFaenaUpdatePage implements OnInit {
   async onError(error) {
     this.isSaving = false;
     console.error(error);
-    const toast = await this.toastCtrl.create({ message: 'Failed to load data', duration: 2000, position: 'middle' });
+    const toast = await this.toastCtrl.create({ message: 'No se pudieron cargar los datos', duration: 2000, position: 'middle' });
     await toast.present();
   }
 

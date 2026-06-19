@@ -8,6 +8,7 @@ import { AreaFaenaService } from './area-faena.service';
 @Component({
   selector: 'page-area-faena',
   templateUrl: 'area-faena.html',
+  styleUrl: 'area-faena.scss',
 })
 export class AreaFaenaPage {
   areaFaenas: AreaFaena[];
@@ -45,7 +46,7 @@ export class AreaFaenaPage {
         },
         async error => {
           console.error(error);
-          const toast = await this.toastCtrl.create({ message: 'Failed to load data', duration: 2000, position: 'middle' });
+          const toast = await this.toastCtrl.create({ message: 'No se pudieron cargar los datos', duration: 2000, position: 'middle' });
           await toast.present();
         },
       );
@@ -67,7 +68,7 @@ export class AreaFaenaPage {
   async delete(areaFaena) {
     this.areaFaenaService.delete(areaFaena.id).subscribe(
       async () => {
-        const toast = await this.toastCtrl.create({ message: 'AreaFaena deleted successfully.', duration: 3000, position: 'middle' });
+        const toast = await this.toastCtrl.create({ message: 'Registro eliminado correctamente.', duration: 3000, position: 'middle' });
         await toast.present();
         await this.loadAll();
       },

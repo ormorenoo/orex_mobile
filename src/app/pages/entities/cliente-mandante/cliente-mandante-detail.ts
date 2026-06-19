@@ -7,6 +7,7 @@ import { ClienteMandanteService } from './cliente-mandante.service';
 @Component({
   selector: 'page-cliente-mandante-detail',
   templateUrl: 'cliente-mandante-detail.html',
+  styleUrls: ['cliente-mandante-detail.scss'],
 })
 export class ClienteMandanteDetailPage implements OnInit {
   clienteMandante: ClienteMandante = {};
@@ -30,15 +31,15 @@ export class ClienteMandanteDetailPage implements OnInit {
 
   async deleteModal(item: ClienteMandante) {
     const alert = await this.alertController.create({
-      header: 'Confirm the deletion?',
+      header: '¿Eliminar este registro?',
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
           cssClass: 'secondary',
         },
         {
-          text: 'Delete',
+          text: 'Eliminar',
           handler: () => {
             this.clienteMandanteService.delete(item.id).subscribe(() => {
               this.navController.navigateForward('/tabs/entities/cliente-mandante');

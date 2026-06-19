@@ -3,45 +3,47 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Areas</ion-title>
+    <ion-title>Áreas</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<!-- todo: add elasticsearch support -->
 <ion-content class="ion-padding">
   <ion-refresher [disabled]="plt.is('desktop')" slot="fixed" (ionRefresh)="loadAll($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-list>
+  <div class="reg-list">
     @for (area of areas; track trackId($index, area)) {
       <ion-item-sliding #slidingItem>
-        <ion-item (click)="view(area)">
-          <ion-label text-wrap>
-            <p>{{ area.id }}</p>
-            <p>{{ area.nombre }}</p>
-          </ion-label>
-        </ion-item>
+        <button type="button" class="reg-card" (click)="view(area)">
+          <span class="reg-card__bar"></span>
+          <span class="reg-card__main">
+            <span class="reg-card__top">
+              <span class="reg-card__code mono">AREA #{{ area.id }}</span>
+            </span>
+            <span class="reg-card__detail">{{ area.nombre || '—' }}</span>
+          </span>
+          <ion-icon name="chevron-forward"></ion-icon>
+        </button>
         <ion-item-options side="end">
           <ion-item-option color="primary" (click)="edit(slidingItem, area)">
-            {{ 'EDIT_BUTTON' | translate }}
+            Editar
           </ion-item-option>
           <ion-item-option color="danger" (click)="delete(area)">
-            {{ 'DELETE_BUTTON' | translate }}
+            Eliminar
           </ion-item-option>
         </ion-item-options>
       </ion-item-sliding>
     }
-  </ion-list>
+  </div>
+
   @if (!areas?.length) {
-    <ion-item>
-      <ion-label> No Areas found. </ion-label>
-    </ion-item>
+    <div class="reg-empty">No hay áreas registradas.</div>
   }
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="new()">
-      <ion-icon name="add"></ion-icon>
+      <ion-icon class="add" name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 </ion-content>

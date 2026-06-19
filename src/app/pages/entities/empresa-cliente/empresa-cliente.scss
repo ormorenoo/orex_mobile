@@ -1,0 +1,11 @@
+/* Lista catálogo neutra: reutiliza .reg-list / .reg-card del global.
+   Sin estado, la barra izquierda toma un tono acero neutro. */
+.reg-card {
+  .reg-card__bar {
+    background: var(--blue);
+  }
+}
+
+ion-item-sliding {
+  background: transparent;
+}
