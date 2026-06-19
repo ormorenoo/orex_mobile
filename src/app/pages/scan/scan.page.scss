@@ -1,0 +1,130 @@
+.scan {
+  --background: #0c0f14;
+
+  &__bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 54px;
+    padding: 0 12px;
+    color: #fff;
+  }
+
+  &__back {
+    border: none;
+    background: rgba(255, 255, 255, 0.12);
+    cursor: pointer;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    ion-icon {
+      color: #fff;
+      font-size: 22px;
+    }
+  }
+
+  &__title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  &__stage {
+    position: relative;
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 50% 40%, #2a3340 0%, #14181f 55%, #0c0f14 100%);
+  }
+
+  &__hint {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    animation: scanPulse 1.8s ease-in-out infinite;
+  }
+
+  &__footer {
+    padding: 18px 16px 24px;
+  }
+}
+
+.reticle {
+  position: relative;
+  width: 230px;
+  height: 230px;
+
+  &__c {
+    position: absolute;
+    width: 42px;
+    height: 42px;
+
+    &--tl {
+      left: 0;
+      top: 0;
+      border-top: 4px solid var(--orange);
+      border-left: 4px solid var(--orange);
+      border-top-left-radius: 8px;
+    }
+    &--tr {
+      right: 0;
+      top: 0;
+      border-top: 4px solid var(--orange);
+      border-right: 4px solid var(--orange);
+      border-top-right-radius: 8px;
+    }
+    &--bl {
+      left: 0;
+      bottom: 0;
+      border-bottom: 4px solid var(--orange);
+      border-left: 4px solid var(--orange);
+      border-bottom-left-radius: 8px;
+    }
+    &--br {
+      right: 0;
+      bottom: 0;
+      border-bottom: 4px solid var(--orange);
+      border-right: 4px solid var(--orange);
+      border-bottom-right-radius: 8px;
+    }
+  }
+
+  &__line {
+    position: absolute;
+    left: 8%;
+    right: 8%;
+    height: 2px;
+    background: var(--orange);
+    box-shadow: 0 0 12px 2px rgba(255, 106, 0, 0.7);
+    animation: scanLine 2.2s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes scanLine {
+  0% {
+    top: 6%;
+  }
+  100% {
+    top: 90%;
+  }
+}
+
+@keyframes scanPulse {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}

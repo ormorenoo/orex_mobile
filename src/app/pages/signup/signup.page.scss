@@ -1,0 +1,93 @@
+/* Toolbar transparente: solo el botón de volver, sobre el fondo claro */
+.signup-header ion-toolbar {
+  --background: transparent;
+  --border-color: transparent;
+  --color: var(--ink);
+}
+
+.signup-content {
+  --background: var(--bg);
+}
+
+.signup-wrap {
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 8px 20px 32px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Marca */
+.signup-brand {
+  text-align: center;
+  margin-bottom: 22px;
+
+  &__logo {
+    width: 70%;
+    max-width: 260px;
+    display: block;
+    margin: 0 auto;
+  }
+
+  &__tagline {
+    margin: 10px 0 0;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+}
+
+/* Tarjeta del formulario */
+.signup-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  box-shadow: var(--shadow);
+  padding: 22px 18px 20px;
+
+  &__title {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--ink);
+  }
+
+  &__sub {
+    margin: 4px 0 18px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+}
+
+.signup-list {
+  background: transparent;
+  padding: 0;
+}
+
+.signup-item {
+  --background: var(--bg);
+  --border-radius: var(--r);
+  --padding-start: 12px;
+  --inner-padding-end: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  margin-bottom: 12px;
+
+  ion-icon {
+    color: var(--faint);
+    font-size: 18px;
+    margin-right: 6px;
+  }
+}
+
+#signup {
+  --border-radius: 999px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  --box-shadow: 0 8px 20px rgba(255, 106, 0, 0.3);
+}

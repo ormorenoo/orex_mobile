@@ -1,0 +1,26 @@
+<ion-content class="scan">
+  <div class="scan__bar">
+    <button type="button" class="scan__back" (click)="volver()">
+      <ion-icon name="chevron-back"></ion-icon>
+    </button>
+    <span class="scan__title">Escanear mesa</span>
+  </div>
+
+  <div class="scan__stage">
+    <div class="reticle">
+      <span class="reticle__c reticle__c--tl"></span>
+      <span class="reticle__c reticle__c--tr"></span>
+      <span class="reticle__c reticle__c--bl"></span>
+      <span class="reticle__c reticle__c--br"></span>
+      <span class="reticle__line"></span>
+    </div>
+    <div class="scan__hint">Apunta al código QR pegado en la mesa</div>
+  </div>
+
+  <div class="scan__footer">
+    <ion-button expand="block" (click)="ingresarCodigo()">
+      <ion-icon slot="start" name="keypad-outline"></ion-icon>
+      Ingresar código manualmente
+    </ion-button>
+  </div>
+</ion-content>

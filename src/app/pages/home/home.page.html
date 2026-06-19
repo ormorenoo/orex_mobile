@@ -1,7 +1,11 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title> Hola, {{ account?.firstName }} </ion-title>
-
+    <ion-title>
+      <div class="hd">
+        <span class="hd__hi">Hola, {{ account?.firstName || 'técnico' }}</span>
+        <span class="hd__role">Técnico de terreno</span>
+      </div>
+    </ion-title>
     <ion-buttons slot="end">
       <ion-button fill="clear" (click)="logout()">
         <ion-icon name="log-out-outline"></ion-icon>
@@ -11,55 +15,62 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <!-- Sección de bienvenida -->
-  <div class="welcome-section">
-    <h2>Bienvenido</h2>
-    <p>¿Qué deseas hacer hoy?</p>
+  <!-- Estado de conexión -->
+  <div class="conn">
+    <span class="conn__chip" [class.conn__chip--off]="!online">
+      <span class="conn__dot"></span>{{ online ? 'En línea' : 'Sin conexión' }}
+    </span>
   </div>
 
-  <!-- Accesos rápidos -->
-  <ion-grid class="quick-actions">
-    <ion-row>
-      <ion-col size="6">
-        <ion-card button (click)="goTo('mantenimiento')">
-          <ion-card-content>
-            <ion-icon name="construct-outline"></ion-icon>
-            <p>Mantenimientos</p>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
+  <!-- Escanear QR -->
+  <button type="button" class="scan-cta" (click)="goScan()">
+    <span class="scan-cta__icon"><ion-icon name="scan-outline"></ion-icon></span>
+    <span class="scan-cta__txt">
+      <span class="scan-cta__t">Escanear QR de mesa</span>
+      <span class="scan-cta__s">Abre la mesa y registra en terreno</span>
+    </span>
+  </button>
 
-      <ion-col size="6">
-        <ion-card button (click)="goTo('inspeccion')">
-          <ion-card-content>
-            <ion-icon name="clipboard-outline"></ion-icon>
-            <p>Inspecciones</p>
-          </ion-card-content>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <button type="button" class="codigo-link" (click)="ingresarCodigo()">
+    <ion-icon name="keypad-outline"></ion-icon>
+    Ingresar código manualmente
+  </button>
 
-  <!-- Acciones rápidas -->
-  <div class="quick-actions-secondary">
-    <h3>Acciones rápidas</h3>
+  <!-- Contadores / accesos -->
+  <div class="counters">
+    <button type="button" class="counter" (click)="goTo('inspeccion')">
+      <ion-icon name="clipboard-outline"></ion-icon>
+      <span class="counter__l">Inspecciones</span>
+    </button>
+    <button type="button" class="counter" (click)="goTo('mantenimiento')">
+      <ion-icon name="construct-outline"></ion-icon>
+      <span class="counter__l">Mantenimientos</span>
+    </button>
+  </div>
 
-    <div class="action-buttons">
-      <div class="action-item" (click)="create('inspeccion')">
-        <ion-icon name="add-circle-outline"></ion-icon>
-        <span>Nueva inspección</span>
-      </div>
-
-      <div class="action-item" (click)="create('mantenimiento')">
-        <ion-icon name="add-circle-outline"></ion-icon>
-        <span>Nuevo mantenimiento</span>
-      </div>
+  <!-- Mesas recientes -->
+  @if (mesasRecientes.length) {
+    <div class="seccion-titulo">Mesas recientes</div>
+    <div class="mesas">
+      @for (mesa of mesasRecientes; track mesa.id) {
+        <button type="button" class="mesa-item" (click)="abrirMesa(mesa)">
+          <span class="mesa-item__av mono">{{ mesa.id }}</span>
+          <span class="mesa-item__body">
+            <span class="mesa-item__id mono">{{ mesa.identificador }}</span>
+            <span class="mesa-item__sub">{{ subtituloMesa(mesa) }}</span>
+          </span>
+          <ion-icon name="chevron-forward"></ion-icon>
+        </button>
+      }
     </div>
-  </div>
-  <div *ngIf="online" class="quick-actions-secondary">
-    <ion-button style="width: 100% !important" [disabled]="isLoading" (click)="sync()">
-      <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
-      <span *ngIf="!isLoading">Sincronizar</span>
-    </ion-button>
-  </div>
+  }
+
+  <!-- Sincronizar -->
+  <ion-button *ngIf="online" class="sync-btn" expand="block" fill="outline" [disabled]="isLoading" (click)="sync()">
+    <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+    <ng-container *ngIf="!isLoading">
+      <ion-icon slot="start" name="sync-outline"></ion-icon>
+      Sincronizar
+    </ng-container>
+  </ion-button>
 </ion-content>

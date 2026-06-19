@@ -1,0 +1,34 @@
+ion-tab-bar {
+  --background: var(--surface);
+  border-top: 1px solid var(--line);
+  height: 62px;
+}
+
+ion-tab-button {
+  --color: var(--faint);
+  --color-selected: var(--orange);
+}
+
+/* Botón central de escaneo: flotante sobre la barra, centrado */
+.scan-fab {
+  position: fixed;
+  left: 50%;
+  bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  width: 56px;
+  height: 56px;
+  border: none;
+  border-radius: 50%;
+  background: var(--orange);
+  box-shadow: 0 6px 16px rgba(255, 106, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1000;
+
+  ion-icon {
+    color: #fff;
+    font-size: 26px;
+  }
+}

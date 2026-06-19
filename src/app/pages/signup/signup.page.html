@@ -1,40 +1,47 @@
-<ion-header>
+<ion-header class="signup-header">
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ 'SIGNUP_TITLE' | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <form (submit)="doSignup()">
-    <ion-list>
-      <ion-item>
-        <ion-label position="floating">{{ 'FIRST_NAME' | translate }}</ion-label>
-        <ion-input type="string" [(ngModel)]="account.firstName" name="firstName"></ion-input>
-      </ion-item>
+<ion-content class="signup-content">
+  <div class="signup-wrap">
+    <div class="signup-brand">
+      <img src="assets/img/logo_orex_mobile_full.png" alt="OREX" class="signup-brand__logo" />
+      <p class="signup-brand__tagline">Gestión de mantenimiento minero</p>
+    </div>
 
-      <ion-item>
-        <ion-label position="floating">{{ 'LAST_NAME' | translate }}</ion-label>
-        <ion-input type="string" [(ngModel)]="account.lastName" name="lastName"></ion-input>
-      </ion-item>
+    <div class="signup-card">
+      <h1 class="signup-card__title">{{ 'SIGNUP_TITLE' | translate }}</h1>
+      <p class="signup-card__sub">Crea tu cuenta para comenzar</p>
 
-      <ion-item>
-        <ion-label position="floating">{{ 'EMAIL' | translate }}</ion-label>
-        <ion-input type="email" [(ngModel)]="account.email" name="email"></ion-input>
-      </ion-item>
+      <form (submit)="doSignup()">
+        <ion-list lines="none" class="signup-list">
+          <ion-item class="signup-item">
+            <ion-icon slot="start" name="person-outline"></ion-icon>
+            <ion-input [label]="'FIRST_NAME' | translate" labelPlacement="floating" type="text" [(ngModel)]="account.firstName" name="firstName"></ion-input>
+          </ion-item>
 
-      <ion-item>
-        <ion-label position="floating">{{ 'PASSWORD' | translate }}</ion-label>
-        <ion-input type="password" [(ngModel)]="account.password" name="password"></ion-input>
-      </ion-item>
+          <ion-item class="signup-item">
+            <ion-icon slot="start" name="person-outline"></ion-icon>
+            <ion-input [label]="'LAST_NAME' | translate" labelPlacement="floating" type="text" [(ngModel)]="account.lastName" name="lastName"></ion-input>
+          </ion-item>
 
-      <ion-row class="ion-padding">
-        <ion-col>
-          <ion-button expand="block" type="submit" color="primary">{{ 'SIGNUP_BUTTON' | translate }}</ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-list>
-  </form>
+          <ion-item class="signup-item">
+            <ion-icon slot="start" name="mail-outline"></ion-icon>
+            <ion-input [label]="'EMAIL' | translate" labelPlacement="floating" type="email" [(ngModel)]="account.email" name="email" autocomplete="email"></ion-input>
+          </ion-item>
+
+          <ion-item class="signup-item">
+            <ion-icon slot="start" name="lock-closed-outline"></ion-icon>
+            <ion-input [label]="'PASSWORD' | translate" labelPlacement="floating" type="password" [(ngModel)]="account.password" name="password" autocomplete="new-password"></ion-input>
+          </ion-item>
+        </ion-list>
+
+        <ion-button expand="block" shape="round" size="large" type="submit" id="signup">{{ 'SIGNUP_BUTTON' | translate }}</ion-button>
+      </form>
+    </div>
+  </div>
 </ion-content>

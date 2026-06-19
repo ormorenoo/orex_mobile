@@ -1,58 +1,104 @@
-:host {
-  ion-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* Toolbar transparente: solo el botón de volver, sobre el fondo claro */
+.login-header ion-toolbar {
+  --background: transparent;
+  --border-color: transparent;
+  --color: var(--ink);
+}
+
+.login-content {
+  --background: var(--bg);
+}
+
+.login-wrap {
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 8px 20px 32px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Marca */
+.login-brand {
+  text-align: center;
+  margin-bottom: 22px;
+
+  &__logo {
+    width: 70%;
+    max-width: 260px;
+    display: block;
+    margin: 0 auto;
+  }
+
+  &__tagline {
+    margin: 10px 0 0;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
   }
 }
 
-.login-container {
-  max-width: 420px;
-  margin: 0 auto;
-  padding: 24px;
-  background: #1a1a1a;
-  border-radius: 12px;
-  border: 1px solid var(--orex-border);
+/* Tarjeta del formulario */
+.login-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  box-shadow: var(--shadow);
+  padding: 22px 18px 20px;
+
+  &__title {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--ink);
+  }
+
+  &__sub {
+    margin: 4px 0 18px;
+    font-size: 13px;
+    color: var(--muted);
+  }
 }
 
-.login-container h1,
-.login-container ion-title {
-  font-size: 32px;
-  font-weight: 700;
-  margin-bottom: 32px;
+.login-list {
+  background: transparent;
+  padding: 0;
 }
 
-/* Títulos y labels */
-ion-title {
-  color: #fff;
-}
-
-ion-label {
-  color: #ffffffcc !important;
-  font-size: 1rem;
-}
-
-/* Inputs */
-ion-item {
-  --background: transparent;
-  --border-color: #ffffff55;
-  --highlight-color-focused: #ffffff;
-  border-radius: 12px;
+.login-item {
+  --background: var(--bg);
+  --border-radius: var(--r);
+  --padding-start: 12px;
+  --inner-padding-end: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
   margin-bottom: 12px;
+
+  ion-icon {
+    color: var(--faint);
+    font-size: 18px;
+    margin-right: 6px;
+  }
 }
 
-/* Botón de login */
+.login-remember {
+  margin: 4px 2px 18px;
+  font-size: 14px;
+  color: var(--muted);
+
+  ion-toggle {
+    --background-checked: var(--orange);
+    --handle-background: #fff;
+  }
+}
+
 #login {
-  font-size: 1.1rem;
-  font-weight: 600;
-  padding: 12px 0;
-  --border-radius: 12px;
-  --background: #ff7a00;
-  --background-activated: #ff8f26;
-}
-
-/* Toggle 'Recordarme' */
-ion-toggle {
-  --handle-background: #fff;
-  --background-checked: #ff7a00;
+  --border-radius: 999px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  --box-shadow: 0 8px 20px rgba(255, 106, 0, 0.3);
 }
