@@ -3,17 +3,27 @@ import { UntypedFormBuilder as FormBuilder } from '@angular/forms';
 import { NavController, Platform, ToastController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { Polin } from '../polin';
+import { Polin, PolinService } from '../polin';
 import { Inspeccion } from './inspeccion.model';
-import { Estacion } from '../estacion';
+import { Estacion, EstacionService } from '../estacion';
 import { Faena } from '../faena';
 import { Area } from '../area';
 import { CorreaTransportadora } from '../correa-transportadora';
-import { MesaTrabajo } from '../mesa-trabajo';
+import { MesaTrabajo, MesaTrabajoService } from '../mesa-trabajo';
+import {
+  bloquearControles,
+  resumenUbicacion,
+  ResumenUbicacion,
+  ubicacionDesdeEstacion,
+  ubicacionDesdeMesa,
+  ubicacionDesdePolin,
+} from '#app/shared/utils/ubicacion.utils';
+import { estadoClase, posicionLabel, tipoPolinLabel } from '#app/shared/utils/polin-ui.utils';
 import { Criticidad } from '../enumerations/criticidad.model';
 import { CondicionPolin } from '../enumerations/condicion-polin.model';
 import { TipoFalla } from '../enumerations/tipo-falla.model';
 import { TipoServicio } from '../enumerations/tipo-servicio.model';
+import { TipoRegistro } from '../enumerations/tipo-registro.model';
 import { FaenaDataService } from '../faena/faena-data.service';
 import { InspeccionDataService } from './inspeccion-data.service';
 import { AreaFaenaDataService } from '../area-faena/area-faena-data.service';
@@ -54,9 +64,49 @@ export class InspeccionUpdatePage implements OnInit {
   metodoGeneral: 'camara' | 'archivo' = 'camara';
   metodoDetalle: 'camara' | 'archivo' = 'camara';
 
+  /** Cuando se entra desde una mesa/estación/polín la ubicación se precarga y bloquea. */
+  ubicacionAutocompletada = false;
+  estacionFija = false;
+  polinFijo = false;
+  resumen?: ResumenUbicacion;
+  /** Mesa de origen, para volver a su detalle al guardar. */
+  mesaTrabajoIdActual?: number;
+
+  // Helpers de presentación (prototipo): clases de estado y etiquetas.
+  estadoClase = estadoClase;
+  posicionLabel = posicionLabel;
+  tipoPolinLabel = tipoPolinLabel;
+
+  // Opciones de los segmented (orden del prototipo).
+  condicionOpciones = [
+    { key: 'OPERATIVO', label: 'Operativo', clase: 'seg--ok' },
+    { key: 'OBSERVACION', label: 'Observación', clase: 'seg--obs' },
+    { key: 'NO_OPERATIVO', label: 'No operativo', clase: 'seg--no' },
+  ];
+  criticidadOpciones = [
+    { key: 'INMEDIATO', label: 'Inmediato' },
+    { key: 'URGENTE', label: 'Urgente' },
+    { key: 'PLANIFICADO', label: 'Planificado' },
+  ];
+  TipoRegistro = TipoRegistro;
+
+  /** ¿El registro es a nivel estación (sin polín)? Espejo de la web. */
+  get esEstacion(): boolean {
+    return this.form.get('tipo')?.value === TipoRegistro.ESTACION;
+  }
+
+  /** Cambia el tipo de registro (polín ↔ estación) y limpia el polín si pasa a estación. */
+  onTipoChange(tipo: TipoRegistro): void {
+    this.form.get('tipo')?.setValue(tipo);
+    if (tipo === TipoRegistro.ESTACION) {
+      this.form.get('polin')?.setValue(null);
+    }
+  }
+
   form = inject(FormBuilder).group({
     id: [null, []],
     fechaCreacion: [null, []],
+    tipo: [TipoRegistro.POLIN, []],
     condicion: [null, []],
     criticidad: [null, []],
     tipoFalla: [null, []],
@@ -85,6 +135,9 @@ export class InspeccionUpdatePage implements OnInit {
     private correaTransportadoraDataService: CorreaTransportadoraDataService,
     private mesaTrabajoDataService: MesaTrabajoDataService,
     private estacionDataService: EstacionDataService,
+    private mesaTrabajoService: MesaTrabajoService,
+    private estacionService: EstacionService,
+    private polinService: PolinService,
   ) {
     this.form.valueChanges.subscribe(v => {
       this.isReadyToSave = this.form.valid;
@@ -98,6 +151,94 @@ export class InspeccionUpdatePage implements OnInit {
       this.isNew = this.inspeccion.id === null || this.inspeccion.id === undefined;
       this.updateForm(this.inspeccion);
     });
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.handleQueryParams(params['polinId'] ?? null, params['estacionId'] ?? null, params['mesaTrabajoId'] ?? null, params['tipo'] ?? null);
+    });
+  }
+
+  /**
+   * Precarga y bloquea la ubicación cuando se crea desde una mesa/estación/polín
+   * (flujo del QR). Espejo de inspeccion-update.component.ts en la web.
+   */
+  protected handleQueryParams(polinId: string | null, estacionId: string | null, mesaTrabajoId: string | null, tipo: string | null = null): void {
+    if (polinId) {
+      this.polinService.find(+polinId).subscribe(res => {
+        if (res.body) {
+          const valores = ubicacionDesdePolin(res.body);
+          this.form.patchValue(valores);
+          this.polins = [res.body];
+          this.mesaTrabajoIdActual = res.body.estacion?.mesaTrabajo?.id;
+          this.bloquearUbicacion(true, true);
+          this.resumen = resumenUbicacion(valores);
+        }
+      });
+      return;
+    }
+
+    if (estacionId) {
+      this.estacionService.find(+estacionId).subscribe(res => {
+        if (res.body) {
+          const valores = ubicacionDesdeEstacion(res.body);
+          this.form.patchValue(valores);
+          this.mesaTrabajoIdActual = res.body.mesaTrabajo?.id;
+          if (tipo === TipoRegistro.ESTACION) {
+            // Registro a nivel ESTACIÓN completa (sin polín); se cargan polines por si alterna a "Por polín".
+            this.form.get('tipo')?.setValue(TipoRegistro.ESTACION);
+          }
+          this.loadPolinesOptions(res.body);
+          this.bloquearUbicacion(true, false);
+          this.resumen = resumenUbicacion(valores);
+        }
+      });
+      return;
+    }
+
+    if (mesaTrabajoId) {
+      this.mesaTrabajoIdActual = +mesaTrabajoId;
+      this.mesaTrabajoService.find(+mesaTrabajoId).subscribe(res => {
+        if (res.body) {
+          const valores = ubicacionDesdeMesa(res.body);
+          this.form.patchValue(valores);
+          this.loadEstacionesOptions(res.body);
+          this.bloquearUbicacion(false, false);
+          this.resumen = resumenUbicacion(valores);
+        }
+      });
+      return;
+    }
+  }
+
+  /** Selección de polín como tarjeta (radio única). */
+  seleccionarPolin(polin: Polin): void {
+    this.form.get('polin')?.setValue(polin);
+  }
+
+  polinSeleccionado(polin: Polin): boolean {
+    return this.form.get('polin')?.value?.id === polin.id;
+  }
+
+  /** Setter para los controles tipo segmented (condición/criticidad). */
+  setControl(control: string, value: string): void {
+    this.form.get(control)?.setValue(value);
+  }
+
+  esControl(control: string, value: string): boolean {
+    return this.form.get(control)?.value === value;
+  }
+
+  /** Bloquea faena/área/correa/mesa (siempre) y opcionalmente estación y polín. */
+  private bloquearUbicacion(estacionFija: boolean, polinFijo: boolean): void {
+    this.ubicacionAutocompletada = true;
+    this.estacionFija = estacionFija;
+    this.polinFijo = polinFijo;
+    const controles = [this.form.get('faena'), this.form.get('area'), this.form.get('correa'), this.form.get('mesa')];
+    if (estacionFija) {
+      controles.push(this.form.get('estacion'));
+    }
+    if (polinFijo) {
+      controles.push(this.form.get('polin'));
+    }
+    bloquearControles(...controles);
   }
 
   async loadFaenasOptions(): Promise<void> {
@@ -236,7 +377,13 @@ export class InspeccionUpdatePage implements OnInit {
       await toast.present();
 
       if (result.success) {
-        await this.navController.navigateBack('/tabs/entities/inspeccion');
+        if (this.mesaTrabajoIdActual) {
+          await this.navController.navigateBack(`/tabs/entities/mesa-trabajo/${this.mesaTrabajoIdActual}/view`, {
+            queryParams: { nuevo: 'inspeccion' },
+          });
+        } else {
+          await this.navController.navigateBack('/tabs/entities/inspeccion');
+        }
       }
     } catch (error) {
       this.isSaving = false;
@@ -315,6 +462,7 @@ export class InspeccionUpdatePage implements OnInit {
       ...new Inspeccion(),
       id: this.form.get(['id']).value,
       fechaCreacion: this.form.get(['fechaCreacion']).value ? new Date(this.form.get(['fechaCreacion']).value) : null,
+      tipo: this.form.get(['tipo']).value,
       condicion: this.form.get(['condicion']).value,
       criticidad: this.form.get(['criticidad']).value,
       tipoFalla: this.form.get(['tipoFalla']).value,
@@ -322,7 +470,8 @@ export class InspeccionUpdatePage implements OnInit {
       comentarios: this.form.get(['comentarios']).value,
       rutaFotoGeneral: this.form.get(['rutaFotoGeneral']).value,
       rutaFotoDetalle: this.form.get(['rutaFotoDetalle']).value,
-      polin: this.form.get(['polin']).value,
+      polin: this.esEstacion ? null : this.form.get(['polin']).value,
+      estacion: this.form.get(['estacion']).value,
       applicationUser: this.form.get(['applicationUser']).value,
     };
   }

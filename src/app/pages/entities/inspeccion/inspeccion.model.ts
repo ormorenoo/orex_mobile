@@ -1,6 +1,8 @@
 import { BaseEntity } from 'src/model/base-entity';
 import { Mantenimiento } from '#app/pages/entities/mantenimiento/mantenimiento.model';
 import { Polin } from '../polin';
+import { Estacion } from '../estacion';
+import { TipoRegistro } from '../enumerations/tipo-registro.model';
 import { ApplicationUser } from '../application-user/application-user.model';
 
 export const enum Condicion {
@@ -55,5 +57,7 @@ export class Inspeccion implements BaseEntity {
     public polin?: Polin,
     public mantenimientos?: Mantenimiento[],
     public applicationUser?: ApplicationUser,
+    public tipo?: TipoRegistro,
+    public estacion?: Estacion,
   ) {}
 }

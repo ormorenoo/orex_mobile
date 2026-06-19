@@ -13,57 +13,30 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-list class="inspeccion-list">
+  <div class="reg-list">
     @for (inspeccion of inspeccions; track trackId($index, inspeccion)) {
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title>
-            Inspección #{{ inspeccion.id ?? inspeccion.idLocal }}
-          </ion-card-title>
-          <ion-card-subtitle>
-            {{ inspeccion.fechaCreacion | date: 'medium' }}
-          </ion-card-subtitle>
-          <ion-card-subtitle>
-            {{ inspeccion.applicationUser?.login ?? 'local' }}
-          </ion-card-subtitle>
-        </ion-card-header>
-
-        <ion-card-content (click)="view(inspeccion)" class="card-body-clickable">
-          <div class="chips-row">
-            <ion-chip color="danger" outline *ngIf="inspeccion.condicion.toString() === 'NO_OPERATIVO'">
-              <ion-label class="chip-text">Condición: No Operativo</ion-label>
-            </ion-chip>
-
-            <ion-chip color="warning" outline *ngIf="inspeccion.condicion.toString() === 'OBSERVACION'">
-              <ion-label class="chip-text">Condición: Observación</ion-label>
-            </ion-chip>
-
-            <ion-chip color="success" outline *ngIf="inspeccion.condicion.toString() === 'OPERATIVO'">
-              <ion-label class="chip-text">Condición: Operativo</ion-label>
-            </ion-chip>
-
-            <ion-chip color="danger" outline *ngIf="inspeccion.criticidad.toString() === 'INMEDIATO'">
-              <ion-label class="chip-text">Criticidad: Inmediato</ion-label>
-            </ion-chip>
-
-            <ion-chip color="warning" outline *ngIf="inspeccion.criticidad.toString() === 'URGENTE'">
-              <ion-label class="chip-text">Criticidad: Urgente</ion-label>
-            </ion-chip>
-
-            <ion-chip color="success" outline *ngIf="inspeccion.criticidad.toString() === 'PLANIFICADO'">
-              <ion-label class="chip-text">Criticidad: Planificado</ion-label>
-            </ion-chip>
-          </div>
-        </ion-card-content>
-
-      </ion-card>
+      <button type="button" class="reg-card {{ estadoClase(inspeccion.condicion) }}" (click)="view(inspeccion)">
+        <span class="reg-card__bar"></span>
+        <span class="reg-card__main">
+          <span class="reg-card__top">
+            <span class="reg-card__code mono">INS #{{ inspeccion.id ?? inspeccion.idLocal }}</span>
+            <span class="badge {{ estadoClase(inspeccion.condicion) }}">{{ estadoLabel(inspeccion.condicion) }}</span>
+          </span>
+          <span class="reg-card__detail">
+            {{ inspeccion.polin?.identificador ? 'Polín ' + inspeccion.polin.identificador : 'Estación ' + (inspeccion.estacion?.identificador || '—') }}
+            @if (inspeccion.criticidad) {
+              · {{ inspeccion.criticidad }}
+            }
+          </span>
+          <span class="reg-card__sub">{{ inspeccion.fechaCreacion | date: 'dd-MM-yyyy HH:mm' }} · {{ inspeccion.applicationUser?.login ?? 'local' }}</span>
+        </span>
+        <ion-icon name="chevron-forward"></ion-icon>
+      </button>
     }
-  </ion-list>
+  </div>
 
   @if (!inspeccions?.length) {
-    <ion-item>
-      <ion-label>No hay inspecciones registradas.</ion-label>
-    </ion-item>
+    <div class="reg-empty">No hay inspecciones registradas.</div>
   }
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">

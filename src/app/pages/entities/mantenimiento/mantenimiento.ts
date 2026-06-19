@@ -7,6 +7,7 @@ import { MantenimientoService } from './mantenimiento.service';
 import { MantenimientoOfflineService } from './mantenimiento-offline-service';
 import { EntitiesOfflineService } from '#app/services/utils/entities-offline';
 import { NetworkService } from '#app/services/utils/network.service';
+import { estadoClase, estadoLabel } from '#app/shared/utils/polin-ui.utils';
 
 @Component({
   selector: 'page-mantenimiento',
@@ -15,6 +16,8 @@ import { NetworkService } from '#app/services/utils/network.service';
 })
 export class MantenimientoPage {
   mantenimientos: Mantenimiento[];
+  estadoClase = estadoClase;
+  estadoLabel = estadoLabel;
 
   // todo: add pagination
 
@@ -46,7 +49,7 @@ export class MantenimientoPage {
     } catch (error) {
       console.error(error);
       const toast = await this.toastCtrl.create({
-        message: 'Failed to load data',
+        message: 'No se pudieron cargar los datos',
         duration: 2000,
         position: 'middle',
       });
@@ -74,7 +77,7 @@ export class MantenimientoPage {
   async delete(mantenimiento) {
     this.mantenimientoService.delete(mantenimiento.id).subscribe(
       async () => {
-        const toast = await this.toastCtrl.create({ message: 'Mantenimiento deleted successfully.', duration: 3000, position: 'middle' });
+        const toast = await this.toastCtrl.create({ message: 'Registro eliminado correctamente.', duration: 3000, position: 'middle' });
         await toast.present();
         await this.loadData();
       },

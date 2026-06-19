@@ -1,51 +1,115 @@
-.detail-content {
+/* Cabecera ink */
+.det-head {
+  background: var(--ink);
+  color: #fff;
+  border-radius: var(--r);
+  margin: 16px 16px 0;
+  padding: 18px;
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__id {
+    font-size: 20px;
+    font-weight: 800;
+  }
+
+  &__badge {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.18);
+
+    &.estado--ok {
+      background: var(--green);
+    }
+    &.estado--obs {
+      background: var(--amber);
+    }
+    &.estado--no {
+      background: var(--red);
+    }
+  }
+
+  &__sub {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 4px;
+  }
+}
+
+.page {
   padding: 16px;
 }
 
-/* ESTILO GLOBAL DE CADA SECCIÓN */
-ion-card {
-  margin-bottom: 18px;
-  border-radius: 14px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+.btn-eliminar {
+  margin-top: 8px;
 }
 
-/* --- CAMPOS GENERALES --- */
+/* Tarjetas de sección (heredan superficie/borde del global) */
+ion-card {
+  margin: 0 0 14px;
+  border-radius: var(--r);
+  box-shadow: var(--shadow);
+}
+
+ion-card-title {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+/* Campos */
 .field {
-  margin-bottom: 20px;
+  margin-bottom: 14px;
   padding-bottom: 12px;
-  border-bottom: 1px solid rgba(0,0,0,0.08);
+  border-bottom: 1px solid var(--line-soft);
 
   &:last-child {
     border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
   }
 }
 
 .field-label {
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: #939393;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--faint);
   text-transform: uppercase;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.04em;
   margin-bottom: 4px;
 }
 
 .field p {
   margin: 0;
-  font-size: 1rem;
+  font-size: 15px;
   font-weight: 500;
-  color: #939393;
-  line-height: 1.3;
+  color: var(--ink);
+  line-height: 1.35;
+
+  &.link {
+    color: var(--orange);
+    font-weight: 700;
+    cursor: pointer;
+  }
 }
 
 .chip-text {
-  font-size: 1rem;
-  font-weight: 600; 
+  font-size: 0.9rem;
+  font-weight: 700;
 }
 
-/* --- IMÁGENES --- */
+/* Imágenes */
 .img-row {
   display: flex;
-  gap: 20px;
+  gap: 16px;
   flex-wrap: wrap;
 }
 
@@ -61,27 +125,27 @@ ion-card {
 .thumb {
   width: 100%;
   max-width: 150px;
-  border-radius: 12px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  border-radius: var(--r);
+  border: 1px solid var(--line);
   cursor: pointer;
 }
 
-/* --- ACCIONES --- */
+/* Acciones */
 .actions {
-  margin-top: 30px;
+  margin-top: 22px;
 
   ion-button {
     margin-bottom: 10px;
   }
 }
 
-/* --- MODAL IMAGEN --- */
+/* Modal de imagen */
 .modal-img-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
-  background: black;
+  background: #000;
   position: relative;
 
   img {
@@ -95,6 +159,6 @@ ion-card {
     top: 16px;
     right: 16px;
     font-size: 32px;
-    color: white;
+    color: #fff;
   }
 }

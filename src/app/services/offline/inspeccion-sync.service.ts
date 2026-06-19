@@ -30,6 +30,7 @@ export class InspeccionSyncService {
     const inspeccionRequest = {
       id: undefined,
       fechaCreacion: payload.fechaCreacion,
+      tipo: payload.tipo,
       condicion: payload.condicion,
       criticidad: payload.criticidad,
       tipoFalla: payload.tipoFalla,
@@ -38,6 +39,7 @@ export class InspeccionSyncService {
       rutaFotoGeneral: payload.rutaFotoGeneral,
       rutaFotoDetalle: payload.rutaFotoDetalle,
       polin: payload.polin,
+      estacion: payload.estacion,
       applicationUser: payload.applicationUser,
     };
 

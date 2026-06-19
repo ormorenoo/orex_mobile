@@ -12,41 +12,29 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-list class="mantenimiento-list">
+  <div class="reg-list">
     @for (mantenimiento of mantenimientos; track trackId($index, mantenimiento)) {
-      <ion-card>
-        <ion-card-header>
-          <ion-card-title> Mantenimiento #{{ mantenimiento.id ?? mantenimiento.idLocal}} </ion-card-title>
-          <ion-card-subtitle>
-            {{ mantenimiento.fechaCreacion | date: 'medium' }}
-          </ion-card-subtitle>
-          <ion-card-subtitle>
-            {{ mantenimiento.applicationUser?.login ?? 'local' }}
-          </ion-card-subtitle>
-        </ion-card-header>
-
-        <ion-card-content (click)="view(mantenimiento)" class="card-body-clickable">
-          <div class="chips-row">
-            <ion-chip color="danger" outline *ngIf="mantenimiento.condicion.toString() === 'NO_OPERATIVO'">
-              <ion-label class="chip-text">Condición: No Operativo</ion-label>
-            </ion-chip>
-
-            <ion-chip color="warning" outline *ngIf="mantenimiento.condicion.toString() === 'OBSERVACION'">
-              <ion-label class="chip-text">Condición: Observación</ion-label>
-            </ion-chip>
-
-            <ion-chip color="success" outline *ngIf="mantenimiento.condicion.toString() === 'OPERATIVO'">
-              <ion-label class="chip-text">Condición: Operativo</ion-label>
-            </ion-chip>
-          </div>
-        </ion-card-content>
-      </ion-card>
+      <button type="button" class="reg-card {{ estadoClase(mantenimiento.condicion) }}" (click)="view(mantenimiento)">
+        <span class="reg-card__bar"></span>
+        <span class="reg-card__main">
+          <span class="reg-card__top">
+            <span class="reg-card__code mono">MNT #{{ mantenimiento.id ?? mantenimiento.idLocal }}</span>
+            <span class="badge {{ estadoClase(mantenimiento.condicion) }}">{{ estadoLabel(mantenimiento.condicion) }}</span>
+          </span>
+          <span class="reg-card__detail">
+            {{ mantenimiento.polin?.identificador ? 'Polín ' + mantenimiento.polin.identificador : 'Estación ' + (mantenimiento.estacion?.identificador || '—') }}
+            @if (mantenimiento.tipoMantenimiento) {
+              · {{ mantenimiento.tipoMantenimiento }}
+            }
+          </span>
+          <span class="reg-card__sub">{{ mantenimiento.fechaCreacion | date: 'dd-MM-yyyy HH:mm' }} · {{ mantenimiento.applicationUser?.login ?? 'local' }}</span>
+        </span>
+        <ion-icon name="chevron-forward"></ion-icon>
+      </button>
     }
-  </ion-list>
+  </div>
   @if (!mantenimientos?.length) {
-    <ion-item>
-      <ion-label> No Mantenimientos found. </ion-label>
-    </ion-item>
+    <div class="reg-empty">No hay mantenimientos registrados.</div>
   }
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">

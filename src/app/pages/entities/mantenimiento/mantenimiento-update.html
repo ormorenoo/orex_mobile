@@ -3,115 +3,162 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Mantenimiento</ion-title>
+    <ion-title>Nuevo mantenimiento</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content>
   @if (form) {
     <form [formGroup]="form">
-      <ion-list class="form-list">
-        <!-- SELECT FAENA -->
-        <ion-item class="form-item">
-          <ion-label position="stacked">Faena</ion-label>
-          <ion-select
-            interface="popover"
-            formControlName="faena"
-            (ionChange)="loadAreasOptions(form.get('faena').value)"
-            [compareWith]="compareFaena"
-          >
-            <ion-select-option [value]="null">Seleccione...</ion-select-option>
-            @for (faenaOption of faenas; track trackFaenaById($index, faenaOption)) {
-              <ion-select-option [value]="faenaOption">{{ faenaOption.nombre }}</ion-select-option>
-            }
-          </ion-select>
-        </ion-item>
+      <div class="form-body">
+        <!-- UBICACIÓN AUTOCOMPLETADA -->
+        @if (ubicacionAutocompletada && resumen) {
+          <div class="loc-card">
+            <div class="loc-card__head">
+              <ion-icon name="checkmark"></ion-icon>
+              <span>Ubicación autocompletada desde la mesa</span>
+              <ion-icon class="loc-card__lock" name="lock-closed"></ion-icon>
+            </div>
+            <div class="loc-card__grid">
+              @if (resumen.faena) {
+                <span class="loc-card__k">Faena</span><span class="loc-card__v">{{ resumen.faena }}</span>
+              }
+              @if (resumen.area) {
+                <span class="loc-card__k">Área</span><span class="loc-card__v">{{ resumen.area }}</span>
+              }
+              @if (resumen.correa) {
+                <span class="loc-card__k">Correa</span><span class="loc-card__v mono">{{ resumen.correa }}</span>
+              }
+              @if (resumen.mesa) {
+                <span class="loc-card__k">Mesa</span><span class="loc-card__v mono">{{ resumen.mesa }}</span>
+              }
+              @if (estacionFija && resumen.estacion) {
+                <span class="loc-card__k">Estación</span><span class="loc-card__v mono">{{ resumen.estacion }}</span>
+              }
+            </div>
+          </div>
+        }
 
-        <!-- SELECT AREA -->
-        <ion-item class="form-item">
-          <ion-label position="stacked">Área</ion-label>
-          <ion-select
-            interface="popover"
-            formControlName="area"
-            (ionChange)="loadCorreasTransportadorasOptions(form.get('area').value, form.get('faena').value)"
-            [compareWith]="compareArea"
-          >
-            <ion-select-option [value]="null">Seleccione...</ion-select-option>
-            @for (areaOption of areas; track trackAreaById($index, areaOption)) {
-              <ion-select-option [value]="areaOption">{{ areaOption.nombre }}</ion-select-option>
-            }
-          </ion-select>
-        </ion-item>
+        <!-- CASCADA MANUAL (solo cuando NO se entra desde la mesa) -->
+        @if (!ubicacionAutocompletada) {
+          <ion-list class="form-list">
+            <ion-item class="form-item">
+              <ion-label position="stacked">Faena</ion-label>
+              <ion-select interface="popover" formControlName="faena" (ionChange)="loadAreasOptions(form.get('faena').value)" [compareWith]="compareFaena">
+                <ion-select-option [value]="null">Seleccione...</ion-select-option>
+                @for (faenaOption of faenas; track trackFaenaById($index, faenaOption)) {
+                  <ion-select-option [value]="faenaOption">{{ faenaOption.nombre }}</ion-select-option>
+                }
+              </ion-select>
+            </ion-item>
+            <ion-item class="form-item">
+              <ion-label position="stacked">Área</ion-label>
+              <ion-select interface="popover" formControlName="area" (ionChange)="loadCorreasTransportadorasOptions(form.get('area').value, form.get('faena').value)" [compareWith]="compareArea">
+                <ion-select-option [value]="null">Seleccione...</ion-select-option>
+                @for (areaOption of areas; track trackAreaById($index, areaOption)) {
+                  <ion-select-option [value]="areaOption">{{ areaOption.nombre }}</ion-select-option>
+                }
+              </ion-select>
+            </ion-item>
+            <ion-item class="form-item">
+              <ion-label position="stacked">Correa transportadora</ion-label>
+              <ion-select interface="popover" formControlName="correa" (ionChange)="loadMesasTrabajoOptions(form.get('correa').value)" [compareWith]="compareCorrea">
+                <ion-select-option [value]="null">Seleccione...</ion-select-option>
+                @for (correaOption of correas; track trackCorreaTransportadoraById($index, correaOption)) {
+                  <ion-select-option [value]="correaOption">{{ correaOption.tagId }}</ion-select-option>
+                }
+              </ion-select>
+            </ion-item>
+            <ion-item class="form-item">
+              <ion-label position="stacked">Mesa de trabajo</ion-label>
+              <ion-select interface="popover" formControlName="mesa" (ionChange)="loadEstacionesOptions(form.get('mesa').value)" [compareWith]="compareMesa">
+                <ion-select-option [value]="null">Seleccione...</ion-select-option>
+                @for (mesaOption of mesas; track trackMesaTrabajoById($index, mesaOption)) {
+                  <ion-select-option [value]="mesaOption">{{ mesaOption.identificador }}</ion-select-option>
+                }
+              </ion-select>
+            </ion-item>
+          </ion-list>
+        }
 
-        <!-- SELECT CORREA -->
-        <ion-item class="form-item">
-          <ion-label position="stacked">Correa transportadora</ion-label>
-          <ion-select
-            interface="popover"
-            formControlName="correa"
-            (ionChange)="loadMesasTrabajoOptions(form.get('correa').value)"
-            [compareWith]="compareCorrea"
-          >
-            <ion-select-option [value]="null">Seleccione...</ion-select-option>
-            @for (correaOption of correas; track trackCorreaTransportadoraById($index, correaOption)) {
-              <ion-select-option [value]="correaOption">{{ correaOption.tagId }}</ion-select-option>
-            }
-          </ion-select>
-        </ion-item>
-
-        <!-- SELECT MESA -->
-        <ion-item class="form-item">
-          <ion-label position="stacked">Mesa de trabajo</ion-label>
-          <ion-select
-            interface="popover"
-            formControlName="mesa"
-            (ionChange)="loadEstacionesOptions(form.get('mesa').value)"
-            [compareWith]="compareMesa"
-          >
-            <ion-select-option [value]="null">Seleccione...</ion-select-option>
-            @for (mesaOption of mesas; track trackMesaTrabajoById($index, mesaOption)) {
-              <ion-select-option [value]="mesaOption">{{ mesaOption.identificador }}</ion-select-option>
-            }
-          </ion-select>
-        </ion-item>
-
-        <!-- SELECT ESTACIÓN -->
-        <ion-item class="form-item">
-          <ion-label position="stacked">Estación</ion-label>
-          <ion-select
-            interface="popover"
-            formControlName="estacion"
-            (ionChange)="loadPolinesOptions(form.get('estacion').value)"
-            [compareWith]="compareEstacion"
-          >
-            <ion-select-option [value]="null">Seleccione...</ion-select-option>
-            @for (estacionOption of estaciones; track trackEstacionById($index, estacionOption)) {
-              <ion-select-option [value]="estacionOption">{{ estacionOption.identificador }}</ion-select-option>
-            }
-          </ion-select>
-        </ion-item>
-
-        <!-- SELECT POLÍN -->
-        <ion-item class="form-item">
-          <ion-label position="stacked">Polín</ion-label>
-          <ion-select interface="popover" formControlName="polin" [compareWith]="comparePolin">
-            <ion-select-option [value]="null">Seleccione...</ion-select-option>
-            @for (polinOption of polins; track trackPolinById($index, polinOption)) {
-              <ion-select-option [value]="polinOption">{{ polinOption.identificador }}</ion-select-option>
-            }
-          </ion-select>
-        </ion-item>
-
-        <!-- CAMPOS QUE SE OCULTAN SI NO HAY POLIN -->
-        @if (form.get('polin').value) {
+        <!-- ESTACIÓN: seleccionable salvo que venga fija -->
+        @if (!estacionFija) {
           <ion-item class="form-item">
-            <ion-label position="stacked">Condición del polín</ion-label>
-            <ion-select interface="popover" formControlName="condicion">
-              @for (key of condicionKeys; track $index) {
-                <ion-select-option [value]="key">{{ condicion[key] }}</ion-select-option>
+            <ion-label position="stacked">Estación</ion-label>
+            <ion-select interface="popover" formControlName="estacion" (ionChange)="loadPolinesOptions(form.get('estacion').value)" [compareWith]="compareEstacion">
+              <ion-select-option [value]="null">Seleccione...</ion-select-option>
+              @for (estacionOption of estaciones; track trackEstacionById($index, estacionOption)) {
+                <ion-select-option [value]="estacionOption">{{ estacionOption.identificador }}</ion-select-option>
               }
             </ion-select>
           </ion-item>
+        }
+
+        <!-- TIPO DE REGISTRO + NIVEL -->
+        @if (form.get('estacion').value) {
+          <div class="field">
+            <div class="field__label">Tipo de registro</div>
+            <div class="seg-row">
+              <button type="button" class="seg seg--steel" [class.active]="!esEstacion" (click)="onTipoChange(TipoRegistro.POLIN)">Por polín</button>
+              <button type="button" class="seg seg--steel" [class.active]="esEstacion" (click)="onTipoChange(TipoRegistro.ESTACION)">Por estación</button>
+            </div>
+          </div>
+
+          @if (!esEstacion) {
+            <div class="picker">
+              <div class="picker__label">Polín <span class="req">*</span></div>
+              <div class="polin-cards">
+                @for (p of polins; track trackPolinById($index, p)) {
+                  <button type="button" class="polin-card" [class.active]="polinSeleccionado(p)" (click)="seleccionarPolin(p)">
+                    <span class="dot" [ngClass]="estadoClase(p.estado)"></span>
+                    <span class="polin-card__id">{{ p.identificador }}</span>
+                    <span class="polin-card__meta">{{ posicionLabel(p.posicionPolin) }} · {{ tipoPolinLabel(p.tipoPolin) }}</span>
+                    <span class="polin-card__check" [class.on]="polinSeleccionado(p)">
+                      <ion-icon name="checkmark"></ion-icon>
+                    </span>
+                  </button>
+                } @empty {
+                  <div class="picker__empty">Esta estación no tiene polines.</div>
+                }
+              </div>
+            </div>
+          } @else {
+            <div class="nivel-estacion">
+              <ion-icon name="albums-outline"></ion-icon>
+              <div>
+                <strong>Registro a nivel estación</strong>
+                <small>Aplica a toda la estación {{ resumen?.estacion || form.get('estacion').value?.identificador }}, sin elegir polín.</small>
+              </div>
+            </div>
+          }
+        }
+
+        <!-- CAMPOS DE REGISTRO -->
+        @if ((!esEstacion && form.get('polin').value) || (esEstacion && form.get('estacion').value)) {
+          <div class="field">
+            <div class="field__label">Condición</div>
+            <div class="seg-row">
+              @for (op of condicionOpciones; track op.key) {
+                <button type="button" class="seg {{ op.clase }}" [class.active]="esControl('condicion', op.key)" (click)="setControl('condicion', op.key)">
+                  {{ op.label }}
+                </button>
+              }
+            </div>
+          </div>
+
+          <!-- TIPO DE MANTENIMIENTO: solo a nivel estación (en polín es CAMBIO por defecto) -->
+          @if (esEstacion) {
+            <div class="field">
+              <div class="field__label">Tipo de mantenimiento</div>
+              <div class="seg-row">
+                @for (op of tipoMantenimientoOpciones; track op.key) {
+                  <button type="button" class="seg seg--steel" [class.active]="esControl('tipoMantenimiento', op.key)" (click)="setControl('tipoMantenimiento', op.key)">
+                    {{ op.label }}
+                  </button>
+                }
+              </div>
+            </div>
+          }
 
           <ion-item class="form-item">
             <ion-label position="stacked">Tipo de falla</ion-label>
@@ -121,7 +168,6 @@
               }
             </ion-select>
           </ion-item>
-
           <ion-item class="form-item">
             <ion-label position="stacked">Tipo de servicio</ion-label>
             <ion-select interface="popover" formControlName="tipoServicio">
@@ -132,57 +178,40 @@
           </ion-item>
 
           <ion-item class="form-item">
-            <ion-label position="stacked">Tipo de mantenimiento</ion-label>
-            <ion-select interface="popover" formControlName="tipoMantenimiento">
-              @for (key of tipoMantenimientoKeys; track $index) {
-                <ion-select-option [value]="key">{{ tipoMantenimiento[key] }}</ion-select-option>
-              }
-            </ion-select>
-          </ion-item>
-
-          <ion-item class="form-item">
             <ion-label position="stacked">Comentarios</ion-label>
-            <ion-textarea autoGrow="true" formControlName="comentarios" placeholder="Escriba un comentario..."> </ion-textarea>
+            <ion-textarea autoGrow="true" formControlName="comentarios" placeholder="Escriba un comentario..."></ion-textarea>
           </ion-item>
 
-          <ion-item class="form-item">
-            <ion-label position="stacked">Imagen General</ion-label>
-
-            <ion-segment [value]="metodoGeneral" (ionChange)="onMetodoGeneralChange($event)">
-              <ion-segment-button value="camara"> Cámara </ion-segment-button>
-
-              <ion-segment-button value="archivo"> Subir </ion-segment-button>
-            </ion-segment>
-
-            <ion-button *ngIf="metodoGeneral === 'camara'" expand="block" (click)="takePhoto('general')"> Tomar foto </ion-button>
-
-            <input *ngIf="metodoGeneral === 'archivo'" type="file" accept="image/*" (change)="onFileSelected($event, 'general')" />
-
-            <img *ngIf="previewGeneral" [src]="previewGeneral" class="image-preview" />
-          </ion-item>
-
-          <ion-item class="form-item">
-            <ion-label position="stacked">Imagen Detalle</ion-label>
-
-            <ion-segment [value]="metodoDetalle" (ionChange)="onMetodoDetalleChange($event)">
-              <ion-segment-button value="camara"> Cámara </ion-segment-button>
-
-              <ion-segment-button value="archivo"> Subir </ion-segment-button>
-            </ion-segment>
-
-            <ion-button *ngIf="metodoDetalle === 'camara'" expand="block" (click)="takePhoto('detalle')"> Tomar foto </ion-button>
-
-            <input *ngIf="metodoDetalle === 'archivo'" type="file" accept="image/*" (change)="onFileSelected($event, 'detalle')" />
-
-            <img *ngIf="previewDetalle" [src]="previewDetalle" class="image-preview" />
-          </ion-item>
+          <div class="field">
+            <div class="field__label">Evidencia fotográfica</div>
+            <ion-item class="form-item">
+              <ion-label position="stacked">Imagen general</ion-label>
+              <ion-segment [value]="metodoGeneral" (ionChange)="onMetodoGeneralChange($event)">
+                <ion-segment-button value="camara">Cámara</ion-segment-button>
+                <ion-segment-button value="archivo">Subir</ion-segment-button>
+              </ion-segment>
+              <ion-button *ngIf="metodoGeneral === 'camara'" expand="block" (click)="takePhoto('general')">Tomar foto</ion-button>
+              <input *ngIf="metodoGeneral === 'archivo'" type="file" accept="image/*" (change)="onFileSelected($event, 'general')" />
+              <img *ngIf="previewGeneral" [src]="previewGeneral" class="image-preview" />
+            </ion-item>
+            <ion-item class="form-item">
+              <ion-label position="stacked">Imagen detalle</ion-label>
+              <ion-segment [value]="metodoDetalle" (ionChange)="onMetodoDetalleChange($event)">
+                <ion-segment-button value="camara">Cámara</ion-segment-button>
+                <ion-segment-button value="archivo">Subir</ion-segment-button>
+              </ion-segment>
+              <ion-button *ngIf="metodoDetalle === 'camara'" expand="block" (click)="takePhoto('detalle')">Tomar foto</ion-button>
+              <input *ngIf="metodoDetalle === 'archivo'" type="file" accept="image/*" (change)="onFileSelected($event, 'detalle')" />
+              <img *ngIf="previewDetalle" [src]="previewDetalle" class="image-preview" />
+            </ion-item>
+          </div>
         }
-      </ion-list>
+      </div>
 
-      <!-- BOTÓN GUARDAR -->
-      <div class="save-container">
-        <ion-button expand="block" shape="round" size="large" [disabled]="!isReadyToSave" (click)="save()">
-          Guardar Mantenimiento
+      <!-- GUARDAR (sticky) -->
+      <div class="save-bar">
+        <ion-button expand="block" shape="round" size="large" [disabled]="(esEstacion ? !form.get('estacion').value : !form.get('polin').value) || isSaving" (click)="save()">
+          Guardar mantenimiento
         </ion-button>
       </div>
     </form>

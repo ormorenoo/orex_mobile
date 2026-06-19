@@ -5,6 +5,7 @@ import { Inspeccion } from './inspeccion.model';
 import { InspeccionService } from './inspeccion.service';
 import { InspeccionOfflineSaveService } from './inspeccion-offline-save-service';
 import { NetworkService } from '#app/services/utils/network.service';
+import { estadoClase, estadoLabel, posicionLabel, tipoPolinLabel } from '#app/shared/utils/polin-ui.utils';
 
 @Component({
   selector: 'page-inspeccion-detail',
@@ -13,6 +14,10 @@ import { NetworkService } from '#app/services/utils/network.service';
 })
 export class InspeccionDetailPage implements OnInit {
   inspeccion: Inspeccion = {};
+  estadoClase = estadoClase;
+  estadoLabel = estadoLabel;
+  posicionLabel = posicionLabel;
+  tipoPolinLabel = tipoPolinLabel;
   thumbnailGeneral: string | null = null;
   thumbnailDetallePolin: string | null = null;
   imagenSeleccionada: string | null = null;
@@ -69,15 +74,15 @@ export class InspeccionDetailPage implements OnInit {
 
   async deleteModal(item: Inspeccion) {
     const alert = await this.alertController.create({
-      header: 'Confirm the deletion?',
+      header: '¿Eliminar este registro?',
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
           cssClass: 'secondary',
         },
         {
-          text: 'Delete',
+          text: 'Eliminar',
           handler: async () => {
             const online = await this.networkService.isOnline();
             if (online) {

@@ -6,6 +6,7 @@ import { MantenimientoService } from './mantenimiento.service';
 import { Inspeccion } from '../inspeccion';
 import { NetworkService } from '#app/services/utils/network.service';
 import { MantenimientoOfflineService } from './mantenimiento-offline-service';
+import { estadoClase, estadoLabel, posicionLabel, tipoPolinLabel } from '#app/shared/utils/polin-ui.utils';
 
 @Component({
   selector: 'page-mantenimiento-detail',
@@ -14,6 +15,10 @@ import { MantenimientoOfflineService } from './mantenimiento-offline-service';
 })
 export class MantenimientoDetailPage implements OnInit {
   mantenimiento: Mantenimiento = {};
+  estadoClase = estadoClase;
+  estadoLabel = estadoLabel;
+  posicionLabel = posicionLabel;
+  tipoPolinLabel = tipoPolinLabel;
   thumbnailGeneral: string | null = null;
   thumbnailDetallePolin: string | null = null;
   imagenSeleccionada: string | null = null;
@@ -66,15 +71,15 @@ export class MantenimientoDetailPage implements OnInit {
 
   async deleteModal(item: Mantenimiento) {
     const alert = await this.alertController.create({
-      header: 'Confirm the deletion?',
+      header: '¿Eliminar este registro?',
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
           cssClass: 'secondary',
         },
         {
-          text: 'Delete',
+          text: 'Eliminar',
           handler: async () => {
             const online = await this.networkService.isOnline();
             if (online) {

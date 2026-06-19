@@ -3,18 +3,28 @@ import { UntypedFormBuilder as FormBuilder } from '@angular/forms';
 import { NavController, Platform, ToastController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
-import { Polin } from '../polin';
+import { Polin, PolinService } from '../polin';
 import { Inspeccion } from '../inspeccion';
 import { Mantenimiento } from './mantenimiento.model';
 import { Area } from '../area';
 import { Faena } from '../faena';
 import { CorreaTransportadora } from '../correa-transportadora';
-import { MesaTrabajo } from '../mesa-trabajo';
-import { Estacion } from '../estacion';
+import { MesaTrabajo, MesaTrabajoService } from '../mesa-trabajo';
+import { Estacion, EstacionService } from '../estacion';
+import {
+  bloquearControles,
+  resumenUbicacion,
+  ResumenUbicacion,
+  ubicacionDesdeEstacion,
+  ubicacionDesdeMesa,
+  ubicacionDesdePolin,
+} from '#app/shared/utils/ubicacion.utils';
+import { estadoClase, posicionLabel, tipoPolinLabel } from '#app/shared/utils/polin-ui.utils';
 import { CondicionPolin } from '../enumerations/condicion-polin.model';
 import { TipoFalla } from '../enumerations/tipo-falla.model';
 import { TipoServicio } from '../enumerations/tipo-servicio.model';
 import { TipoMantenimiento } from '../enumerations/tipo-mantenimiento.model';
+import { TipoRegistro } from '../enumerations/tipo-registro.model';
 import { MantenimientoDataService } from './mantenimiento-data.service';
 import { FaenaDataService } from '../faena/faena-data.service';
 import { AreaFaenaDataService } from '../area-faena/area-faena-data.service';
@@ -56,9 +66,47 @@ export class MantenimientoUpdatePage implements OnInit, OnDestroy {
   metodoGeneral: 'camara' | 'archivo' = 'camara';
   metodoDetalle: 'camara' | 'archivo' = 'camara';
 
+  /** Cuando se entra desde una mesa/estación/polín la ubicación se precarga y bloquea. */
+  ubicacionAutocompletada = false;
+  estacionFija = false;
+  polinFijo = false;
+  resumen?: ResumenUbicacion;
+  /** Mesa de origen, para volver a su detalle al guardar. */
+  mesaTrabajoIdActual?: number;
+
+  // Helpers de presentación (prototipo).
+  estadoClase = estadoClase;
+  posicionLabel = posicionLabel;
+  tipoPolinLabel = tipoPolinLabel;
+
+  condicionOpciones = [
+    { key: 'OPERATIVO', label: 'Operativo', clase: 'seg--ok' },
+    { key: 'OBSERVACION', label: 'Observación', clase: 'seg--obs' },
+    { key: 'NO_OPERATIVO', label: 'No operativo', clase: 'seg--no' },
+  ];
+  tipoMantenimientoOpciones = [
+    { key: 'CAMBIO', label: 'Cambio' },
+    { key: 'REPARACION', label: 'Reparación' },
+  ];
+  TipoRegistro = TipoRegistro;
+
+  /** ¿El registro es a nivel estación (sin polín)? Espejo de la web. */
+  get esEstacion(): boolean {
+    return this.form.get('tipo')?.value === TipoRegistro.ESTACION;
+  }
+
+  /** Cambia el tipo de registro (polín ↔ estación) y limpia el polín si pasa a estación. */
+  onTipoChange(tipo: TipoRegistro): void {
+    this.form.get('tipo')?.setValue(tipo);
+    if (tipo === TipoRegistro.ESTACION) {
+      this.form.get('polin')?.setValue(null);
+    }
+  }
+
   form = inject(FormBuilder).group({
     id: [null, []],
     fechaCreacion: [null, []],
+    tipo: [TipoRegistro.POLIN, []],
     condicion: [null, []],
     tipoFalla: [null, []],
     tipoServicio: [null, []],
@@ -88,6 +136,9 @@ export class MantenimientoUpdatePage implements OnInit, OnDestroy {
     private mesaTrabajoDataService: MesaTrabajoDataService,
     private estacionDataService: EstacionDataService,
     private manteminientoDataService: MantenimientoDataService,
+    private mesaTrabajoService: MesaTrabajoService,
+    private estacionService: EstacionService,
+    private polinService: PolinService,
   ) {
     this.form.valueChanges.subscribe(v => {
       this.isReadyToSave = this.form.valid;
@@ -101,6 +152,93 @@ export class MantenimientoUpdatePage implements OnInit, OnDestroy {
       this.isNew = this.mantenimiento.id === null || this.mantenimiento.id === undefined;
       this.updateForm(this.mantenimiento);
     });
+    this.activatedRoute.queryParams.subscribe(params => {
+      this.handleQueryParams(params['polinId'] ?? null, params['estacionId'] ?? null, params['mesaTrabajoId'] ?? null, params['tipo'] ?? null);
+    });
+  }
+
+  /**
+   * Precarga y bloquea la ubicación cuando se crea desde una mesa/estación/polín
+   * (flujo del QR). Espejo de mantenimiento-update.component.ts en la web.
+   */
+  protected handleQueryParams(polinId: string | null, estacionId: string | null, mesaTrabajoId: string | null, tipo: string | null = null): void {
+    if (polinId) {
+      this.polinService.find(+polinId).subscribe(res => {
+        if (res.body) {
+          const valores = ubicacionDesdePolin(res.body);
+          this.form.patchValue(valores);
+          this.polins = [res.body];
+          this.mesaTrabajoIdActual = res.body.estacion?.mesaTrabajo?.id;
+          this.bloquearUbicacion(true, true);
+          this.resumen = resumenUbicacion(valores);
+        }
+      });
+      return;
+    }
+
+    if (estacionId) {
+      this.estacionService.find(+estacionId).subscribe(res => {
+        if (res.body) {
+          const valores = ubicacionDesdeEstacion(res.body);
+          this.form.patchValue(valores);
+          this.mesaTrabajoIdActual = res.body.mesaTrabajo?.id;
+          if (tipo === TipoRegistro.ESTACION) {
+            // Registro a nivel ESTACIÓN completa (sin polín); se cargan polines por si alterna a "Por polín".
+            this.form.get('tipo')?.setValue(TipoRegistro.ESTACION);
+          }
+          this.loadPolinesOptions(res.body);
+          this.bloquearUbicacion(true, false);
+          this.resumen = resumenUbicacion(valores);
+        }
+      });
+      return;
+    }
+
+    if (mesaTrabajoId) {
+      this.mesaTrabajoIdActual = +mesaTrabajoId;
+      this.mesaTrabajoService.find(+mesaTrabajoId).subscribe(res => {
+        if (res.body) {
+          const valores = ubicacionDesdeMesa(res.body);
+          this.form.patchValue(valores);
+          this.loadEstacionesOptions(res.body);
+          this.bloquearUbicacion(false, false);
+          this.resumen = resumenUbicacion(valores);
+        }
+      });
+      return;
+    }
+  }
+
+  /** Selección de polín como tarjeta (radio única). */
+  seleccionarPolin(polin: Polin): void {
+    this.form.get('polin')?.setValue(polin);
+  }
+
+  polinSeleccionado(polin: Polin): boolean {
+    return this.form.get('polin')?.value?.id === polin.id;
+  }
+
+  setControl(control: string, value: string): void {
+    this.form.get(control)?.setValue(value);
+  }
+
+  esControl(control: string, value: string): boolean {
+    return this.form.get(control)?.value === value;
+  }
+
+  /** Bloquea faena/área/correa/mesa (siempre) y opcionalmente estación y polín. */
+  private bloquearUbicacion(estacionFija: boolean, polinFijo: boolean): void {
+    this.ubicacionAutocompletada = true;
+    this.estacionFija = estacionFija;
+    this.polinFijo = polinFijo;
+    const controles = [this.form.get('faena'), this.form.get('area'), this.form.get('correa'), this.form.get('mesa')];
+    if (estacionFija) {
+      controles.push(this.form.get('estacion'));
+    }
+    if (polinFijo) {
+      controles.push(this.form.get('polin'));
+    }
+    bloquearControles(...controles);
   }
 
   ngOnDestroy() {
@@ -249,7 +387,13 @@ export class MantenimientoUpdatePage implements OnInit, OnDestroy {
       await toast.present();
 
       if (result.success) {
-        await this.navController.navigateBack('/tabs/entities/mantenimiento');
+        if (this.mesaTrabajoIdActual) {
+          await this.navController.navigateBack(`/tabs/entities/mesa-trabajo/${this.mesaTrabajoIdActual}/view`, {
+            queryParams: { nuevo: 'mantenimiento' },
+          });
+        } else {
+          await this.navController.navigateBack('/tabs/entities/mantenimiento');
+        }
       }
     } catch (error) {
       this.isSaving = false;
@@ -328,14 +472,17 @@ export class MantenimientoUpdatePage implements OnInit, OnDestroy {
       ...new Mantenimiento(),
       id: this.form.get(['id']).value,
       fechaCreacion: this.form.get(['fechaCreacion']).value ? new Date(this.form.get(['fechaCreacion']).value) : null,
+      tipo: this.form.get(['tipo']).value,
       condicion: this.form.get(['condicion']).value,
       tipoFalla: this.form.get(['tipoFalla']).value,
       tipoServicio: this.form.get(['tipoServicio']).value,
-      tipoMantenimiento: this.form.get(['tipoMantenimiento']).value,
+      // Para polín el tipo de mantenimiento siempre es CAMBIO; solo aplica selección a nivel estación.
+      tipoMantenimiento: this.esEstacion ? this.form.get(['tipoMantenimiento']).value : 'CAMBIO',
       comentarios: this.form.get(['comentarios']).value,
       rutaFotoGeneral: this.form.get(['rutaFotoGeneral']).value,
       rutaFotoDetalle: this.form.get(['rutaFotoDetalle']).value,
-      polin: this.form.get(['polin']).value,
+      polin: this.esEstacion ? null : this.form.get(['polin']).value,
+      estacion: this.form.get(['estacion']).value,
       applicationUser: this.form.get(['applicationUser']).value,
       inspeccion: this.form.get(['inspeccion']).value,
     };

@@ -30,6 +30,7 @@ export class MantenimientoSyncService {
     const manteminientoRequest = {
       id: undefined,
       fechaCreacion: payload.fechaCreacion,
+      tipo: payload.tipo,
       condicion: payload.condicion,
       tipoFalla: payload.tipoFalla,
       tipoServicio: payload.tipoServicio,
@@ -38,6 +39,7 @@ export class MantenimientoSyncService {
       rutaFotoGeneral: payload.rutaFotoGeneral,
       rutaFotoDetalle: payload.rutaFotoDetalle,
       polin: payload.polin,
+      estacion: payload.estacion,
       inspeccion: payload.inspeccion,
       applicationUser: payload.applicationUser,
     };

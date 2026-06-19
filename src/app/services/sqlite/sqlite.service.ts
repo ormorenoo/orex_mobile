@@ -107,6 +107,7 @@ export class SqliteService {
         id INTEGER PRIMARY KEY,
         identificador TEXT,
         descripcion TEXT,
+        posicion_polin TEXT,
         tipo_polin TEXT,
         estado TEXT,
         codigo_sap TEXT,

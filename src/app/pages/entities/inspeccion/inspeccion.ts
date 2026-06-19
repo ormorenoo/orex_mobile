@@ -6,6 +6,7 @@ import { Inspeccion } from './inspeccion.model';
 import { InspeccionService } from './inspeccion.service';
 import { NetworkService } from '#app/services/utils/network.service';
 import { EntitiesOfflineService } from '#app/services/utils/entities-offline';
+import { estadoClase, estadoLabel } from '#app/shared/utils/polin-ui.utils';
 
 @Component({
   selector: 'page-inspeccion',
@@ -14,6 +15,8 @@ import { EntitiesOfflineService } from '#app/services/utils/entities-offline';
 })
 export class InspeccionPage {
   inspeccions: Inspeccion[];
+  estadoClase = estadoClase;
+  estadoLabel = estadoLabel;
 
   // todo: add pagination
 
@@ -44,7 +47,7 @@ export class InspeccionPage {
     } catch (error) {
       console.error(error);
       const toast = await this.toastCtrl.create({
-        message: 'Failed to load data',
+        message: 'No se pudieron cargar los datos',
         duration: 2000,
         position: 'middle',
       });
@@ -71,7 +74,7 @@ export class InspeccionPage {
   async delete(inspeccion) {
     this.inspeccionService.delete(inspeccion.id).subscribe(
       async () => {
-        const toast = await this.toastCtrl.create({ message: 'Inspeccion deleted successfully.', duration: 3000, position: 'middle' });
+        const toast = await this.toastCtrl.create({ message: 'Registro eliminado correctamente.', duration: 3000, position: 'middle' });
         await toast.present();
         await this.loadData();
       },

@@ -75,6 +75,8 @@ export class MantenimientoOfflineRepository {
       payload.polin ?? undefined,
       payload.inspeccion ?? undefined,
       payload.applicationUser ?? undefined,
+      payload.tipo ?? undefined,
+      payload.estacion ?? undefined,
     );
   }
 }

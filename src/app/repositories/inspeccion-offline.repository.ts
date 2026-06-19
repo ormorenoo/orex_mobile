@@ -75,6 +75,8 @@ export class InspeccionOfflineRepository {
       payload.polin ?? undefined,
       payload.mantenimientos ?? undefined,
       payload.applicationUser ?? undefined,
+      payload.tipo ?? undefined,
+      payload.estacion ?? undefined,
     );
   }
 }

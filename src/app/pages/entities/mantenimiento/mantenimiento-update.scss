@@ -1,28 +1,273 @@
+.form-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ===== Cascada manual (alta sin mesa) ===== */
+.form-list {
+  background: transparent;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .form-item {
-  margin-bottom: 18px;
-}
-
-ion-item {
-  --inner-padding-top: 12px;
-  --inner-padding-bottom: 12px;
-  border-radius: 10px;
-  --background: rgb(34, 34, 34);
-  margin-bottom: 12px;
-}
-
-ion-select {
-  font-size: 16px;
+  --background: var(--surface);
+  --inner-padding-top: 10px;
+  --inner-padding-bottom: 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  margin: 0;
 }
 
 ion-label {
-  font-weight: 600;
-  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
 }
 
-.save-container {
-  margin-top: 25px;
+/* ===== Tarjeta de ubicación autocompletada (verde) ===== */
+.loc-card {
+  background: var(--surface);
+  border: 1px solid #b8e0c8;
+  border-radius: var(--r);
+  overflow: hidden;
+
+  &__head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 13px;
+    background: #eaf6ef;
+    border-bottom: 1px solid #cde8d8;
+    font-size: 12px;
+    font-weight: 800;
+    color: #1f7a45;
+
+    ion-icon {
+      color: #1f7a45;
+      font-size: 18px;
+    }
+  }
+
+  &__lock {
+    margin-left: auto;
+    font-size: 14px;
+  }
+
+  &__grid {
+    padding: 11px 13px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 8px 14px;
+    align-items: center;
+  }
+
+  &__k {
+    font-size: 10.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--faint);
+  }
+
+  &__v {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+
+    &.mono {
+      font-family: var(--mono);
+      font-weight: 700;
+      color: var(--blue);
+    }
+  }
 }
 
+.loc-note {
+  font-size: 11px;
+  color: var(--faint);
+  line-height: 1.5;
+  margin: -6px 2px 0;
+}
+
+/* ===== Selector de polín (tarjetas) ===== */
+.picker__label,
+.field__label {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.req {
+  color: var(--red);
+}
+
+.polin-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.polin-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  border-radius: var(--r);
+  padding: 12px 13px;
+
+  &.active {
+    background: var(--orange-soft);
+    border-color: var(--orange);
+  }
+
+  &__id {
+    font-size: 13px;
+    font-weight: 800;
+    font-family: var(--mono);
+    color: var(--ink);
+  }
+
+  &__meta {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  &__check {
+    margin-left: auto;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px solid var(--faint);
+    background: transparent;
+
+    ion-icon {
+      color: transparent;
+      font-size: 14px;
+    }
+
+    &.on {
+      background: var(--orange);
+      border-color: var(--orange);
+
+      ion-icon {
+        color: #fff;
+      }
+    }
+  }
+}
+
+.picker__empty {
+  font-size: 13px;
+  color: var(--faint);
+  padding: 10px 2px;
+}
+
+/* dot de estado */
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex: 0 0 auto;
+  background: var(--faint);
+
+  &.estado--ok {
+    background: var(--green);
+  }
+  &.estado--obs {
+    background: var(--amber);
+  }
+  &.estado--no {
+    background: var(--red);
+  }
+}
+
+/* ===== Segmented de color ===== */
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.seg-row {
+  display: flex;
+  gap: 8px;
+}
+
+.seg {
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+  padding: 11px 4px;
+  border-radius: var(--r);
+  font-size: 12.5px;
+  font-weight: 800;
+  border: 1.5px solid var(--line);
+  background: var(--surface);
+  color: var(--muted);
+
+  &.seg--ok.active {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
+  }
+  &.seg--obs.active {
+    background: var(--amber);
+    border-color: var(--amber);
+    color: #fff;
+  }
+  &.seg--no.active {
+    background: var(--red);
+    border-color: var(--red);
+    color: #fff;
+  }
+  &.seg--steel.active {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: #fff;
+  }
+}
+
+/* ===== Nivel estación ===== */
+.nivel-estacion {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--blue);
+  border-radius: var(--r);
+  padding: 14px;
+
+  ion-icon {
+    font-size: 26px;
+    color: var(--blue);
+    flex: none;
+  }
+
+  strong {
+    display: block;
+    font-size: 14px;
+    color: var(--ink);
+  }
+
+  small {
+    font-size: 12px;
+    color: var(--muted);
+  }
+}
+
+/* ===== Fotos ===== */
 ion-segment {
   margin: 8px 0 12px;
 }
@@ -32,6 +277,14 @@ ion-segment {
   max-height: 180px;
   object-fit: cover;
   margin-top: 10px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--r);
+  border: 1px solid var(--line);
+}
+
+/* ===== Guardar sticky ===== */
+.save-bar {
+  position: sticky;
+  bottom: 0;
+  padding: 12px 16px 18px;
+  background: linear-gradient(to top, var(--bg) 70%, rgba(236, 238, 241, 0));
 }

@@ -3,13 +3,21 @@ import { Inspeccion } from '#app/pages/entities/inspeccion/inspeccion.model';
 import { Mantenimiento } from '#app/pages/entities/mantenimiento/mantenimiento.model';
 import { Estacion } from '../estacion';
 
-export const enum TipoPolin {
+export const enum PosicionPolin {
   'UNICO',
   'CENTRAL',
   'CENTRAL_DERECHO',
   'CENTRAL_IZQUIERDO',
   'DERECHO',
   'IZQUIERDO',
+}
+
+export const enum TipoPolin {
+  'IMPACTO',
+  'RETORNO',
+  'CARGA',
+  'PESOMETRICO',
+  'AUTOLINEANTE',
 }
 
 export const enum Estado {
@@ -23,6 +31,7 @@ export class Polin implements BaseEntity {
     public id?: number,
     public identificador?: string,
     public descripcion?: string,
+    public posicionPolin?: PosicionPolin,
     public tipoPolin?: TipoPolin,
     public estado?: Estado,
     public codigoSap?: string,
