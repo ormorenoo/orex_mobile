@@ -3,26 +3,114 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Mesa Trabajo</ion-title>
+    <ion-title>
+      <div class="tb-title">
+        <span class="tb-title__id">{{ mesaTrabajo.identificador }}</span>
+        <span class="tb-title__sub">Mesa de trabajo</span>
+      </div>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="compartirQr()">
+        <ion-icon slot="icon-only" name="qr-code-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-list>
-    <ion-item>
-      <ion-label position="fixed">ID</ion-label>
-      <div item-content>
-        <span id="id-content">{{ mesaTrabajo.id }}</span>
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Identificador</ion-label>
-      <div item-content>
-        <span id="identificador-content">{{ mesaTrabajo.identificador }}</span>
-      </div>
-    </ion-item>
-  </ion-list>
+<ion-content>
+  <!-- BREADCRUMB -->
+  @if (faena || area || correa) {
+    <div class="crumb">
+      <ion-icon name="location-outline"></ion-icon>
+      @if (faena) {
+        <span>{{ faena }}</span>
+      }
+      @if (area) {
+        <span class="crumb__sep">›</span><span>{{ area }}</span>
+      }
+      @if (correa) {
+        <span class="crumb__sep">›</span><span class="mono">{{ correa }}</span>
+      }
+    </div>
+  }
 
-  <ion-button expand="block" color="primary" (click)="open(mesaTrabajo)">{{ 'EDIT_BUTTON' | translate }}</ion-button>
-  <ion-button expand="block" color="danger" (click)="deleteModal(mesaTrabajo)">{{ 'DELETE_BUTTON' | translate }}</ion-button>
+  <div class="page">
+    <!-- RESUMEN DE ESTADOS -->
+    <div class="resumen">
+      <div class="resumen__card resumen__card--ok">
+        <div class="resumen__n">{{ counts.op }}</div>
+        <div class="resumen__l">Operativos</div>
+      </div>
+      <div class="resumen__card resumen__card--obs">
+        <div class="resumen__n">{{ counts.obs }}</div>
+        <div class="resumen__l">Observación</div>
+      </div>
+      <div class="resumen__card resumen__card--no">
+        <div class="resumen__n">{{ counts.no }}</div>
+        <div class="resumen__l">No operat.</div>
+      </div>
+    </div>
+
+    <!-- ACCIONES -->
+    <div class="acciones">
+      <ion-button expand="block" (click)="nuevaInspeccion()">
+        <ion-icon slot="start" name="clipboard-outline"></ion-icon>
+        Inspección
+      </ion-button>
+      <ion-button expand="block" color="tertiary" (click)="nuevoMantenimiento()">
+        <ion-icon slot="start" name="construct-outline"></ion-icon>
+        Mantenim.
+      </ion-button>
+    </div>
+
+    <!-- QR COMPACTO + ENLACE ESTACIONES -->
+    <div class="fila">
+      <button type="button" class="qr-mini" (click)="compartirQr()">
+        @if (qrDataUrl) {
+          <img [src]="qrDataUrl" alt="QR" />
+        }
+        <span>Imprimir QR</span>
+      </button>
+      <button type="button" class="est-link" (click)="irAEstaciones()">
+        <div class="est-link__head">
+          <span class="est-link__t">Estaciones</span>
+          <span class="est-link__c">{{ estCount }} estac. · {{ polinTotal }} polines</span>
+          <ion-icon name="chevron-forward"></ion-icon>
+        </div>
+        <div class="heat">
+          @for (estado of heatDots; track $index) {
+            <span class="heat__dot" [ngClass]="estadoClase(estado)"></span>
+          }
+        </div>
+      </button>
+    </div>
+
+    <!-- ACTIVIDAD RECIENTE -->
+    <div class="seccion-titulo">Actividad reciente</div>
+    @if (!actividad.length) {
+      <div class="estado-vacio">Sin actividad en esta mesa.</div>
+    } @else {
+      <div class="feed">
+        @for (a of actividad; track $index) {
+          <div class="feed__row" [class.feed__row--nuevo]="a.nuevo">
+            <span class="feed__icon" [class.feed__icon--mant]="a.kind === 'mantenimiento'">
+              <ion-icon [name]="a.kind === 'mantenimiento' ? 'construct-outline' : 'clipboard-outline'"></ion-icon>
+            </span>
+            <div class="feed__body">
+              <div class="feed__top">
+                <span class="feed__label">{{ a.label }}</span>
+                <span class="feed__dot" [ngClass]="estadoClase(a.estado)"></span>
+                <span class="feed__polin mono">{{ a.polin || '—' }}</span>
+              </div>
+              <span class="feed__meta">{{ a.detalle }} · {{ a.fecha | date: 'dd-MM HH:mm' }}</span>
+            </div>
+          </div>
+        }
+      </div>
+    }
+
+    <ion-button class="btn-eliminar" expand="block" fill="outline" color="danger" (click)="deleteModal(mesaTrabajo)">
+      Eliminar
+    </ion-button>
+  </div>
 </ion-content>

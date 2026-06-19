@@ -11,6 +11,7 @@ import { filter, map } from 'rxjs/operators';
 import { MesaTrabajoPage } from './mesa-trabajo';
 import { MesaTrabajoUpdatePage } from './mesa-trabajo-update';
 import { MesaTrabajo, MesaTrabajoDetailPage, MesaTrabajoService } from '.';
+import { MesaTrabajoEstacionesPage } from './mesa-trabajo-estaciones';
 import { UserRouteAccessService } from '#app/services/auth/user-route-access.service';
 
 @Injectable({ providedIn: 'root' })
@@ -61,6 +62,14 @@ const routes: Routes = [
     canActivate: [UserRouteAccessService],
   },
   {
+    path: ':id/estaciones',
+    component: MesaTrabajoEstacionesPage,
+    data: {
+      authorities: ['ROLE_USER'],
+    },
+    canActivate: [UserRouteAccessService],
+  },
+  {
     path: ':id/edit',
     component: MesaTrabajoUpdatePage,
     resolve: {
@@ -74,7 +83,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [MesaTrabajoPage, MesaTrabajoUpdatePage, MesaTrabajoDetailPage],
+  declarations: [MesaTrabajoPage, MesaTrabajoUpdatePage, MesaTrabajoDetailPage, MesaTrabajoEstacionesPage],
   imports: [IonicModule, FormsModule, ReactiveFormsModule, CommonModule, TranslateModule, RouterModule.forChild(routes)],
 })
 export class MesaTrabajoPageModule {}

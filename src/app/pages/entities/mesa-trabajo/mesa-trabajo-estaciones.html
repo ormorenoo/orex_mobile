@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <div class="tb-title">
+        <span class="tb-title__t">Estaciones</span>
+        <span class="tb-title__sub mono">{{ mesaTrabajo.identificador }}</span>
+      </div>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="page">
+    @if (cargando) {
+      <div class="estado-vacio"><ion-spinner name="crescent"></ion-spinner></div>
+    } @else if (!estaciones.length) {
+      <div class="estado-vacio">Esta mesa no tiene estaciones registradas.</div>
+    } @else {
+      @for (item of estaciones; track item.estacion.id) {
+        <div class="est-card">
+          <button type="button" class="est-card__head" (click)="seleccionarEstacion(item.estacion)">
+            <span class="est-card__id mono">{{ item.estacion.identificador }}</span>
+            <span class="est-badge" [ngClass]="estadoClase(item.estado)">{{ item.estadoShort }}</span>
+            <span class="est-card__accion">
+              Estación completa
+              <ion-icon name="chevron-forward"></ion-icon>
+            </span>
+          </button>
+          <div class="est-card__polines">
+            @for (polin of item.polines; track polin.id) {
+              <button type="button" class="polin-btn" [ngClass]="estadoClase(polin.estado)" (click)="seleccionarPolin(polin)">
+                <span class="polin-btn__dot" [ngClass]="estadoClase(polin.estado)"></span>
+                <span class="polin-btn__id mono">{{ polin.identificador }}</span>
+                <span class="polin-btn__pos">{{ posicionLabel(polin.posicionPolin) }}</span>
+              </button>
+            } @empty {
+              <span class="vacio-sm">Sin polines</span>
+            }
+          </div>
+        </div>
+      }
+    }
+  </div>
+</ion-content>

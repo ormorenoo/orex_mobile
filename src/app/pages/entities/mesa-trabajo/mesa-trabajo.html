@@ -24,10 +24,10 @@
         </ion-item>
         <ion-item-options side="end">
           <ion-item-option color="primary" (click)="edit(slidingItem, mesaTrabajo)">
-            {{ 'EDIT_BUTTON' | translate }}
+            Editar
           </ion-item-option>
           <ion-item-option color="danger" (click)="delete(mesaTrabajo)">
-            {{ 'DELETE_BUTTON' | translate }}
+            Eliminar
           </ion-item-option>
         </ion-item-options>
       </ion-item-sliding>
@@ -35,7 +35,7 @@
   </ion-list>
   @if (!mesaTrabajos?.length) {
     <ion-item>
-      <ion-label> No Mesa Trabajos found. </ion-label>
+      <ion-label> No hay registros. </ion-label>
     </ion-item>
   }
 

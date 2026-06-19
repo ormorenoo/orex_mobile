@@ -1,0 +1,158 @@
+.tb-title {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+
+  &__t {
+    font-size: 15px;
+    font-weight: 800;
+    color: #fff;
+  }
+
+  &__sub {
+    font-size: 11px;
+    color: var(--faint);
+  }
+}
+
+.mono {
+  font-family: var(--mono);
+}
+
+.page {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.est-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  overflow: hidden;
+
+  &__head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 11px 13px;
+    border: none;
+    border-bottom: 1px solid var(--line-soft);
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  &__id {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--ink);
+  }
+
+  &__accion {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--orange);
+
+    ion-icon {
+      font-size: 14px;
+    }
+  }
+
+  &__polines {
+    display: flex;
+    gap: 8px;
+    padding: 11px 13px;
+    flex-wrap: wrap;
+  }
+}
+
+.est-badge {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #fff;
+  padding: 2px 7px;
+  border-radius: 3px;
+  background: var(--faint);
+
+  &.estado--ok {
+    background: var(--green);
+  }
+  &.estado--obs {
+    background: var(--amber);
+  }
+  &.estado--no {
+    background: var(--red);
+  }
+}
+
+.polin-btn {
+  flex: 1 1 28%;
+  min-width: 84px;
+  cursor: pointer;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: var(--r);
+  padding: 8px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+
+  &.estado--ok {
+    border-color: var(--green);
+  }
+  &.estado--obs {
+    border-color: var(--amber);
+  }
+  &.estado--no {
+    border-color: var(--red);
+  }
+
+  &__dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--faint);
+
+    &.estado--ok {
+      background: var(--green);
+    }
+    &.estado--obs {
+      background: var(--amber);
+    }
+    &.estado--no {
+      background: var(--red);
+    }
+  }
+
+  &__id {
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--ink);
+  }
+
+  &__pos {
+    font-size: 9px;
+    color: var(--muted);
+  }
+}
+
+.vacio-sm {
+  font-size: 13px;
+  color: var(--faint);
+}
+
+.estado-vacio {
+  text-align: center;
+  color: var(--faint);
+  font-size: 14px;
+  padding: 30px 0;
+}

@@ -29,6 +29,10 @@ export class MantenimientoService {
     return this.http.get(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  findByMesa(mesaId: number): Observable<HttpResponse<Mantenimiento[]>> {
+    return this.http.get<Mantenimiento[]>(`${ApiService.API_URL}/mantenimientos-by-mesa/${mesaId}`, { observe: 'response' });
+  }
+
   query(req?: any): Observable<HttpResponse<Mantenimiento[]>> {
     const options = createRequestOption(req);
     return this.http.get<Mantenimiento[]>(this.resourceUrl, { params: options, observe: 'response' });

@@ -25,6 +25,10 @@ export class InspeccionService {
     return this.http.get(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  findByMesa(mesaId: number): Observable<HttpResponse<Inspeccion[]>> {
+    return this.http.get<Inspeccion[]>(`${ApiService.API_URL}/inspeccions-by-mesa/${mesaId}`, { observe: 'response' });
+  }
+
   query(req?: any): Observable<HttpResponse<Inspeccion[]>> {
     const options = createRequestOption(req);
     return this.http.get<Inspeccion[]>(this.resourceUrl, { params: options, observe: 'response' });
