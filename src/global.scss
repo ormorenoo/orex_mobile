@@ -1,132 +1,16 @@
-/* ============================
-   PALETA OREX
-============================ */
-:root {
-  --orex-orange: #ff6400;
-  --orex-orange-dark: #cc5200;
-  --orex-gray: #3a3a3a;
-  --orex-dark: #111111;
-  --orex-border: #2a2a2a;
+/* ============================================================
+   OREX móvil — tema «Industrial» (claro), paridad con la web.
+   Los tokens (--orange, --bg, --surface, --ink, --line, --r…)
+   viven en theme/variables.scss.
+   ============================================================ */
 
-  --text-light: #ffffff;
-  --text-muted: #b5b5b5;
-
-  color-scheme: dark;
-}
-
-body.dark {
-  --ion-color-primary: #f8951d;
-  --ion-background-color: #121212;
-  --ion-text-color: #ffffff;
-}
-
-/* ============================
-   BASE GENERAL
-============================ */
-body, ion-app, ion-content {
-  background: var(--orex-dark);
-  color: var(--text-light);
-  font-family: 'Roboto', sans-serif;
-}
-
-/* Inputs */
-ion-item {
-  --background: var(--orex-dark);
-  --border-color: var(--orex-border);
-  --border-width: 1px;
-  --highlight-color-focused: var(--orex-orange);
-}
-
-ion-label {
-  color: var(--text-muted);
-}
-
-ion-input {
-  --color: var(--text-light);
-}
-
-/* Toolbars */
-ion-toolbar {
-  --background: #000;
-  --color: white;
-  border-bottom: 1px solid var(--orex-border);
-}
-
-/* ============================
-   BOTONES
-============================ */
-ion-button {
-  --border-radius: 8px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-
-  &.button-solid {
-    --background: var(--orex-orange);
-    --background-activated: var(--orex-orange-dark);
-    --background-focused: var(--orex-orange-dark);
-    --background-hover: var(--orex-orange-dark);
-    color: white;
-  }
-
-  &.button-outline {
-    --color: var(--orex-orange);
-    --border-color: var(--orex-orange);
-    --border-width: 1px;
-    --background: transparent;
-  }
-
-  &.button-clear {
-    --color: var(--orex-orange);
-  }
-}
-
-/* Botón gris secundario */
-ion-button.secondary {
-  --background: var(--orex-gray) !important;
-  --background-hover: #4d4d4d !important;
-  --background-focused: #4d4d4d !important;
-}
-
-ion-icon {
-  color: var(--orex-orange);
-}
-
-ion-icon.add {
-  color: white;
-}
-
-ion-fab-button {
-  --background: var(--orex-orange);
-}
-
-ion-card {
-  background: var(--orex-gray);
-  border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-ion-card:active {
-  transform: scale(0.97);
-}
-
-/* Iconos grandes */
-ion-card ion-icon {
-  font-size: 36px;
-  color: var(--orex-orange); // tu naranja
-  margin-bottom: 10px;
-}
-
-/* Texto */
-ion-card p {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 500;
-  color: #ffffff;
-}
-
-ion-card-title {
-  color: var(--text-light);
+/* Fuente Inter (empaquetada, variable 100–900) */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/assets/fonts/InterVariable.woff2') format('woff2');
 }
 
 /* Core CSS required for Ionic components to work properly */
@@ -138,9 +22,333 @@ ion-card-title {
 @import '~@ionic/angular/css/typography.css';
 @import '~@ionic/angular/css/display.css';
 
-/* Optional CSS utils that can be commented out */
+/* Optional CSS utils */
 @import '~@ionic/angular/css/padding.css';
 @import '~@ionic/angular/css/float-elements.css';
 @import '~@ionic/angular/css/text-alignment.css';
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
+
+/* ============================
+   BASE
+============================ */
+body,
+ion-app,
+ion-content {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--ion-font-family);
+}
+
+ion-content {
+  --background: var(--bg);
+}
+
+/* ============================
+   TOOLBAR — barra de marca (ink)
+============================ */
+ion-toolbar {
+  --background: var(--ink);
+  --color: #ffffff;
+  --border-color: transparent;
+}
+
+ion-title {
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+ion-toolbar ion-icon,
+ion-toolbar ion-button {
+  color: #ffffff;
+  --color: #ffffff;
+}
+
+/* ============================
+   ITEMS / INPUTS — superficie blanca, borde fino
+============================ */
+ion-item {
+  --background: var(--surface);
+  --border-color: var(--line);
+  --border-width: 0 0 1px 0;
+  --highlight-color-focused: var(--orange);
+  --color: var(--ink);
+}
+
+ion-label {
+  color: var(--muted);
+}
+
+ion-input,
+ion-textarea,
+ion-select {
+  --color: var(--ink);
+  --placeholder-color: var(--faint);
+}
+
+/* ============================
+   BOTONES — radio técnico 3px
+============================ */
+ion-button {
+  --border-radius: var(--r);
+  --box-shadow: none;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+ion-fab-button {
+  --background: var(--orange);
+  --color: #ffffff;
+}
+
+ion-fab-button ion-icon {
+  color: #ffffff;
+}
+
+/* ============================
+   CARDS — superficie blanca, borde, sombra mínima, 3px
+============================ */
+ion-card {
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+ion-card:active {
+  transform: scale(0.99);
+}
+
+ion-card-title {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+ion-card p {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+ion-card ion-icon {
+  font-size: 36px;
+  color: var(--orange);
+  margin-bottom: 10px;
+}
+
+/* Iconos — acento naranja por defecto */
+ion-icon {
+  color: var(--orange);
+}
+
+ion-icon.add {
+  color: #ffffff;
+}
+
+/* Listas sobre el fondo de la app */
+ion-list {
+  background: transparent;
+}
+
+/* ============================
+   FILAS DE LISTA — tipografía
+============================ */
+ion-item h2,
+ion-item h3 {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+ion-item p {
+  color: var(--muted);
+}
+
+/* Acciones deslizables (ion-item-sliding) */
+ion-item-option {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* ============================
+   CHIPS / BADGES de estado
+============================ */
+ion-chip {
+  --background: var(--line-soft);
+  --color: var(--ink);
+  border-radius: var(--r);
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+ion-chip.chip-ok,
+ion-chip[color='success'] {
+  --background: #eaf6ef;
+  --color: #1f7a45;
+}
+
+ion-chip.chip-obs,
+ion-chip[color='warning'] {
+  --background: #fbf3e1;
+  --color: var(--amber);
+}
+
+ion-chip.chip-no,
+ion-chip[color='danger'] {
+  --background: #fbe9e9;
+  --color: var(--red);
+}
+
+/* ============================
+   SEGMENT (Ionic) — look técnico
+============================ */
+ion-segment {
+  --background: var(--line-soft);
+  border-radius: var(--r);
+}
+
+ion-segment-button {
+  --background-checked: var(--surface);
+  --color: var(--muted);
+  --color-checked: var(--ink);
+  --indicator-color: var(--surface);
+  --border-radius: var(--r);
+  font-weight: 700;
+  text-transform: none;
+  min-height: 38px;
+}
+
+/* ============================
+   VARIOS
+============================ */
+ion-spinner {
+  color: var(--orange);
+}
+
+ion-refresher-content {
+  color: var(--muted);
+}
+
+ion-note {
+  color: var(--muted);
+}
+
+/* Código / identificadores monoespaciados */
+.mono {
+  font-family: var(--mono);
+}
+
+/* ============================
+   LISTA DE REGISTROS (inspección / mantenimiento)
+   Tarjeta con barra de estado a la izquierda, código mono y badge.
+============================ */
+.reg-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.reg-card {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  padding: 0;
+  overflow: hidden;
+
+  &__bar {
+    align-self: stretch;
+    width: 4px;
+    flex: none;
+    background: var(--faint);
+  }
+
+  &.estado--ok .reg-card__bar {
+    background: var(--green);
+  }
+  &.estado--obs .reg-card__bar {
+    background: var(--amber);
+  }
+  &.estado--no .reg-card__bar {
+    background: var(--red);
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+    min-width: 0;
+    padding: 12px 14px;
+  }
+
+  &__top {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__code {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--ink);
+  }
+
+  &__detail {
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+
+  &__sub {
+    font-size: 11px;
+    color: var(--faint);
+  }
+
+  > ion-icon {
+    color: var(--faint);
+    font-size: 18px;
+    margin-right: 10px;
+    flex: none;
+  }
+}
+
+/* Badge de estado (texto + color suave) */
+.badge {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 7px;
+  border-radius: 3px;
+  background: var(--line-soft);
+  color: var(--muted);
+
+  &.estado--ok {
+    background: #eaf6ef;
+    color: #1f7a45;
+  }
+  &.estado--obs {
+    background: #fbf3e1;
+    color: var(--amber);
+  }
+  &.estado--no {
+    background: #fbe9e9;
+    color: var(--red);
+  }
+}
+
+.reg-empty {
+  text-align: center;
+  color: var(--faint);
+  font-size: 14px;
+  padding: 30px 0;
+}

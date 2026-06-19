@@ -30,8 +30,9 @@
                 "output": "./svg"
               }
             ],
-            "styles": ["src/theme/variables.scss", "src/global.scss"],
+            "styles": ["src/global.scss", "src/theme/variables.scss"],
             "scripts": [],
+            "allowedCommonJsDependencies": ["qrcode"],
             "aot": false,
             "vendorChunk": true,
             "extractLicenses": false,
