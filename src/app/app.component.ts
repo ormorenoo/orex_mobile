@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
+import { App, URLOpenListenerEvent } from '@capacitor/app';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar, Style } from '@capacitor/status-bar';
-import { Platform } from '@ionic/angular';
+import { NavController, Platform } from '@ionic/angular';
 import { TranslateService } from '@ngx-translate/core';
 import { SqliteService } from './services/sqlite/sqlite.service';
 
@@ -15,6 +16,8 @@ export class AppComponent {
     private platform: Platform,
     private translate: TranslateService,
     private sqliteService: SqliteService,
+    private zone: NgZone,
+    private navController: NavController,
   ) {
     this.initializeApp();
   }
@@ -29,6 +32,27 @@ export class AppComponent {
       }
     });
     this.initTranslate();
+    this.initDeepLinks();
+  }
+
+  /**
+   * Deep link del QR de la mesa: al escanear `…/mesa-trabajo/{id}/view`
+   * se abre el detalle de la mesa dentro de la app. Si no hay sesión, el
+   * guard de ruta redirige a login. REQ-324-001.
+   */
+  initDeepLinks() {
+    if (!Capacitor.isPluginAvailable('App')) {
+      return;
+    }
+    App.addListener('appUrlOpen', (event: URLOpenListenerEvent) => {
+      const match = /\/mesa-trabajo\/(\d+)\/view/.exec(event.url ?? '');
+      if (match) {
+        const mesaId = match[1];
+        this.zone.run(() => {
+          this.navController.navigateForward(`/tabs/entities/mesa-trabajo/${mesaId}/view`);
+        });
+      }
+    });
   }
 
   initTranslate() {
