@@ -6,6 +6,10 @@ export const enum TipoEstacion {
   'CARGA',
   'RETORNO',
   'IMPACTO',
+  'POLEA',
+  'GARLAND',
+  'PESOMETRICO',
+  'AUTOLINEANTE',
 }
 
 export const enum TipoEstacionPolin {
@@ -30,6 +34,7 @@ export class Estacion implements BaseEntity {
   constructor(
     public id?: number,
     public identificador?: string,
+    public tipoEstacion?: TipoEstacion,
     public mesaTrabajo?: MesaTrabajo,
   ) {}
 }

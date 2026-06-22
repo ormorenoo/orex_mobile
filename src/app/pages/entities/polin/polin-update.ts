@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { Estacion, EstacionService } from '../estacion';
 import { Polin } from './polin.model';
 import { PolinService } from './polin.service';
+import { tiposPolinPorEstacion, tipoPolinLabel } from '#app/shared/utils/polin-ui.utils';
 
 @Component({
   selector: 'page-polin-update',
@@ -29,13 +30,11 @@ export class PolinUpdatePage implements OnInit {
     { value: 'IZQUIERDO', label: 'PosicionPolin.IZQUIERDO' },
   ];
 
-  readonly tipoPolinOptions: { value: string; label: string }[] = [
-    { value: 'IMPACTO', label: 'TipoPolin.IMPACTO' },
-    { value: 'RETORNO', label: 'TipoPolin.RETORNO' },
-    { value: 'CARGA', label: 'TipoPolin.CARGA' },
-    { value: 'PESOMETRICO', label: 'TipoPolin.PESOMETRICO' },
-    { value: 'AUTOLINEANTE', label: 'TipoPolin.AUTOLINEANTE' },
-  ];
+  /** Tipos de polín ofrecidos según la estación elegida (PESOMETRICO/AUTOLINEANTE/POLEA la fijan). */
+  get tipoPolinOptions(): { value: string; label: string }[] {
+    const estacion = this.estacions?.find(e => e.id === this.form?.get('estacionId')?.value);
+    return tiposPolinPorEstacion(estacion?.tipoEstacion).map(v => ({ value: v, label: tipoPolinLabel(v) }));
+  }
 
   form = inject(FormBuilder).group({
     id: [null, []],
@@ -126,6 +125,18 @@ export class PolinUpdatePage implements OnInit {
 
   trackEstacionById(index: number, item: Estacion) {
     return item.id;
+  }
+
+  /** Al elegir estación: fija el tipo de polín si la estación lo determina (PESOMETRICO/AUTOLINEANTE/POLEA). */
+  onEstacionChange(): void {
+    const estacion = this.estacions?.find(e => e.id === this.form.get('estacionId').value);
+    const opciones = tiposPolinPorEstacion(estacion?.tipoEstacion);
+    const actual = this.form.get('tipoPolin').value;
+    if (opciones.length === 1) {
+      this.form.get('tipoPolin').setValue(opciones[0]);
+    } else if (actual && !opciones.includes(actual)) {
+      this.form.get('tipoPolin').setValue(null);
+    }
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<Polin>>) {

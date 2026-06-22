@@ -8,9 +8,10 @@ export class EstacionOfflineRepository {
 
   async replaceAll(estaciones: Estacion[]): Promise<void> {
     for (const estacion of estaciones) {
-      await this.sqlite.run(`INSERT INTO estacion (id, identificador, mesa_trabajo_id) VALUES (?, ?, ?)`, [
+      await this.sqlite.run(`INSERT INTO estacion (id, identificador, tipo_estacion, mesa_trabajo_id) VALUES (?, ?, ?, ?)`, [
         estacion.id,
         estacion.identificador,
+        estacion.tipoEstacion ?? null,
         estacion.mesaTrabajo.id,
       ]);
     }
@@ -19,7 +20,7 @@ export class EstacionOfflineRepository {
   async findByMesaId(idMesa: number): Promise<Estacion[]> {
     const result = await this.sqlite.query(
       `
-    SELECT e.id, e.identificador
+    SELECT e.id, e.identificador, e.tipo_estacion
     FROM estacion e
     JOIN mesa_trabajo mt ON mt.id = e.mesa_trabajo_id
     WHERE e.mesa_trabajo_id = ?
@@ -36,6 +37,7 @@ export class EstacionOfflineRepository {
         ({
           id: row.id,
           identificador: row.identificador,
+          tipoEstacion: row.tipo_estacion ?? undefined,
         }) as Estacion,
     );
   }

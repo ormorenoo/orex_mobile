@@ -13,9 +13,10 @@ export const enum PosicionPolin {
 }
 
 export const enum TipoPolin {
-  'IMPACTO',
-  'RETORNO',
   'CARGA',
+  'RETORNO',
+  'IMPACTO',
+  'POLEA',
   'PESOMETRICO',
   'AUTOLINEANTE',
 }

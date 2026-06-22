@@ -21,7 +21,7 @@ import {
 } from '#app/shared/utils/ubicacion.utils';
 import { estadoClase, posicionLabel, tipoPolinLabel } from '#app/shared/utils/polin-ui.utils';
 import { CondicionPolin } from '../enumerations/condicion-polin.model';
-import { TipoFalla } from '../enumerations/tipo-falla.model';
+import { TipoFalla, fallasPorContexto } from '../enumerations/tipo-falla.model';
 import { TipoServicio } from '../enumerations/tipo-servicio.model';
 import { TipoMantenimiento } from '../enumerations/tipo-mantenimiento.model';
 import { TipoRegistro } from '../enumerations/tipo-registro.model';
@@ -54,7 +54,6 @@ export class MantenimientoUpdatePage implements OnInit, OnDestroy {
   condicion = CondicionPolin;
   condicionKeys = Object.keys(CondicionPolin);
   tipoFalla = TipoFalla;
-  tipoFallaKeys = Object.keys(TipoFalla);
   tipoServicio = TipoServicio;
   tipoServicioKeys = Object.keys(TipoServicio);
   tipoMantenimiento = TipoMantenimiento;
@@ -93,6 +92,11 @@ export class MantenimientoUpdatePage implements OnInit, OnDestroy {
   /** ¿El registro es a nivel estación (sin polín)? Espejo de la web. */
   get esEstacion(): boolean {
     return this.form.get('tipo')?.value === TipoRegistro.ESTACION;
+  }
+
+  /** Códigos de falla a listar según contexto: Garland > estación/polín. */
+  get tipoFallaKeys(): string[] {
+    return fallasPorContexto(this.esEstacion, this.form.get('estacion')?.value?.tipoEstacion);
   }
 
   /** Cambia el tipo de registro (polín ↔ estación) y limpia el polín si pasa a estación. */

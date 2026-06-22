@@ -97,6 +97,7 @@ export class SqliteService {
       CREATE TABLE IF NOT EXISTS estacion (
         id INTEGER PRIMARY KEY,
         identificador TEXT,
+        tipo_estacion TEXT,
         mesa_trabajo_id INTEGER,
         FOREIGN KEY (mesa_trabajo_id) REFERENCES mesa_trabajo(id)
       );
@@ -143,6 +144,13 @@ export class SqliteService {
     await this.db.execute(createMesaTrabajoTable);
     await this.db.execute(createEstacionTable);
     await this.db.execute(createPolinTable);
+
+    // Migración: asegurar columna tipo_estacion en bases offline ya existentes.
+    try {
+      await this.db.execute('ALTER TABLE estacion ADD COLUMN tipo_estacion TEXT;');
+    } catch {
+      // La columna ya existe; nada que hacer.
+    }
 
     await this.db.execute(createIndexes);
 

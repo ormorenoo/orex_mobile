@@ -48,7 +48,7 @@
           <ion-label position="stacked">Tipo de polín</ion-label>
           <ion-select interface="popover" formControlName="tipoPolin" id="field_tipoPolin">
             @for (opt of tipoPolinOptions; track opt.value) {
-              <ion-select-option [value]="opt.value">{{ opt.label | translate }}</ion-select-option>
+              <ion-select-option [value]="opt.value">{{ opt.label }}</ion-select-option>
             }
           </ion-select>
         </ion-item>
@@ -75,7 +75,7 @@
 
         <ion-item class="form-item">
           <ion-label position="stacked">Estación</ion-label>
-          <ion-select interface="popover" id="field_estacion" formControlName="estacionId" [compareWith]="compareEstacion">
+          <ion-select interface="popover" id="field_estacion" formControlName="estacionId" [compareWith]="compareEstacion" (ionChange)="onEstacionChange()">
             <ion-select-option [value]="null">Seleccione...</ion-select-option>
             @for (estacionOption of estacions; track trackEstacionById($index, estacionOption)) {
               <ion-select-option [value]="estacionOption.id">{{ estacionOption.id }}</ion-select-option>

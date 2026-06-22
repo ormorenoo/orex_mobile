@@ -53,15 +53,32 @@ export function posicionLabel(posicion: any): string {
 
 /** Etiquetas del tipo real de polín (REQ-323-005). */
 export const TIPO_POLIN_LABEL: Record<string, string> = {
-  IMPACTO: 'Impacto',
-  RETORNO: 'Retorno',
   CARGA: 'Carga',
+  RETORNO: 'Retorno',
+  IMPACTO: 'Impacto',
+  POLEA: 'Polea',
   PESOMETRICO: 'Pesométrico',
   AUTOLINEANTE: 'Autolineante',
 };
 
 export function tipoPolinLabel(tipo: any): string {
   return tipo ? (TIPO_POLIN_LABEL[String(tipo)] ?? String(tipo)) : 'N/A';
+}
+
+/** Tipos de estación que fijan el tipo del polín a un único valor homónimo. */
+export const TIPO_ESTACION_FIJA_POLIN: Record<string, string> = {
+  PESOMETRICO: 'PESOMETRICO',
+  AUTOLINEANTE: 'AUTOLINEANTE',
+  POLEA: 'POLEA',
+};
+
+/** Tipos de polín seleccionables cuando la estación no fija el tipo. */
+export const TIPOS_POLIN_GENERALES: string[] = ['CARGA', 'RETORNO', 'IMPACTO'];
+
+/** Códigos de tipo de polín permitidos según el tipo de estación. */
+export function tiposPolinPorEstacion(tipoEstacion: any): string[] {
+  const fijo = tipoEstacion ? TIPO_ESTACION_FIJA_POLIN[String(tipoEstacion)] : undefined;
+  return fijo ? [fijo] : TIPOS_POLIN_GENERALES;
 }
 
 /** Estado de una estación derivado del peor estado de sus polines. */
